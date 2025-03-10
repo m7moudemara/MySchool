@@ -1,6 +1,6 @@
-# flutter_application_1
+# MySchool
 
-A new Flutter project.
+A new App About SchoolSmart Project.
 
 ## Getting Started
 
