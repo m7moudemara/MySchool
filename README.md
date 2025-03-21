@@ -1,4 +1,4 @@
-# MySchool
+# My School
 
 A new App About SchoolSmart Project.
 
