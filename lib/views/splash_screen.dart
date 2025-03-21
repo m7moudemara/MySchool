@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/views/home_view.dart';
-import 'package:flutter_application_1/views/intro_view.dart';
+
+import 'package:my_school/views/select_account_view.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'intro_view.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -18,10 +21,12 @@ class _SplashViewState extends State<SplashView>
     _checkFirstTime();
   }
 
+
   Future<void> _checkFirstTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
 
+    await Future.delayed(const Duration(seconds: 3));
     await Future.delayed(const Duration(seconds: 3));
     if (isFirstTime) {
       Navigator.pushReplacement(
@@ -31,7 +36,7 @@ class _SplashViewState extends State<SplashView>
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomeView()),
+        MaterialPageRoute(builder: (context) => const SelectedAccountView()),
       );
     }
   }
@@ -76,6 +81,8 @@ class _SplashViewState extends State<SplashView>
               padding: const EdgeInsets.all(50.0),
               child: Image.asset("assets/myschool.png"),
             ),
+
+       
           ),
           Positioned(
             bottom: 70,
@@ -112,6 +119,7 @@ class _SplashViewState extends State<SplashView>
   }
 }
 
+
 class HalfCircleClipperLeft extends CustomClipper<Rect> {
   @override
   Rect getClip(Size size) {
@@ -123,6 +131,7 @@ class HalfCircleClipperLeft extends CustomClipper<Rect> {
     return false;
   }
 }
+
 
 class HalfCircleClipperRight extends CustomClipper<Rect> {
   @override
