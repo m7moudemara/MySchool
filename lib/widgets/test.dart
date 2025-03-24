@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CircleAboveImagesWithText extends StatefulWidget {
+  const CircleAboveImagesWithText({super.key});
+
   @override
   _CircleAboveImagesWithTextState createState() =>
       _CircleAboveImagesWithTextState();

@@ -1,10 +1,13 @@
 
+import 'package:MySchool/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
+  final VoidCallback onTap ;
   const CustomButton({
     super.key, required this.text,
+    required this.onTap
   });
 
   @override
@@ -12,12 +15,12 @@ class CustomButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: 	InkWell(
-        onTap: (){},
+        onTap: onTap,
         child: Container(
           height: 63,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Color(0xff3620C2),
+            color: AppColors.kSecondaryColor,
             borderRadius: BorderRadius.circular(8),
                   
           ),

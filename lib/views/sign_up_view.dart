@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:my_school/widgets/custom_button.dart';
-import 'package:my_school/widgets/custom_text_field.dart';
+import 'package:MySchool/widgets/custom_button.dart';
+import 'package:MySchool/widgets/custom_text_field.dart';
+import 'package:MySchool/constants.dart';
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
+  static String id = "/SignUpView";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Spacer(),
-            SignUpImage(),
-            HelloText(),
-            CustomTextField(hintText: "Name"),
-            SizedBox(height: 10),
-            CustomTextField(hintText: "Email"),
-            SizedBox(height: 10),
-            CustomTextField(hintText: "ID Number"),
-            SizedBox(height: 10),
-            CustomTextField(hintText: "Password"),
-            SizedBox(height: 10),
-            CustomButton(text: "Sign Up"),
-            HaveAnAccountText(),
-            Spacer(),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                const SignUpImage(),
+                const SizedBox(height: 20),
+                const HelloText(),
+                const SizedBox(height: 20),
+                SignUpForm(),
+
+                const HaveAnAccountText(),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -39,7 +39,10 @@ class SignUpImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image(image: AssetImage("assets/signup_image.png"), height: 121);
+    return const Image(
+      image: AssetImage("assets/signup_image.png"),
+      height: 121,
+    );
   }
 }
 
@@ -48,14 +51,73 @@ class HelloText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        AppTexts.helloText,
+        style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 16),
+      ),
+    );
+  }
+}
+
+class SignUpForm extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
         children: [
-          Text(
-            "Hello, Sign Up to start using our app",
-            style: TextStyle(color: Color(0xff3620C2), fontSize: 16),
+          CustomTextField(
+            hintText: "Name",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your name';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 10),
+          CustomTextField(
+            hintText: "Email",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 10),
+          CustomTextField(
+            hintText: "ID Number",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your ID number';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 10),
+          CustomTextField(
+            hintText: "Password",
+            obscureText: true,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your password';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 10),
+          CustomButton(
+            onTap: () {
+              if (_formKey.currentState!.validate()) {
+                // Process data
+              }
+            },
+            text: "Sign Up",
           ),
         ],
       ),
@@ -69,23 +131,23 @@ class HaveAnAccountText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 2.0,left: 10),
+      padding: const EdgeInsets.only( left: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text("Have an account "),
+          Text(AppTexts.haveAccountText),
+
           TextButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, '/LoginView');
+            },
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,
-              minimumSize: Size(50, 30)
-              
+              minimumSize: Size(50, 30),
             ),
-            onPressed: (){
-              Navigator.pushNamed(context, '/LoginView');
-            },
             child: Text(
-              "? Login",
-              style: TextStyle(color: Color(0xff3620C2), fontSize: 13.33,),
+              AppTexts.loginText,
+              style: TextStyle(color: AppColors.kSecondaryColor, fontSize: 13.33),
             ),
           ),
         ],

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_school/views/test.dart';
+import 'package:MySchool/widgets/test.dart';
 
 class SelectedAccountView extends StatelessWidget {
   const SelectedAccountView({super.key});
+  static String id = '/SelectedAccountView';
 
   @override
   Widget build(BuildContext context) {

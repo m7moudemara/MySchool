@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:my_school/views/select_account_view.dart';
+import 'package:MySchool/views/select_account_view.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
