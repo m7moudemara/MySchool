@@ -1,3 +1,4 @@
+import 'package:MySchool/constants.dart';
 import 'package:flutter/material.dart';
 
 class NotificationsView extends StatefulWidget {
@@ -10,20 +11,7 @@ class NotificationsView extends StatefulWidget {
 
 class _NotificationsViewState extends State<NotificationsView> {
   int _currentIndex = 0;
-  IconData _getIcon(int index) {
-    switch (index) {
-      case 0:
-        return Icons.home;
-      case 1:
-        return Icons.chat;
-      case 2:
-        return Icons.people;
-      case 3:
-        return Icons.person;
-      default:
-        return Icons.home;
-    }
-  }
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +19,6 @@ class _NotificationsViewState extends State<NotificationsView> {
         
          leading: IconButton(
           
-          // padding: EdgeInsets.only(right: 3),
           icon: const Icon(Icons.arrow_back, color: Color(0xFF161C2B)),
           onPressed: () => Navigator.pop(context),
          ),
@@ -95,9 +82,9 @@ Padding(
     type: BottomNavigationBarType.fixed,
     showSelectedLabels: false,
     showUnselectedLabels: false,
-    selectedItemColor: Colors.white,
-    unselectedItemColor: Colors.white.withOpacity(0.7),
-    backgroundColor: Color(0xff103568), 
+    selectedItemColor: AppColors.kSecondaryColor,
+    unselectedItemColor: Color(0xff868686),
+    backgroundColor: Colors.transparent, 
     currentIndex: _currentIndex,
     onTap: (index) {
       setState(() {
@@ -107,22 +94,18 @@ Padding(
     items: [
       BottomNavigationBarItem(
         icon: Icon(Icons.home_outlined, size: 30),
-        activeIcon: Icon(Icons.home_sharp, size: 30),
         label: '',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.chat_bubble_rounded, size: 30),
-        activeIcon: Icon(Icons.chat_outlined, size: 30),
+        icon: Icon(Icons.chat_outlined, size: 30),
         label: '',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.people_alt_outlined, size: 30),
-        activeIcon: Icon(Icons.people_alt_sharp, size: 30),
         label: '',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.person_outline, size: 30),
-        activeIcon: Icon(Icons.person_sharp, size: 30),
         label: '',
       ),
     ],

@@ -5,8 +5,7 @@ import 'package:MySchool/constants.dart';
 import 'package:MySchool/views/home_student_view.dart';
 import 'package:MySchool/views/sign_up/forget_password_view.dart';
 import 'package:MySchool/views/sign_up/sign_up_view.dart';
-import 'package:MySchool/services/auth_service.dart'; // استيراد AuthService
-
+import 'package:MySchool/services/auth_service.dart'; 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
   static String id = '/LoginView';
@@ -19,9 +18,9 @@ class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   final _idNumberController = TextEditingController();
   final _passwordController = TextEditingController();
-  final AuthService _authService = AuthService(); // استخدام AuthService
+  final AuthService _authService = AuthService();
   bool _isLoading = false;
-  bool _obscurePassword = true; // Added for password visibility toggle
+  bool _obscurePassword = true; 
 
   @override
   void dispose() {
@@ -42,7 +41,7 @@ class _LoginViewState extends State<LoginView> {
       setState(() => _isLoading = false);
 
       if (result['success'] == true) {
-        // If login is successful, navigate to the HomeView
+        
         Navigator.pushReplacementNamed(context, HomeView.id);
       } else {
         // Show error message

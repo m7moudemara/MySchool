@@ -74,9 +74,8 @@ class ForgetPasswordForm extends StatelessWidget {
                   ),
                 );
 
-                // Simulate a network call or other async operation
                 Future.delayed(const Duration(seconds: 2), () {
-                  Navigator.pushNamed(context, ResetPasswordView.id); // تم التعديل هنا
+                  Navigator.pushNamed(context, ResetPasswordView.id); 
                 });
               }
             },

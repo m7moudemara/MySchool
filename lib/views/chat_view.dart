@@ -86,7 +86,6 @@ class _ChatViewState extends State<ChatView> {
       );
 
       if (response.statusCode == 201) {
-        // Update the temporary message with server data
         setState(() {
           final index = _messages.indexWhere(
             (m) => m['id'].toString().startsWith('temp_'),
@@ -103,7 +102,6 @@ class _ChatViewState extends State<ChatView> {
       }
     } on DioException catch (e) {
       _showErrorSnackbar('Failed to send message: ${e.message}');
-      // Remove the temporary message if sending failed
       setState(() {
         _messages.removeWhere((m) => m['id'].toString().startsWith('temp_'));
       });
@@ -118,21 +116,7 @@ class _ChatViewState extends State<ChatView> {
     );
   }
 
-  Image _getImage(int index) {
-    switch (index) {
-      case 0:
-        return Image.asset("assets/home.png", height: 30.67, width: 30.24);
-      case 1:
-        return Image.asset("assets/chat.png", height: 30.67, width: 30.24);
-      case 2:
-        return Image.asset("assets/people.png", height: 30.67, width: 38.42);
-      case 3:
-        return Image.asset("assets/person.png", height: 30, width: 30);
-      default:
-        return Image.asset("assets/home.png", height: 30.67, width: 30.24);
-    }
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -214,43 +198,42 @@ class _ChatViewState extends State<ChatView> {
           ),
         ],
       ),
-      bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-        child: BottomNavigationBar(
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          iconSize: 30,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white,
-          backgroundColor: const Color(0xff103568),
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() => _currentIndex = index);
-          },
-          items: List.generate(4, (index) {
-            return BottomNavigationBarItem(
-              icon: Container(
-                padding: const EdgeInsets.only(bottom: 5),
-                decoration:
-                    _currentIndex == index
-                        ? const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xFF3620C2),
-                              width: 2,
-                            ),
-                          ),
-                        )
-                        : null,
-                child: _getImage(index),
-              ),
-              label: '',
-            );
-          }),
-        ),
+     bottomNavigationBar: ClipRRect(
+  borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+  child: BottomNavigationBar(
+    elevation: 0,
+    type: BottomNavigationBarType.fixed,
+    showSelectedLabels: false,
+    showUnselectedLabels: false,
+    selectedItemColor: AppColors.kSecondaryColor,
+    unselectedItemColor: Color(0xff868686),
+    backgroundColor: Colors.transparent, 
+    currentIndex: _currentIndex,
+    onTap: (index) {
+      setState(() {
+        _currentIndex = index;
+      });
+    },
+    items: [
+      BottomNavigationBarItem(
+        icon: Icon(Icons.home_outlined, size: 30),
+        label: '',
       ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.chat_outlined, size: 30),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.people_alt_outlined, size: 30),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.person_outline, size: 30),
+        label: '',
+      ),
+    ],
+  ),
+),
     );
   }
 }

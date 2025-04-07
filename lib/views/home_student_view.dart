@@ -149,22 +149,18 @@ class _HomeViewState extends State<HomeView> {
     items: [
       BottomNavigationBarItem(
         icon: Icon(Icons.home_outlined, size: 30),
-        // activeIcon: Icon(Icons.home_outlined, size: 30,color: AppColors.kSecondaryColor,),
         label: '',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.chat_outlined, size: 30),
-        // activeIcon: Icon(Icons.chat_outlined, size: 30,color: AppColors.kSecondaryColor,),
         label: '',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.people_alt_outlined, size: 30),
-        // activeIcon: Icon(Icons.people_alt_outlined, size: 30,color: AppColors.kSecondaryColor,),
         label: '',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.person_outline, size: 30),
-        // activeIcon: Icon(Icons.person_outline, size: 30,color: AppColors.kSecondaryColor,),
         label: '',
       ),
     ],

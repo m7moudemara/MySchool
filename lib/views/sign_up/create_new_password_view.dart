@@ -26,7 +26,6 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
       _showConfirmationDialog = true;
     });
 
-    // الانتقال إلى صفحة تسجيل الدخول بعد 3 ثوانٍ
     Future.delayed(const Duration(seconds: 7), () {
       Navigator.pushReplacementNamed(context, LoginView.id);
     });
@@ -92,7 +91,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                     },
                     text: "Reset Password",
                   ),
-                  const SizedBox(height: 100), // مساحة إضافية لتفادي تداخل لوحة المفاتيح
+                  const SizedBox(height: 100),
                 ],
               ),
             ),
@@ -109,7 +108,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                     borderRadius: BorderRadius.circular(69),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.black,
                         spreadRadius: 5,
                         blurRadius: 10,
                         offset: const Offset(0, 3),
@@ -120,7 +119,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        "assets/con.png", // تأكد من وجود الصورة في مجلد assets
+                        "assets/con.png",
                         height: 100,
                         width: 100,
                       ),

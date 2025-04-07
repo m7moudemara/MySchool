@@ -108,9 +108,8 @@ class AttendanceView extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Calendar header would go here
+        
           const SizedBox(height: 16),
-          // Calendar grid
           Wrap(
             spacing: 16,
             runSpacing: 16,
@@ -124,7 +123,7 @@ class AttendanceView extends StatelessWidget {
               _buildDayIndicator(isPresent: true),
               _buildDayIndicator(isPresent: true),
               _buildDayIndicator(isPresent: true),
-              _buildDayIndicator(isPresent: false), // Absent day
+              _buildDayIndicator(isPresent: false),
               _buildDayIndicator(isPresent: true),
             ],
           ),

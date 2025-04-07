@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ResultDetailsView extends StatelessWidget {  // تغيير اسم الكلاس ليكون أكثر دقة
+class ResultDetailsView extends StatelessWidget {  
   const ResultDetailsView({super.key});
-  static String id = '/ResultDetailsView';  // تغيير معرف الصفحة
-
+  static String id = '/ResultDetailsView';  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

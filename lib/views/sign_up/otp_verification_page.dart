@@ -9,22 +9,24 @@ class OTPVerificationView extends StatefulWidget {
 }
 
 class _OTPVerificationViewState extends State<OTPVerificationView> {
-  final List<TextEditingController> _otpControllers = List.generate(4, (index) => TextEditingController());
+  final List<TextEditingController> _otpControllers = List.generate(
+    4,
+    (index) => TextEditingController(),
+  );
   final _formKey = GlobalKey<FormState>();
 
   void _verifyOTP() {
     if (_formKey.currentState!.validate()) {
       String otp = _otpControllers.map((controller) => controller.text).join();
-      
 
       if (otp == "1234") {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('تم التحقق بنجاح!')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('تم التحقق بنجاح!')));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('رمز OTP غير صحيح!')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('رمز OTP غير صحيح!')));
       }
     }
   }
@@ -45,10 +47,10 @@ class _OTPVerificationViewState extends State<OTPVerificationView> {
                 width: 286,
                 height: 288,
               ),
-              
+
               SendText(),
-              Text("( example123@gmail.com )",), 
-              
+              Text("( example123@gmail.com )"),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(4, (index) {
@@ -83,14 +85,15 @@ class _OTPVerificationViewState extends State<OTPVerificationView> {
                 children: [
                   Text("Do not send OTP ?"),
                   GestureDetector(
-                    onTap: (){},
-                    child: Text('Send OTP',style: TextStyle(color: AppColors.kSecondaryColor,)))
+                    onTap: () {},
+                    child: Text(
+                      'Send OTP',
+                      style: TextStyle(color: AppColors.kSecondaryColor),
+                    ),
+                  ),
                 ],
               ),
-              CustomButton(
-                text:'Verify',
-                onTap: _verifyOTP,
-              ),
+              CustomButton(text: 'Verify', onTap: _verifyOTP),
             ],
           ),
         ),
@@ -100,9 +103,7 @@ class _OTPVerificationViewState extends State<OTPVerificationView> {
 }
 
 class SendText extends StatelessWidget {
-  const SendText({
-    super.key,
-  });
+  const SendText({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -118,9 +119,7 @@ class SendText extends StatelessWidget {
 }
 
 class OtpText extends StatelessWidget {
-  const OtpText({
-    super.key,
-  });
+  const OtpText({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +127,11 @@ class OtpText extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Text(
         'OTP Verification',
-        style: TextStyle(fontSize: 30, color: AppColors.kSecondaryColor,fontFamily: "Outfit",),
+        style: TextStyle(
+          fontSize: 30,
+          color: AppColors.kSecondaryColor,
+          fontFamily: "Outfit",
+        ),
       ),
     );
   }

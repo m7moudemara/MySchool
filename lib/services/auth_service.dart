@@ -19,7 +19,6 @@ class AuthService {
     required String password,
   }) async {
     try {
-      // 1. التحقق من عدم وجود مستخدم بنفس البريد الإلكتروني
       final emailResponse = await _dio.get(
         '/users',
         queryParameters: {'email': email},
@@ -29,7 +28,6 @@ class AuthService {
         return {'success': false, 'error': 'Email already exists'};
       }
 
-      // 2. التحقق من عدم وجود مستخدم بنفس رقم الهوية
       final idResponse = await _dio.get(
         '/users',
         queryParameters: {'idNumber': idNumber},
@@ -39,7 +37,6 @@ class AuthService {
         return {'success': false, 'error': 'ID number already exists'};
       }
 
-      // 3. إنشاء المستخدم الجديد
       final response = await _dio.post(
         '/users',
         data: {
@@ -57,13 +54,11 @@ class AuthService {
     }
   }
 
-  // دالة لتسجيل الدخول
   Future<Map<String, dynamic>> login({
     required String idNumber,
     required String password,
   }) async {
     try {
-      // التحقق من وجود المستخدم
       final response = await _dio.get(
         '/users',
         queryParameters: {'idNumber': idNumber, 'password': password},
