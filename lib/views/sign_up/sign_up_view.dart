@@ -3,6 +3,8 @@ import 'package:MySchool/widgets/custom_button.dart';
 import 'package:MySchool/widgets/custom_text_field.dart';
 import 'package:MySchool/constants.dart';
 
+import '../../services/auth_service.dart';
+
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
   static String id = "/SignUpView";
@@ -61,8 +63,62 @@ class HelloText extends StatelessWidget {
   }
 }
 
-class SignUpForm extends StatelessWidget {
+
+class SignUpForm extends StatefulWidget {
+  @override
+  _SignUpFormState createState() => _SignUpFormState();
+}
+class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
+  final _authService = AuthService(); 
+  bool _isLoading = false;
+  bool _obscurePassword = true; 
+
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _idNumberController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _idNumberController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+
+      final result = await _authService.signUp(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        idNumber: _idNumberController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      setState(() => _isLoading = false);
+
+      if (result['success'] == true) {
+        Navigator.pushReplacementNamed(context, '/LoginView');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully! Please login.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['error']),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +127,7 @@ class SignUpForm extends StatelessWidget {
       child: Column(
         children: [
           CustomTextField(
+            controller: _nameController,
             hintText: "Name",
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -81,49 +138,78 @@ class SignUpForm extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           CustomTextField(
+            controller: _emailController,
             hintText: "Email",
+            keyboardType: TextInputType.emailAddress,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
               }
+              if (!value.contains('@') || !value.contains('.')) {
+                return 'Please enter a valid email';
+              }
               return null;
             },
           ),
           const SizedBox(height: 10),
           CustomTextField(
+            controller: _idNumberController,
             hintText: "ID Number",
+            keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your ID number';
               }
+              if (value.length < 6) {
+                return 'ID number must be at least 6 digits';
+              }
               return null;
             },
           ),
           const SizedBox(height: 10),
-          CustomTextField(
-            hintText: "Password",
-            obscureText: true,
+          TextFormField(
+            controller: _passwordController,
+            obscureText: _obscurePassword,
+            decoration: InputDecoration(
+              hintText: "Password",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscurePassword = !_obscurePassword;
+                  });
+                },
+              ),
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your password';
               }
+              if (value.length < 6) {
+                return 'Password must be at least 6 characters';
+              }
               return null;
             },
           ),
-          const SizedBox(height: 10),
-          CustomButton(
-            onTap: () {
-              if (_formKey.currentState!.validate()) {
-                // Process data
-              }
-            },
-            text: "Sign Up",
-          ),
+          const SizedBox(height: 20),
+          _isLoading
+              ? const CircularProgressIndicator()
+              : CustomButton(
+                  onTap: _submitForm,
+                  text: "Sign Up",
+                ),
         ],
       ),
     );
   }
 }
+
 
 class HaveAnAccountText extends StatelessWidget {
   const HaveAnAccountText({super.key});

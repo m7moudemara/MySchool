@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:MySchool/views/select_account_view.dart';
-import '../widgets/intro_widget.dart';
+import 'package:MySchool/views/sign_up/select_account_view.dart';
+import '../../widgets/intro_widget.dart';
 
 class IntroView extends StatefulWidget {
   const IntroView({super.key});

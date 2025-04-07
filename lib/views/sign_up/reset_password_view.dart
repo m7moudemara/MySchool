@@ -1,6 +1,6 @@
-import 'package:MySchool/views/create_new_password_view.dart';
+import 'package:MySchool/views/sign_up/create_new_password_view.dart';
 import 'package:flutter/material.dart';
-import '../widgets/custom_button.dart';
+import '../../widgets/custom_button.dart';
 
 class ResetPasswordView extends StatelessWidget {
   const ResetPasswordView({super.key});
