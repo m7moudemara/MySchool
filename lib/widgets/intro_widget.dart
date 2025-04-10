@@ -21,7 +21,7 @@ class IntroPage extends StatelessWidget {
         children: [
           
           Container(
-            height: size.height * 0.4, // 40%
+            height: size.height * 0.4, 
             margin: const EdgeInsets.only(bottom: 40),
             child: Image.asset(
               image,

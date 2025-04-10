@@ -4,10 +4,10 @@ abstract class IUser {
   String get id;
   String get name;
   String get imageUrl;
-  String get displayInfo; // سيحل محل student.className
-  int? get totalDays;    // جعله اختياريًا
-  int? get absentDays;   // جعله اختياريًا
-  bool get showAttendance; // تحديد إذا كان سيظهر مؤشر الحضور
+  String get displayInfo;
+  int? get totalDays;    
+  int? get absentDays;  
+  bool get showAttendance; 
 }
 class Student implements IUser {
   @override final String id;

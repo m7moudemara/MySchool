@@ -84,11 +84,11 @@ class _HomeworkViewState extends State<HomeworkView> {
     final dates = List.generate(
       7,
       (i) => firstDayOfWeek.add(Duration(days: i)),
-    ); // 7 أيام من الأسبوع
+    ); 
 
     return Column(
       children: [
-        _buildMonthHeader(currentDate), // نمرر التاريخ الحالي للعرض
+        _buildMonthHeader(currentDate),
         const SizedBox(height: 16),
         SizedBox(
           height: 90,
@@ -101,7 +101,7 @@ class _HomeworkViewState extends State<HomeworkView> {
               final isToday =
                   date.day == currentDate.day &&
                   date.month ==
-                      currentDate.month; // تحديد اليوم الحالي ديناميكيًا
+                      currentDate.month; 
               return _buildDayCard(
                 day: days[index],
                 date: date.day.toString(),
@@ -117,7 +117,7 @@ class _HomeworkViewState extends State<HomeworkView> {
   Widget _buildMonthHeader(DateTime date) {
     final monthName = DateFormat(
       'MMM yyyy',
-    ).format(date); // يحتاج لـ import 'package:intl/intl.dart'
+    ).format(date);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -162,7 +162,7 @@ class _HomeworkViewState extends State<HomeworkView> {
           Text(
             day,
             style: TextStyle(
-              fontSize: 14, // تصغير حجم خط اليوم
+              fontSize: 14,
               fontWeight: FontWeight.w500,
               color: isToday ? Colors.white : const Color(0xFF2F2E41),
             ),

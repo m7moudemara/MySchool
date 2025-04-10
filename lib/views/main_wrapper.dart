@@ -9,7 +9,6 @@ import 'package:MySchool/views/teacher/teacher_profile_view.dart';
 import 'package:MySchool/widgets/buttom_navigation_bar_widget.dart';
 import 'package:flutter/material.dart';
 
-// Roles
 enum UserRole { student, teacher, parent }
 
 class MainWrapper extends StatefulWidget {
@@ -45,17 +44,17 @@ class _MainWrapperState extends State<MainWrapper> {
         ];
       case UserRole.teacher:
         return [
-          const TeacherDashBoard(), // الصفحة الرئيسية للمدرسين
-          const StudentConversationView(), // نفس الدردشة (مع محتوى مختلف داخليًا)
-          const TeacherGroupChatView(), // نفس المجموعات (مع محتوى مختلف)
-          const TeacherProfileView(), // الملف الشخصي للمدرسين
+          const TeacherDashBoard(), 
+          const StudentConversationView(), 
+          const TeacherGroupChatView(), 
+          const TeacherProfileView(), 
         ];
       case UserRole.parent:
         return [
-          const StudentDashBoard(), // الصفحة الرئيسية للطلاب
-          const StudentConversationView(), // الدردشة
-          const StudentGroupChatView(), // المجموعات
-          const StudentProfileView(), // الملف الشخصي
+          const StudentDashBoard(),
+          const StudentConversationView(), 
+          const StudentGroupChatView(),
+          const StudentProfileView(),
         ];
     }
   }
