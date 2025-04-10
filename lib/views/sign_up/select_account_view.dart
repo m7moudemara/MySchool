@@ -1,3 +1,4 @@
+import 'package:MySchool/views/sign_up/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:MySchool/widgets/select_widget.dart';
 
@@ -37,7 +38,7 @@ class GoText extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Navigator.pushNamed(context, '/SignUpView');
+        Navigator.pushNamed(context, LoginView.id);
       },
               child: Container(
     decoration: BoxDecoration(

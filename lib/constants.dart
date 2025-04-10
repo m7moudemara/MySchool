@@ -16,3 +16,20 @@ class AppTexts {
   static const String haveAccountText = "Have an account ";
   static const String loginText = "? Login";
 }
+
+
+enum UserRole { student, teacher, parent }
+
+class AcademicsItem {
+  final String title;
+  final String iconPath;
+  final String routeName;
+  final UserRole visibleFor;
+
+  AcademicsItem({
+    required this.title,
+    required this.iconPath,
+    required this.routeName,
+    required this.visibleFor,
+  });
+}

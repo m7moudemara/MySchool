@@ -2,18 +2,17 @@ import 'package:MySchool/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
-class ChatView extends StatefulWidget {
-  const ChatView({super.key});
-  static String id = "/ChatView";
+class StudentChatView extends StatefulWidget {
+  const StudentChatView({super.key});
+  static String id = "/StudentChatView";
 
   @override
-  State<ChatView> createState() => _ChatViewState();
+  State<StudentChatView> createState() => _StudentChatViewState();
 }
 
-class _ChatViewState extends State<ChatView> {
+class _StudentChatViewState extends State<StudentChatView> {
   final TextEditingController _messageController = TextEditingController();
   final Dio _dio = Dio();
-  int _currentIndex = 0;
   bool _isLoading = false;
   bool _isSending = false;
 
@@ -116,12 +115,14 @@ class _ChatViewState extends State<ChatView> {
     );
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('School Chat',style: TextStyle(color: Colors.deepOrangeAccent),),
+        title: const Text(
+          'School Chat',
+          style: TextStyle(color: Colors.deepOrangeAccent),
+        ),
         backgroundColor: AppColors.kPrimaryColor,
       ),
       body: Column(
@@ -147,33 +148,29 @@ class _ChatViewState extends State<ChatView> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22,vertical: 32),
+            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 32),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
-                    
                     controller: _messageController,
                     decoration: InputDecoration(
-                      
-                      
                       hintText: "Type Message",
-                      suffixIcon:
-                         Padding(
-                           padding: const EdgeInsets.only(right: 20.0),
-                           child: TextButton(
-                                  onPressed: _sendMessage,
-                                  child: Text(
-                                    'Send',
-                                    style: TextStyle(
-                                      color: const Color(0xFF041571),
-                                      fontSize: 13,
-                                      fontFamily: 'Maison Neue',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                         ),
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: TextButton(
+                          onPressed: _sendMessage,
+                          child: Text(
+                            'Send',
+                            style: TextStyle(
+                              color: const Color(0xFF041571),
+                              fontSize: 13,
+                              fontFamily: 'Maison Neue',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
                       hintStyle: TextStyle(
                         color: const Color(0xF9414141),
                         fontSize: 13,
@@ -181,59 +178,18 @@ class _ChatViewState extends State<ChatView> {
                         fontWeight: FontWeight.w700,
                       ),
                       border: OutlineInputBorder(
-                        
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      contentPadding: const EdgeInsets.only(
-                        left: 31,
-                        
-                      ),
+                      contentPadding: const EdgeInsets.only(left: 31),
                     ),
                     onSubmitted: (_) => _sendMessage(),
                   ),
                 ),
-             
               ],
             ),
           ),
         ],
       ),
-     bottomNavigationBar: ClipRRect(
-  borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-  child: BottomNavigationBar(
-    elevation: 0,
-    type: BottomNavigationBarType.fixed,
-    showSelectedLabels: false,
-    showUnselectedLabels: false,
-    selectedItemColor: AppColors.kSecondaryColor,
-    unselectedItemColor: Color(0xff868686),
-    backgroundColor: Colors.transparent, 
-    currentIndex: _currentIndex,
-    onTap: (index) {
-      setState(() {
-        _currentIndex = index;
-      });
-    },
-    items: [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.home_outlined, size: 30),
-        label: '',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.chat_outlined, size: 30),
-        label: '',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.people_alt_outlined, size: 30),
-        label: '',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.person_outline, size: 30),
-        label: '',
-      ),
-    ],
-  ),
-),
     );
   }
 }

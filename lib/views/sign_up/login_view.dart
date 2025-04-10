@@ -1,8 +1,9 @@
+import 'package:MySchool/views/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:MySchool/widgets/custom_button.dart';
 import 'package:MySchool/widgets/custom_text_field.dart';
 import 'package:MySchool/constants.dart';
-import 'package:MySchool/views/home_student_view.dart';
+
 import 'package:MySchool/views/sign_up/forget_password_view.dart';
 import 'package:MySchool/views/sign_up/sign_up_view.dart';
 import 'package:MySchool/services/auth_service.dart'; 
@@ -42,7 +43,7 @@ class _LoginViewState extends State<LoginView> {
 
       if (result['success'] == true) {
         
-        Navigator.pushReplacementNamed(context, HomeView.id);
+        Navigator.pushReplacementNamed(context, MainWrapper.id);
       } else {
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
