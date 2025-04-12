@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
-  final Function(int) onItemTapped;
+  final Function(int) onTap;
 
   const CustomBottomNavBar({
     super.key,
     required this.currentIndex,
-    required this.onItemTapped,
+    required this.onTap,
   });
 
   @override
@@ -25,17 +25,19 @@ class CustomBottomNavBar extends StatelessWidget {
         child: BottomNavigationBar(
           elevation: 0,
           type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          selectedItemColor: AppColors.kSecondaryColor,
-          unselectedItemColor: const Color(0xff868686),
+          showSelectedLabels: false,    //? To Hide Label
+          showUnselectedLabels: false,  //? To Hide Label
+          // Todo If You Want To Change Selected and Unselected Icon Color.
+          selectedItemColor: AppColors.kSecondaryColor,  //? Color When Icon Selected 
+          unselectedItemColor: const Color(0xff868686),  //? Color When Icon Unselected 
           backgroundColor: Colors.white,
-          currentIndex: currentIndex,
-          onTap: onItemTapped,
+          currentIndex: currentIndex,  
+          onTap: onTap,
           items: const [
+            // Todo Change Icon and Active Icon 
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, size: 26),
-              activeIcon: Icon(Icons.home_filled, size: 26),
+              icon: Icon(Icons.home_outlined, size: 26),   //? When Icon Unselected 
+              activeIcon: Icon(Icons.home_filled, size: 26),  //? When Icon Selected  
               label: 'Home',
             ),
             BottomNavigationBarItem(

@@ -83,7 +83,7 @@ class _MainWrapperState extends State<MainWrapper> {
       ),
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: _currentIndex,
-        onItemTapped: _onItemTapped,
+        onTap: _onItemTapped,
       ),
     );
   }
