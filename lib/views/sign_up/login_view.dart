@@ -1,3 +1,6 @@
+import 'package:MySchool/core/app_session.dart';
+import 'package:MySchool/models/student.dart';
+import 'package:MySchool/routes/app_routes.dart';
 import 'package:MySchool/views/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:MySchool/widgets/custom_button.dart';
@@ -39,11 +42,34 @@ class _LoginViewState extends State<LoginView> {
         password: _passwordController.text.trim(),
       );
 
-      setState(() => _isLoading = false);
+      setState(() => _isLoading = false
+      );
 
-      if (result['success'] == true) {
-        
-        Navigator.pushReplacementNamed(context, MainWrapper.id);
+      if (result['success']) {
+        final userJson = result['user'];
+        final role = parseUserRole(userJson['role']);
+       late IUser user;
+
+if (role == UserRole.student) {
+  user = Student.fromJson(userJson);
+} else if (role == UserRole.teacher) {
+  user = Teacher.fromJson(userJson);
+} else {
+  user = Parent.fromJson(userJson);
+}
+
+
+
+        AppSession.currentUser = user; 
+        print("Saved user in AppSession: ${AppSession.currentUser.runtimeType}");
+        print("userJson: $userJson");
+print("role from JSON: ${userJson['role']}");
+
+     Navigator.pushReplacementNamed(
+    context,
+    MainWrapper.id,
+    arguments: RouteArguments(role: role),
+  );
       } else {
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
@@ -59,6 +85,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -129,7 +156,7 @@ class LoginForm extends StatelessWidget {
   final Future<void> Function() onSubmit;
 
   const LoginForm({
-    Key? key,
+    super.key,
     required this.formKey,
     required this.idNumberController,
     required this.passwordController,
@@ -137,7 +164,7 @@ class LoginForm extends StatelessWidget {
     required this.obscurePassword,
     required this.onPasswordVisibilityToggle,
     required this.onSubmit,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -145,10 +172,11 @@ class LoginForm extends StatelessWidget {
       key: formKey,
       child: Column(
         children: [
-          CustomTextField(
+          //! ID Number 
+          CustomTextFormField(
             controller: idNumberController,
             hintText: "ID Number",
-            keyboardType: TextInputType.number,
+            // keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your ID number';
@@ -157,22 +185,24 @@ class LoginForm extends StatelessWidget {
             },
           ),
           const SizedBox(height: 15),
-          TextFormField(
+          //! Password
+          CustomTextFormField(
+            hintText: "Password",
             controller: passwordController,
             obscureText: obscurePassword,
-            decoration: InputDecoration(
-              hintText: "Password",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  obscurePassword ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.grey,
+            
+            suffixIcon: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: IconButton(
+                
+                
+                  icon: Icon(
+                    obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined ,
+                  ),
+                  onPressed: onPasswordVisibilityToggle,
                 ),
-                onPressed: onPasswordVisibilityToggle,
-              ),
             ),
+            
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your password';
@@ -181,7 +211,7 @@ class LoginForm extends StatelessWidget {
                 return 'Password must be at least 6 characters';
               }
               return null;
-            },
+            }, 
           ),
           const ForgotPasswordText(),
           isLoading
@@ -228,13 +258,14 @@ class SignUpText extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Text("Don't have an account "),
+          const Text("Don't have an account? "),
           InkWell(
             onTap: () {
-              Navigator.pushReplacementNamed(context, SignUpView.id);
+              //!Deleted Code
+              // Navigator.pushReplacementNamed(context, SignUpView.id);
             },
             child: Text(
-              "? Sign up",
+              "Sign up",
               style: TextStyle(color: AppColors.kSecondaryColor),
             ),
           ),

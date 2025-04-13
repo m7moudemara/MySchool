@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final TextEditingController? controller;
@@ -12,8 +12,9 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool enabled;
+  final InputDecoration? decoration;
 
-  const CustomTextField({
+  const CustomTextFormField({
     super.key,
     required this.hintText,
     this.obscureText = false,
@@ -26,29 +27,41 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.enabled = true,
+    this.decoration,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      focusNode: focusNode,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      onChanged: onChanged,
-      onFieldSubmitted: onFieldSubmitted,
-      validator: validator,
-      enabled: enabled,
-      decoration: InputDecoration(
-        hintText: hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+    return Center(
+      child: TextFormField(
+        controller: controller,
+        focusNode: focusNode,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        onChanged: onChanged,
+        onFieldSubmitted: onFieldSubmitted,
+        validator: validator,
+        enabled: enabled,
+
+        decoration: InputDecoration(
+          hintText: hintText,
+          enabled: false,
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xffCCCCCC), width: 1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffCCCCCC), width: 1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 22,
+            vertical: 14,
+          ),
         ),
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
-        filled: true,
-        fillColor: enabled ? Colors.white : Colors.grey[200],
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       ),
     );
   }

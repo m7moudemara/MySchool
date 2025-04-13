@@ -49,7 +49,7 @@ class ForgetPasswordForm extends StatelessWidget {
       key: _formKey,
       child: Column(
         children: [
-          CustomTextField(
+          CustomTextFormField(
             hintText: "Email address",
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,

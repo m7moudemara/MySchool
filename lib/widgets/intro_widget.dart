@@ -15,14 +15,14 @@ class IntroPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0,vertical: 21),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           
           Container(
             height: size.height * 0.4, 
-            margin: const EdgeInsets.only(bottom: 40),
+            margin: const EdgeInsets.only(bottom: 21),
             child: Image.asset(
               image,
               fit: BoxFit.contain, 
@@ -30,17 +30,20 @@ class IntroPage extends StatelessWidget {
           ),
           
          
-          Text(
-            title,
-            style: const TextStyle(
-              color: Color(0xff3633E0),
-              fontFamily: "Inter",
-              fontSize: 28,
-              fontWeight: FontWeight.w600,
-              height: 1.3,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Text(
+              title,
+              style: const TextStyle(
+                color: Color(0xff3633E0),
+                fontFamily: "Inter",
+                fontSize: 28,
+                fontWeight: FontWeight.w600,
+                height: 1.3,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
             ),
-            textAlign: TextAlign.center,
-            maxLines: 2,
           ),
         ],
       ),

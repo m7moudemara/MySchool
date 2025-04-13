@@ -62,12 +62,12 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   const SizedBox(height: 20),
-                  CustomTextField(
+                  CustomTextFormField(
                     hintText: "New Password",
                     obscureText: !_showPassword,
                   ),
                   const SizedBox(height: 10),
-                  CustomTextField(
+                  CustomTextFormField(
                     hintText: "Confirm New Password",
                     obscureText: !_showPassword,
                   ),
@@ -96,13 +96,8 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
               ),
             ),
             if (_showConfirmationDialog)
-              // المربع المنبثق
-              Positioned(
-                top: (MediaQuery.of(context).size.height - 474) / 2,
-                left: (MediaQuery.of(context).size.width - 317) / 2,
+              Center(
                 child: Container(
-                  width: 317,
-                  height: 474,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(69),
@@ -119,7 +114,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        "assets/con.png",
+                        "assets/congratulation.png",
                         height: 100,
                         width: 100,
                       ),

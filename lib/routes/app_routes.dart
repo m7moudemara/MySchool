@@ -1,4 +1,10 @@
+import 'package:MySchool/constants.dart';
+import 'package:MySchool/views/intro_view/intro_view.dart';
 import 'package:MySchool/views/intro_view/splash_screen.dart';
+import 'package:MySchool/views/parent/parent_chat_view.dart';
+import 'package:MySchool/views/parent/parent_dashboard_view.dart';
+import 'package:MySchool/views/parent/parent_group_chat_view.dart';
+import 'package:MySchool/views/parent/parent_profile_view.dart';
 import 'package:MySchool/views/teacher/teacher_chat_view.dart';
 import 'package:MySchool/views/teacher/teacher_classes_view.dart';
 import 'package:MySchool/views/teacher/teacher_profile_view.dart';
@@ -21,11 +27,25 @@ import 'package:MySchool/views/student/student_group_chat_view.dart';
 import 'package:MySchool/views/main_wrapper.dart';
 
 class AppRoutes {
+   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+  if (settings.name == MainWrapper.id) {
+    final args = settings.arguments as RouteArguments;
+
+    return MaterialPageRoute(
+      builder: (context) => MainWrapper(userRole: args.role),
+    );
+  }
+
+  return null;
+}
+
+
   static final Map<String, WidgetBuilder> routes = {
     '/': (context) => SplashView(),
+    IntroView.id : (context) => IntroView(),
     StudentDashBoard.id: (context) => StudentDashBoard(),
     SelectedAccountView.id: (context) => SelectedAccountView(),
-    SignUpView.id: (context) => SignUpView(),
+    // SignUpView.id: (context) => SignUpView(),
     LoginView.id: (context) => LoginView(),
     ForgetPasswordView.id: (context) => ForgetPasswordView(),
     ResetPasswordView.id: (context) => ResetPasswordView(),
@@ -38,7 +58,17 @@ class AppRoutes {
     StudentChatView.id: (context) => StudentChatView(),
     StudentConversationView.id: (context) => StudentConversationView(),
     StudentGroupChatView.id: (context) => StudentGroupChatView(),
-    MainWrapper.id: (context) => MainWrapper(userRole: UserRole.student),
     TeacherClassesView.id : (context)=> TeacherClassesView(),
+    ParentDashboardView.id : (context)=> ParentDashboardView(),
+    ParentChatView.id : (context)=> ParentChatView(),
+    ParentGroupChatView.id : (context)=> ParentGroupChatView(),
+    ParentProfileView.id: (context) => const ParentProfileView(),
   };
 }
+class RouteArguments {
+  final UserRole role;
+
+  RouteArguments({required this.role});
+}
+
+

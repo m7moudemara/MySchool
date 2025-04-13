@@ -1,3 +1,4 @@
+import 'package:MySchool/constants.dart';
 import 'package:dio/dio.dart';
 
 class AuthService {
@@ -11,66 +12,72 @@ class AuthService {
     _dio.options.connectTimeout = const Duration(seconds: 5);
     _dio.options.receiveTimeout = const Duration(seconds: 3);
   }
+  //! Deleted Code 
+  // Future<Map<String, dynamic>> signUp({
+  //   required String name,
+  //   required String email,
+  //   required String idNumber,
+  //   required String password,
+  // }) async {
+  //   try {
+  //     final emailResponse = await _dio.get(
+  //       '/users',
+  //       queryParameters: {'email': email},
+  //     );
 
-  Future<Map<String, dynamic>> signUp({
-    required String name,
-    required String email,
-    required String idNumber,
-    required String password,
-  }) async {
-    try {
-      final emailResponse = await _dio.get(
-        '/users',
-        queryParameters: {'email': email},
-      );
+  //     if (emailResponse.data.isNotEmpty) {
+  //       return {'success': false, 'error': 'Email already exists'};
+  //     }
 
-      if (emailResponse.data.isNotEmpty) {
-        return {'success': false, 'error': 'Email already exists'};
-      }
+  //     final idResponse = await _dio.get(
+  //       '/users',
+  //       queryParameters: {'idNumber': idNumber},
+  //     );
 
-      final idResponse = await _dio.get(
-        '/users',
-        queryParameters: {'idNumber': idNumber},
-      );
+  //     if (idResponse.data.isNotEmpty) {
+  //       return {'success': false, 'error': 'ID number already exists'};
+  //     }
 
-      if (idResponse.data.isNotEmpty) {
-        return {'success': false, 'error': 'ID number already exists'};
-      }
+  //     final response = await _dio.post(
+  //       '/users',
+  //       data: {
+  //         'name': name,
+  //         'email': email,
+  //         'idNumber': idNumber,
+  //         'password': password,
+  //         'createdAt': DateTime.now().toIso8601String(),
+  //       },
+  //     );
 
-      final response = await _dio.post(
-        '/users',
-        data: {
-          'name': name,
-          'email': email,
-          'idNumber': idNumber,
-          'password': password,
-          'createdAt': DateTime.now().toIso8601String(),
-        },
-      );
+  //     return {'success': true, 'user': response.data};
+  //   } catch (e) {
+  //     return {'success': false, 'error': 'Registration failed. Please try again.'};
+  //   }
+  // }
 
-      return {'success': true, 'user': response.data};
-    } catch (e) {
-      return {'success': false, 'error': 'Registration failed. Please try again.'};
+Future<Map<String, dynamic>> login({
+  required String idNumber,
+  required String password,
+}) async {
+  try {
+    final response = await _dio.get(
+      '/users',
+      queryParameters: {'idNumber': idNumber, 'password': password},
+    );
+
+    if (response.data.isEmpty) {
+      return {'success': false, 'error': 'Invalid credentials'};
     }
+
+    //! What is Your Role
+    final user = response.data[0];
+        final role = parseUserRole(user['role']);
+
+   
+    return {'success': true, 'user': user, 'role': role};
+  } catch (e) {
+    return {'success': false, 'error': 'Login failed. Please try again.'};
   }
+}
 
-  Future<Map<String, dynamic>> login({
-    required String idNumber,
-    required String password,
-  }) async {
-    try {
-      final response = await _dio.get(
-        '/users',
-        queryParameters: {'idNumber': idNumber, 'password': password},
-      );
-
-      if (response.data.isEmpty) {
-        return {'success': false, 'error': 'Invalid credentials'};
-      }
-
-      return {'success': true, 'user': response.data[0]};
-    } catch (e) {
-      return {'success': false, 'error': 'Login failed. Please try again.'};
-    }
-  }
 }

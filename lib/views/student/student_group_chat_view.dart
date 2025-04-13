@@ -11,6 +11,8 @@ class StudentGroupChatView extends StatefulWidget {
 }
 
 class _StudentGroupChatViewState extends State<StudentGroupChatView> {
+  final TextEditingController _searchController = TextEditingController();
+
   final List<Map<String, String>> contacts = [
     {
       'groupName': 'Mathematics VII B',
@@ -31,6 +33,68 @@ class _StudentGroupChatViewState extends State<StudentGroupChatView> {
       "image": "assets/chat3.png",
     },
   ];
+
+  List<Map<String, String>> filteredContacts = [];
+  //! To Highlight Text
+  Widget _buildHighlightedText(String text, String query) {
+    if (query.isEmpty) {
+      return Text(text);
+    }
+
+    final lowerText = text.toLowerCase();
+    final lowerQuery = query.toLowerCase();
+
+    final startIndex = lowerText.indexOf(lowerQuery);
+
+    if (startIndex == -1) {
+      return Text(text);
+    }
+
+    final endIndex = startIndex + query.length;
+
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: text.substring(0, startIndex),
+            style: TextStyle(color: Colors.black),
+          ),
+          TextSpan(
+            text: text.substring(startIndex, endIndex),
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+          ),
+          TextSpan(
+            text: text.substring(endIndex),
+            style: TextStyle(color: Colors.black),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    filteredContacts = contacts;
+    _searchController.addListener(_filterContacts);
+  }
+
+  void _filterContacts() {
+    String query = _searchController.text.toLowerCase();
+    setState(() {
+      filteredContacts =
+          contacts.where((contact) {
+            String name = contact['groupName']!.toLowerCase();
+            return name.contains(query);
+          }).toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +133,7 @@ class _StudentGroupChatViewState extends State<StudentGroupChatView> {
                 ],
               ),
               child: TextField(
+                controller: _searchController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(Icons.search),
@@ -93,7 +158,11 @@ class _StudentGroupChatViewState extends State<StudentGroupChatView> {
                               leading: CircleAvatar(
                                 child: Image.asset("${e["image"]}"),
                               ),
-                              title: Text(e['groupName']!),
+                              title: _buildHighlightedText(
+                                e['groupName']!,
+                                _searchController.text,
+                              ),
+
                               subtitle: Text(e['lastMessage']!),
                               trailing: Text(e['time']!),
                               onTap: () {

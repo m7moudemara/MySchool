@@ -39,6 +39,8 @@ dependencies:
   rename: ^3.0.2
   rflutter_alert: ^2.0.7
   dio: ^5.8.0+1
+  flutter_bloc: ^9.1.0
+
 
 dev_dependencies:
   flutter_test:

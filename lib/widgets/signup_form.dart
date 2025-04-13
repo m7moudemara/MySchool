@@ -11,28 +11,28 @@ class SignUpForm extends StatelessWidget {
       key: _formKey,
       child: Column(
         children: [
-          CustomTextField(hintText: "Name", validator: (value) {
+          CustomTextFormField(hintText: "Name", validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter your name';
             }
             return null;
           }),
           SizedBox(height: 10),
-          CustomTextField(hintText: "Email", validator: (value) {
+          CustomTextFormField(hintText: "Email", validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter your email';
             }
             return null;
           }),
           SizedBox(height: 10),
-          CustomTextField(hintText: "ID Number", validator: (value) {
+          CustomTextFormField(hintText: "ID Number", validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter your ID number';
             }
             return null;
           }),
           SizedBox(height: 10),
-          CustomTextField(hintText: "Password", validator: (value) {
+          CustomTextFormField(hintText: "Password", validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter your password';
             }

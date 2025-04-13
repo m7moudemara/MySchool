@@ -1,4 +1,5 @@
 import 'package:MySchool/constants.dart';
+import 'package:MySchool/core/app_session.dart';
 import 'package:MySchool/models/student.dart';
 import 'package:MySchool/views/student/notifications_view.dart';
 import 'package:MySchool/widgets/custom_academics_widget.dart';
@@ -15,6 +16,16 @@ class TeacherDashBoard extends StatefulWidget {
 }
 
 class _TeacherDashBoardState extends State<TeacherDashBoard> {
+  Teacher? teacher;
+
+  @override
+  void initState() {
+    super.initState();
+    final user = AppSession.currentUser;
+    if (user is Teacher) {
+      teacher = user;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,8 +66,8 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
                 child: UserCard(
                   user: Teacher(
                     id: "id",
-                    name: "teacher",
-                    imageUrl: "assets/profile.png",
+                    name: teacher?.name ?? '',
+                    imageUrl: teacher?.imageUrl ?? '',
                     department: "Math",
                   ),
                 ),

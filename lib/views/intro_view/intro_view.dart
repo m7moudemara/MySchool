@@ -4,6 +4,7 @@ import '../../widgets/intro_widget.dart';
 
 class IntroView extends StatefulWidget {
   const IntroView({super.key});
+  static final String id = "/IntroView";
 
   @override
   _IntroViewState createState() => _IntroViewState();
@@ -12,8 +13,9 @@ class IntroView extends StatefulWidget {
 class _IntroViewState extends State<IntroView> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
-
-  final List<Widget> _pages = [
+  
+  //! Intro Pages 
+  final List<Widget> _introPages = [
     const IntroPage(
       image: 'assets/intro1.png',
       title: "Make Your Learning Simple",
@@ -43,13 +45,13 @@ class _IntroViewState extends State<IntroView> {
                   _currentPage = page;
                 });
               },
-              children: _pages,
+              children: _introPages,
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-              _pages.length,
+              _introPages.length,
               (index) => Container(
                 margin: const EdgeInsets.symmetric(horizontal: 4),
                 width: 8,

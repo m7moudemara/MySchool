@@ -7,10 +7,13 @@ class StudentConversationView extends StatefulWidget {
   const StudentConversationView({super.key});
 
   @override
-  State<StudentConversationView> createState() => _StudentConversationViewState();
+  State<StudentConversationView> createState() =>
+      _StudentConversationViewState();
 }
 
 class _StudentConversationViewState extends State<StudentConversationView> {
+  final TextEditingController _searchController = TextEditingController();
+
   final List<Map<String, String>> contacts = [
     {
       'name': 'Mrs. Hanna Mohamed',
@@ -37,6 +40,68 @@ class _StudentConversationViewState extends State<StudentConversationView> {
       "image": "assets/chat4.png",
     },
   ];
+
+  List<Map<String, String>> filteredContacts = [];
+  //! To Highlight Text
+  Widget _buildHighlightedText(String text, String query) {
+    if (query.isEmpty) {
+      return Text(text);
+    }
+
+    final lowerText = text.toLowerCase();
+    final lowerQuery = query.toLowerCase();
+
+    final startIndex = lowerText.indexOf(lowerQuery);
+
+    if (startIndex == -1) {
+      return Text(text);
+    }
+
+    final endIndex = startIndex + query.length;
+
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: text.substring(0, startIndex),
+            style: TextStyle(color: Colors.black),
+          ),
+          TextSpan(
+            text: text.substring(startIndex, endIndex),
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+          ),
+          TextSpan(
+            text: text.substring(endIndex),
+            style: TextStyle(color: Colors.black),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    filteredContacts = contacts;
+    _searchController.addListener(_filterContacts);
+  }
+
+  void _filterContacts() {
+    String query = _searchController.text.toLowerCase();
+    setState(() {
+      filteredContacts =
+          contacts.where((contact) {
+            String name = contact['name']!.toLowerCase();
+            return name.contains(query);
+          }).toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +140,7 @@ class _StudentConversationViewState extends State<StudentConversationView> {
                 ],
               ),
               child: TextField(
+                controller: _searchController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(Icons.search),
@@ -87,7 +153,7 @@ class _StudentConversationViewState extends State<StudentConversationView> {
           Expanded(
             child: CustomScrollView(
               slivers:
-                  contacts
+                  filteredContacts
                       .map(
                         (e) => SliverToBoxAdapter(
                           child: Card(
@@ -97,9 +163,13 @@ class _StudentConversationViewState extends State<StudentConversationView> {
                             ),
                             child: ListTile(
                               leading: CircleAvatar(
-                                child: Image.asset("${e["image"]}"),
+                                backgroundImage: AssetImage(e["image"]!),
                               ),
-                              title: Text(e['name']!),
+                              title: _buildHighlightedText(
+                                e['name']!,
+                                _searchController.text,
+                              ),
+
                               subtitle: Text(e['lastMessage']!),
                               trailing: Text(e['time']!),
                               onTap: () {

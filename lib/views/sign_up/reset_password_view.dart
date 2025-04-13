@@ -72,7 +72,7 @@ class ResetPasswordView extends StatelessWidget {
                     // Resend code logic
                   },
                   child: const Text(
-                    "Didn’t Receive the Code?",
+                    "Didn’t Receive the Code? ",
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
