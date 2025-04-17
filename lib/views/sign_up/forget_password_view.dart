@@ -1,7 +1,7 @@
 import 'package:MySchool/views/sign_up/reset_password_view.dart';
 import 'package:flutter/material.dart';
-import '../../widgets/custom_button.dart';
-import '../../widgets/custom_text_field.dart';
+import '../../features/school/presentation/widgets/custom_button.dart';
+import '../../features/school/presentation/widgets/custom_text_field.dart';
 
 class ForgetPasswordView extends StatelessWidget {
   const ForgetPasswordView({super.key});

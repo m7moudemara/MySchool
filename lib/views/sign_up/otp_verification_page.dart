@@ -1,5 +1,5 @@
-import 'package:MySchool/constants.dart';
-import 'package:MySchool/widgets/custom_button.dart';
+import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/features/school/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class OTPVerificationView extends StatefulWidget {

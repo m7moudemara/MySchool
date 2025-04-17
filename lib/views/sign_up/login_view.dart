@@ -1,15 +1,22 @@
-import 'package:MySchool/core/app_session.dart';
-import 'package:MySchool/models/student.dart';
-import 'package:MySchool/routes/app_routes.dart';
-import 'package:MySchool/views/main_wrapper.dart';
+import 'package:MySchool/features/school/data/models/parent_model.dart';
+import 'package:MySchool/features/school/data/models/student_model.dart';
+import 'package:MySchool/features/school/data/models/teacher_model.dart';
+import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:flutter/material.dart';
-import 'package:MySchool/widgets/custom_button.dart';
-import 'package:MySchool/widgets/custom_text_field.dart';
-import 'package:MySchool/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:MySchool/core/app_session.dart';
 
+import 'package:MySchool/routes/app_routes.dart';
+import 'package:MySchool/features/main_wrapper/presentation/views/main_wrapper_view.dart';
 import 'package:MySchool/views/sign_up/forget_password_view.dart';
-import 'package:MySchool/views/sign_up/sign_up_view.dart';
-import 'package:MySchool/services/auth_service.dart'; 
+import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/features/school/presentation/widgets/custom_button.dart';
+import 'package:MySchool/features/school/presentation/widgets/custom_text_field.dart';
+
+import '../../features/auth/presentation/cubit/login/login_cubit.dart';
+import '../../features/auth/presentation/cubit/login/login_state.dart';
+import '../../features/main_wrapper/domain/entities/user_role.dart';
+
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
   static String id = '/LoginView';
@@ -22,9 +29,7 @@ class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   final _idNumberController = TextEditingController();
   final _passwordController = TextEditingController();
-  final AuthService _authService = AuthService();
-  bool _isLoading = false;
-  bool _obscurePassword = true; 
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -33,52 +38,12 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-  Future<void> _submitForm() async {
+  void _onSubmit(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true);
-
-      final result = await _authService.login(
-        idNumber: _idNumberController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-
-      setState(() => _isLoading = false
-      );
-
-      if (result['success']) {
-        final userJson = result['user'];
-        final role = parseUserRole(userJson['role']);
-       late IUser user;
-
-if (role == UserRole.student) {
-  user = Student.fromJson(userJson);
-} else if (role == UserRole.teacher) {
-  user = Teacher.fromJson(userJson);
-} else {
-  user = Parent.fromJson(userJson);
-}
-
-
-
-        AppSession.currentUser = user; 
-        print("Saved user in AppSession: ${AppSession.currentUser.runtimeType}");
-        print("userJson: $userJson");
-print("role from JSON: ${userJson['role']}");
-
-     Navigator.pushReplacementNamed(
-    context,
-    MainWrapper.id,
-    arguments: RouteArguments(role: role),
-  );
-      } else {
-        // Show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(result['error']),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      context.read<LoginCubit>().login(
+            idNumber: _idNumberController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
     }
   }
 
@@ -87,41 +52,76 @@ print("role from JSON: ${userJson['role']}");
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const SizedBox(height: 20),
-                const LoginImage(),
-                const SizedBox(height: 20),
-                const HelloText(),
-                const SizedBox(height: 20),
-                LoginForm(
-                  formKey: _formKey,
-                  idNumberController: _idNumberController,
-                  passwordController: _passwordController,
-                  isLoading: _isLoading,
-                  obscurePassword: _obscurePassword,
-                  onPasswordVisibilityToggle: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
-                  onSubmit: _submitForm,
+        child: BlocConsumer<LoginCubit, LoginState>(
+          listener: (context, state) {
+            if (state is LoginFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.error),
+                  backgroundColor: Colors.red,
                 ),
-                const SignUpText(),
-              ],
-            ),
-          ),
+              );
+            }
+
+            if (state is LoginSuccess) {
+              final userJson = state.userJson;
+              final role = parseUserRole(userJson['role']);
+              late IUser user;
+
+              if (role == UserRole.student) {
+                user = Student.fromJson(userJson);
+              } else if (role == UserRole.teacher) {
+                user = Teacher.fromJson(userJson);
+              } else {
+                user = Parent.fromJson(userJson);
+              }
+
+              AppSession.currentUser = user;
+
+              Navigator.pushReplacementNamed(
+                context,
+                MainWrapperView.id,
+                arguments: RouteArguments(role: role),
+              );
+            }
+          },
+          builder: (context, state) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    const LoginImage(),
+                    const SizedBox(height: 20),
+                    const HelloText(),
+                    const SizedBox(height: 20),
+                    LoginForm(
+                      formKey: _formKey,
+                      idNumberController: _idNumberController,
+                      passwordController: _passwordController,
+                      isLoading: state is LoginLoading,
+                      obscurePassword: _obscurePassword,
+                      onPasswordVisibilityToggle: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                      onSubmit: () async => _onSubmit(context),
+                    ),
+                    const SignUpText(),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
   }
 }
 
-class LoginImage extends StatelessWidget {
+ class LoginImage extends StatelessWidget {
   const LoginImage({super.key});
 
   @override
@@ -176,7 +176,7 @@ class LoginForm extends StatelessWidget {
           CustomTextFormField(
             controller: idNumberController,
             hintText: "ID Number",
-            // keyboardType: TextInputType.number,
+            // keyboardType: TextInputType.number, 
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your ID number';
