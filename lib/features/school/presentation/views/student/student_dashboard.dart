@@ -1,7 +1,8 @@
 import 'package:MySchool/core/app_session.dart';
 import 'package:MySchool/features/school/data/config/academics_items_config.dart';
 import 'package:MySchool/features/school/data/models/student_model.dart';
-import 'package:MySchool/features/school/presentation/views/student/notifications_view.dart';
+import 'package:MySchool/features/notifications/presentation/views/notifications_view.dart';
+import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/widgets/custom_academics_widget.dart';
 import 'package:MySchool/features/school/presentation/widgets/custom_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,7 @@ void initState() {
                       SliverToBoxAdapter(child: const SizedBox(height: 20)),
                       SliverToBoxAdapter(
                         child: RoleBasedAcademicsCompo(
-                          currentUserRole: UserRole.student,
+                          currentUserRole: UserType.student,
                           items: allAcademicsItems,
                         ),
                       ),

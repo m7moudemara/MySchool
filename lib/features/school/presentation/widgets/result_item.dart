@@ -12,7 +12,7 @@ class ResultItem extends StatelessWidget {
       children: [
         Image.asset(result.icon, height: 50),
         Text(
-          '   ${result.subject}',
+          result.subject,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18.41,

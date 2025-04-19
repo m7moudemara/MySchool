@@ -1,4 +1,4 @@
-import 'package:MySchool/views/sign_up/login_view.dart';
+import 'package:MySchool/features/main_wrapper/presentation/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

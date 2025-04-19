@@ -13,4 +13,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }) {
     return remote.login(idNumber: idNumber, password: password);
   }
+
+// TODO: Replace mock code with real API call
+//   @override
+// Future<void> sendResetCode(String email) {
+//   return remoteDataSource.sendResetCode(email);
+// }
+
 }
+
+

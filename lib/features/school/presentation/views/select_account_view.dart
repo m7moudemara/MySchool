@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:MySchool/views/sign_up/login_view.dart';
+import 'package:MySchool/features/main_wrapper/presentation/views/login_view.dart';
 
 import '../widgets/select_widget.dart';
 

@@ -1,4 +1,5 @@
 import 'package:MySchool/features/auth/presentation/cubit/login/login_cubit.dart';
+import 'package:MySchool/features/notifications/presentation/cubit/notification_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/children_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => deps.parentCubit),
         BlocProvider(create: (_) => deps.studentCubit),
         BlocProvider(create: (_) => deps.teacherCubit),
-         BlocProvider(create: (_) => deps.childrenCubit),
+        BlocProvider(create: (_) => deps.childrenCubit),
+        BlocProvider<NotificationCubit>(create: (_) => deps.notificationCubit),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,5 +1,5 @@
 import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/features/school/presentation/widgets/custom_button.dart';
+import 'package:MySchool/features/main_wrapper/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class OTPVerificationView extends StatefulWidget {
@@ -22,11 +22,11 @@ class _OTPVerificationViewState extends State<OTPVerificationView> {
       if (otp == "1234") {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('تم التحقق بنجاح!')));
+        ).showSnackBar(SnackBar(content: Text('otp is correct!')));
       } else {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('رمز OTP غير صحيح!')));
+        ).showSnackBar(SnackBar(content: Text('otp is incorrect!')));
       }
     }
   }

@@ -1,6 +1,5 @@
 import 'package:MySchool/core/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class HomeworkView extends StatefulWidget {
   const HomeworkView({super.key});
@@ -14,24 +13,28 @@ class _HomeworkViewState extends State<HomeworkView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Homework'), centerTitle: true),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text('Homework'), centerTitle: true),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              _buildCalendarSection(),
-              const SizedBox(height: 20),
               _buildHomeworkItem(
                 subject: 'Maths',
                 task: 'Solve the Given problems',
                 daysLeft: '1 day left',
-                button: Column(
-                  children: [
-                    _buildActionButton('Download', onPressed: () {}),
-                    SizedBox(height: 14),
-                    _buildActionButton('Upload', onPressed: () {}),
-                  ],
+                button: SizedBox(
+                  width: 100,
+                  child: Column(
+                    children: [
+                      _buildActionButton('Download', onPressed: () {}),
+                      const SizedBox(height: 14),
+                      _buildActionButton('Upload', onPressed: () {}),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -39,12 +42,15 @@ class _HomeworkViewState extends State<HomeworkView> {
                 subject: 'English',
                 task: 'Solve the Given problems',
                 daysLeft: '1 day left',
-                button: Column(
-                  children: [
-                    _buildActionButton('Download', onPressed: () {}),
-                    SizedBox(height: 14),
-                    _buildActionButton('Upload', onPressed: () {}),
-                  ],
+                button: SizedBox(
+                  width: 100,
+                  child: Column(
+                    children: [
+                      _buildActionButton('Download', onPressed: () {}),
+                      const SizedBox(height: 14),
+                      _buildActionButton('Upload', onPressed: () {}),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -52,87 +58,53 @@ class _HomeworkViewState extends State<HomeworkView> {
                 subject: 'Science',
                 task: 'Solve the Given problems',
                 daysLeft: '1 day left',
-                button: Column(
-                  children: [
-                    _buildActionButton('Download', onPressed: () {}),
-                    SizedBox(height: 14),
-                    _buildActionButton('Upload', onPressed: () {}),
-                  ],
+                button: SizedBox(
+                  width: 100, 
+                  child: Column(
+                    children: [
+                      _buildActionButton('Download', onPressed: () {}),
+                      const SizedBox(height: 14),
+                      _buildActionButton('Upload', onPressed: () {}),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildHomeworkItem(
+                subject: 'Arabic',
+                task: 'Solve the Given problems',
+                daysLeft: '1 day left',
+                button: SizedBox(
+                  width: 100,
+                  child: Column(
+                    children: [
+                      _buildActionButton('Download', onPressed: () {}),
+                      const SizedBox(height: 14),
+                      _buildActionButton('Upload', onPressed: () {}),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildHomeworkItem(
+                subject: 'History',
+                task: 'Solve the Given problems',
+                daysLeft: '1 day left',
+                button: SizedBox(
+                  width: 100, 
+                  child: Column(
+                    children: [
+                      _buildActionButton('Download', onPressed: () {}),
+                      const SizedBox(height: 14),
+                      _buildActionButton('Upload', onPressed: () {}),
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildCalendarSection() {
-    final currentDate = DateTime.now();
-    final firstDayOfWeek = currentDate.subtract(
-      Duration(days: currentDate.weekday - 1),
-    ); // بداية الأسبوع (الاثنين)
-    final days = [
-      'Mon',
-      'Tue',
-      'Wed',
-      'Thu',
-      'Fri',
-      'Sat',
-      'Sun',
-    ]; // يمكن تعديلها حسب احتياجك
-    final dates = List.generate(
-      7,
-      (i) => firstDayOfWeek.add(Duration(days: i)),
-    ); 
-
-    return Column(
-      children: [
-        _buildMonthHeader(currentDate),
-        const SizedBox(height: 16),
-        SizedBox(
-          height: 90,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: days.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 8),
-            itemBuilder: (context, index) {
-              final date = dates[index];
-              final isToday =
-                  date.day == currentDate.day &&
-                  date.month ==
-                      currentDate.month; 
-              return _buildDayCard(
-                day: days[index],
-                date: date.day.toString(),
-                isToday: isToday,
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMonthHeader(DateTime date) {
-    final monthName = DateFormat(
-      'MMM yyyy',
-    ).format(date);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(icon: const Icon(Icons.chevron_left), onPressed: () {
-
-        }),
-        Text(
-          monthName,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-        ),
-        IconButton(icon: const Icon(Icons.chevron_right), onPressed: () {
-          
-
-        }),
-      ],
     );
   }
 
@@ -179,7 +151,9 @@ class _HomeworkViewState extends State<HomeworkView> {
     required Widget button,
   }) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      elevation: 2,
+      color: Colors.white,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 21.0, vertical: 12),
         child: Row(
@@ -235,25 +209,29 @@ class _HomeworkViewState extends State<HomeworkView> {
   }
 
   Widget _buildActionButton(String text, {required VoidCallback onPressed}) {
-    return ElevatedButton(
-      onPressed: onPressed,
-
-      style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(AppColors.kSecondaryColor),
-
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+    return SizedBox(
+      width: double.infinity,
+      height: 36,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ButtonStyle(
+          backgroundColor: const WidgetStatePropertyAll(AppColors.kSecondaryColor),
+          padding: const WidgetStatePropertyAll(EdgeInsets.zero),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 13.91,
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 13.91,
-          fontFamily: 'Inter',
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
+      );
+    
   }
 }

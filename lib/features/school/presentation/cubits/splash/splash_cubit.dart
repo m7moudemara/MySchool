@@ -17,7 +17,7 @@ class SplashCubit extends Cubit<SplashState> {
     if (isFirstTime) {
       emit(SplashNavigateToIntro());
     } else {
-      emit(SplashNavigateToSelectAccount());
+      emit(SplashNavigateToLogin());
     }
   }
 }

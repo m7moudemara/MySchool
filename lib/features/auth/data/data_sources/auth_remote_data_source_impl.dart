@@ -35,4 +35,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return {'success': false, 'error': 'Login failed. Please try again.'};
     }
   }
+  
+// TODO: Handle response (optional)
+//   Future<void> sendResetCode(String email) async {
+//   final response = await dio.post(
+//     "$baseUrl/auth/send-reset-code",
+//     data: {"email": email},
+//   );
+// }
+
+// TODO: Implement the use case for verifying the code sent to the user's email.
+// Future<void> resetPassword(String email, String newPassword) async {
+//   await dio.post(
+//     "$baseUrl/auth/reset-password",
+//     data: {"email": email, "password": newPassword},
+//   );
+// }
+
+
 }

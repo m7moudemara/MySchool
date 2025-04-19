@@ -1,3 +1,4 @@
+import 'package:MySchool/features/main_wrapper/domain/entities/user_role.dart';
 import 'package:MySchool/features/school/data/models/parent_model.dart';
 import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:MySchool/features/school/data/models/teacher_model.dart';
@@ -8,14 +9,13 @@ import 'package:MySchool/core/app_session.dart';
 
 import 'package:MySchool/routes/app_routes.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/main_wrapper_view.dart';
-import 'package:MySchool/views/sign_up/forget_password_view.dart';
+import 'package:MySchool/features/main_wrapper/presentation/views/forget_password_view.dart';
 import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/features/school/presentation/widgets/custom_button.dart';
+import 'package:MySchool/features/main_wrapper/presentation/widgets/custom_button.dart';
 import 'package:MySchool/features/school/presentation/widgets/custom_text_field.dart';
 
-import '../../features/auth/presentation/cubit/login/login_cubit.dart';
-import '../../features/auth/presentation/cubit/login/login_state.dart';
-import '../../features/main_wrapper/domain/entities/user_role.dart';
+import '../../../auth/presentation/cubit/login/login_cubit.dart';
+import '../../../auth/presentation/cubit/login/login_state.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -81,8 +81,8 @@ class _LoginViewState extends State<LoginView> {
               Navigator.pushReplacementNamed(
                 context,
                 MainWrapperView.id,
-                arguments: RouteArguments(role: role),
-              );
+                arguments: RouteArguments(role: parseUserType(role)),
+                );
             }
           },
           builder: (context, state) {

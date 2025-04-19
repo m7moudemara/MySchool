@@ -1,7 +1,7 @@
+import 'package:MySchool/features/main_wrapper/presentation/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'intro_view.dart';
-import 'select_account_view.dart';
 import '../cubits/splash/splash_cubit.dart';
 import '../cubits/splash/splash_state.dart';
 
@@ -31,10 +31,10 @@ class _SplashViewState extends State<SplashView> {
             context,
             MaterialPageRoute(builder: (_) => const IntroView()),
           );
-        } else if (state is SplashNavigateToSelectAccount) {
+        } else if (state is SplashNavigateToLogin) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const SelectedAccountView()),
+            MaterialPageRoute(builder: (_) => const LoginView()),
           );
         }
       },

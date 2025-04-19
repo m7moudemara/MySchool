@@ -121,7 +121,7 @@ class _StudentChatViewState extends State<StudentChatView> {
       appBar: AppBar(
         title: const Text(
           'School Chat',
-          style: TextStyle(color: Colors.deepOrangeAccent),
+          style: TextStyle(color: Colors.white),
         ),
         backgroundColor: AppColors.kPrimaryColor,
       ),

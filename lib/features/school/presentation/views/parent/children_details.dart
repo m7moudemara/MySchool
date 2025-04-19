@@ -1,78 +1,54 @@
-import 'package:MySchool/core/app_session.dart';
-import 'package:MySchool/features/school/data/models/parent_model.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
-// Model to hold the student data
-class Child {
-  final String name;
-  final String studentClass;
-  final String image;
-
-  Child({required this.name, required this.studentClass, required this.image});
-
-  factory Child.fromJson(Map<String, dynamic> json) {
-    return Child(
-      name: json['name'],
-      studentClass: json['class'],  // Assuming class is stored under the 'class' key
-      image: json['imageUrl'],      // Assuming image URL is stored under the 'imageUrl' key
-    );
-  }
-}
 
 // Main MyChildren Page with Search and Navigation to Details
 class MyChildrenView extends StatefulWidget {
   const MyChildrenView({super.key});
-  static const String id = '/my_children';
+static final String id = "my_children_view"; 
   @override
   State<MyChildrenView> createState() => _MyChildrenViewState();
 }
 
 class _MyChildrenViewState extends State<MyChildrenView> {
-  Dio _dio = Dio(); // Create Dio instance
-  List<Child> children = [];
-  List<Child> filteredChildren = [];
+  // Original list of all children
+  final List<Map<String, String>> allChildren = [
+    {
+      "name": "Mohamed Ashraf",
+      "class": "Class 1",
+      "image": "https://img.icons8.com/?size=256w&id=7820&format=png"
+    },
+    {
+      "name": "Mohamed Ashraf",
+      "class": "Class 2",
+      "image": "https://img.icons8.com/?size=256w&id=7820&format=png"
+    },
+    {
+      "name": "Mohamed Ashraf",
+      "class": "Class 3",
+      "image": "https://img.icons8.com/?size=256w&id=7820&format=png"
+    },
+    {
+      "name": "Mohamed Ashraf",
+      "class": "Class 4",
+      "image": "https://img.icons8.com/?size=256w&id=7820&format=png"
+    },
+  ];
+
+  // Filtered list based on search
+  List<Map<String, String>> filteredChildren = [];
   String searchQuery = "";
 
   @override
   void initState() {
     super.initState();
-    _fetchChildrenData();
-  }
-
-  // Fetch children data from the API
-  Future<void> _fetchChildrenData() async {
-    try {
-      final response = await _dio.get('https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users');
-      final List<dynamic> data = response.data;
-
-      // Assuming the API returns all users with their roles, filter out only the parents' children
-      final parent = AppSession.currentUser as Parent; // Get the current parent from session
-      final parentId = parent.idNumber; // Get parent ID
-
-      // Filter the children who belong to this parent
-      final List<Child> loadedChildren = [];
-      for (var item in data) {
-        if (item['parentId'] == parentId) {
-          loadedChildren.add(Child.fromJson(item));
-        }
-      }
-
-      setState(() {
-        children = loadedChildren;
-        filteredChildren = loadedChildren; // Initialize filteredChildren
-      });
-    } catch (e) {
-      print('Error fetching children data: $e');
-    }
+    filteredChildren = allChildren;
   }
 
   // Update search results when user types
   void updateSearch(String query) {
     setState(() {
       searchQuery = query;
-      filteredChildren = children.where((child) {
-        return child.name.toLowerCase().contains(query.toLowerCase());
+      filteredChildren = allChildren.where((child) {
+        return child['name']!.toLowerCase().contains(query.toLowerCase());
       }).toList();
     });
   }
@@ -164,7 +140,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                       itemCount: filteredChildren.length,
                       itemBuilder: (context, index) {
                         final child = filteredChildren[index];
-                        final name = child.name;
+                        final name = child['name']!;
 
                         return Card(
                           shape: RoundedRectangleBorder(
@@ -179,9 +155,9 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) => StudentDetailsPage(
-                                    name: child.name,
-                                    studentClass: child.studentClass,
-                                    imageUrl: child.image,
+                                    name: child['name']!,
+                                    studentClass: child['class']!,
+                                    imageUrl: child['image']!,
                                   ),
                                 ),
                               );
@@ -189,7 +165,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                             leading: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: Image.network(
-                                child.image,
+                                child['image']!,
                                 width: 48,
                                 height: 54,
                                 fit: BoxFit.cover,
@@ -206,7 +182,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                               ),
                             ),
                             subtitle: Text(
-                              child.studentClass,
+                              child['class']!,
                               style: TextStyle(
                                 color: Color(0xFF868686),
                                 fontSize: 14,
@@ -280,7 +256,6 @@ class StudentDetailsPage extends StatelessWidget {
               studentClass,
               style: TextStyle(fontSize: 18, color: Colors.grey[600]),
             ),
-            // 🔧 Add more child-specific details here if needed
           ],
         ),
       ),

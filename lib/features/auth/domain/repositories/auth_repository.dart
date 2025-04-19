@@ -3,4 +3,9 @@ abstract class AuthRepository {
     required String idNumber,
     required String password,
   });
+// TODO: Implement real email sending logic once backend is ready
+//   Future<void> sendResetCode(String email);
 }
+
+
+

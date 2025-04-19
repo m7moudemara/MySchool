@@ -4,4 +4,4 @@ class SplashInitial extends SplashState {}
 
 class SplashNavigateToIntro extends SplashState {}
 
-class SplashNavigateToSelectAccount extends SplashState {}
+class SplashNavigateToLogin extends SplashState {}

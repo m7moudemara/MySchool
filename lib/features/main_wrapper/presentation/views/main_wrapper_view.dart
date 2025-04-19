@@ -1,11 +1,12 @@
 import 'package:MySchool/core/constants.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/parent/parent_views.dart';
+import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/views/parent/parent_dashboard_view.dart';
 import 'package:MySchool/features/school/presentation/views/parent/parent_chat_view.dart';
 import 'package:MySchool/features/school/presentation/views/parent/parent_group_chat_view.dart';
 import 'package:MySchool/features/school/presentation/views/parent/parent_profile_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/student_conversation_view.dart';
-import 'package:MySchool/features/school/presentation/views/student/student_group_chat_view.dart';
+import 'package:MySchool/features/school/presentation/views/student/time_table_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/student_dashboard.dart';
 import 'package:MySchool/features/school/presentation/views/student/student_profile_view.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_dashboard.dart';
@@ -19,7 +20,7 @@ import 'student/student_view.dart';
 import 'teacher/teacher_views.dart';
 
 class MainWrapperView extends StatefulWidget {
-  final UserRole userRole;
+  final UserType userRole;
   static final String id = "/MainWrapper";
   const MainWrapperView({super.key, required this.userRole});
 
@@ -43,13 +44,13 @@ class _MainWrapperViewState extends State<MainWrapperView> {
   //! Return list of views according to the user role
   List<Widget> _getViewByRole() {
     switch (widget.userRole) {
-      case UserRole.student:
+      case UserType.student:
         //! If User is Student
         return getStudentViews();
-      case UserRole.teacher:
+      case UserType.teacher:
         //! If User is Teacher
         return getTeacherViews();
-      case UserRole.parent:
+      case UserType.parent:
         //! If User is Parent
         return getParentViews();
       default:

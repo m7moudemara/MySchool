@@ -1,13 +1,9 @@
-
-
-
+import 'package:MySchool/features/main_wrapper/presentation/views/login_view.dart';
 import 'package:MySchool/features/school/presentation/cubits/intro/intro_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/intro/intro_state.dart';
 import 'package:MySchool/features/school/presentation/widgets/intro_page.dart';
-import 'package:MySchool/features/school/presentation/views/select_account_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class IntroView extends StatefulWidget {
   const IntroView({super.key});
@@ -22,18 +18,12 @@ class _IntroViewState extends State<IntroView> {
   int _currentPage = 0;
 
   final List<Widget> _introPages = const [
-    IntroPage(
-      image: 'assets/intro1.png',
-      title: "Make Your Learning Simple",
-    ),
-    IntroPage(
+    IntroWidget(image: 'assets/intro1.png', title: "Make Your Learning Simple"),
+    IntroWidget(
       image: 'assets/intro2.png',
       title: "Mark Homework as completed",
     ),
-    IntroPage(
-      image: 'assets/intro3.png',
-      title: "Rectify Your Attendance",
-    ),
+    IntroWidget(image: 'assets/intro3.png', title: "Rectify Your Attendance"),
   ];
 
   @override
@@ -43,7 +33,7 @@ class _IntroViewState extends State<IntroView> {
         if (state is IntroCompleted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const SelectedAccountView()),
+            MaterialPageRoute(builder: (_) => const LoginView()),
           );
         }
       },

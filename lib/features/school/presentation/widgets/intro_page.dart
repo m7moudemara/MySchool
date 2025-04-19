@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class IntroPage extends StatelessWidget {
+class IntroWidget extends StatelessWidget {
   final String image;
   final String title;
   
-  const IntroPage({
+  const IntroWidget({
     super.key, 
     required this.image,
     required this.title,

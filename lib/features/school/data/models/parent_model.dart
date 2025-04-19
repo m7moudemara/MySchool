@@ -26,8 +26,6 @@ class Parent extends IUser {
   // Factory constructor to create a Parent instance from JSON data.
   factory Parent.fromJson(Map<String, dynamic> json) {
   final childrenJson = json['children'];
-  print('Parent JSON: $json');
-print('Children field: ${json['children']}');
 
 
   List<Student> childrenList = [];

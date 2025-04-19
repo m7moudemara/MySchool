@@ -46,9 +46,9 @@ class CustomBottomNavBar extends StatelessWidget {
               label: 'Chat',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.group_outlined, size: 26),
-              activeIcon: Icon(Icons.group, size: 26),
-              label: 'Groups',
+              icon: Icon(Icons.calendar_today, size: 26),
+              activeIcon: Icon(Icons.calendar_today, size: 26),
+              label: 'Time Table',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline, size: 26),
