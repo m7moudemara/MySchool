@@ -1,25 +1,29 @@
-
-
-
-
-
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 
 class Student extends IUser {
-  @override final String id;
-  @override final String name;
-  @override final String imageUrl;
+  @override
+  final String id;
+  @override
+  final String name;
+  @override
+  final String imageUrl;
+  @override
+  final bool isFirstLogin;
 
   final String className;
   final String parentId;
 
-  @override String get displayInfo => className;
-  @override final int? totalDays;
-  @override final int? absentDays;
-  @override bool get showAttendance => true;
-  @override UserType get type => UserType.student;
+  @override
+  String get displayInfo => className;
+  @override
+  final int? totalDays;
+  @override
+  final int? absentDays;
+  @override
+  UserType get type => UserType.student;
 
-  Student({
+  Student( {
+    required this.isFirstLogin,
     required this.id,
     required this.name,
     required this.imageUrl,
@@ -27,10 +31,11 @@ class Student extends IUser {
     required this.totalDays,
     required this.absentDays,
     required this.parentId,
-  }); 
+  });
 
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
+      isFirstLogin : json['isFirstLogin'] ?? true,
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       imageUrl: json['imageUrl'] ?? '',

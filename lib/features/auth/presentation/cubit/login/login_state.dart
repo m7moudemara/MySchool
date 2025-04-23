@@ -15,6 +15,13 @@ class LoginSuccess extends LoginState {
   @override
   List<Object?> get props => [userJson];
 }
+
+class FirstLoginRequired extends LoginState {  
+  final Map<String, dynamic> userJson;
+  const FirstLoginRequired({required this.userJson});
+  @override
+  List<Object?> get props => [userJson];
+}
 class LoginFailure extends LoginState {
   final String error;
   const LoginFailure({required this.error});

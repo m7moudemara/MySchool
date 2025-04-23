@@ -1,3 +1,4 @@
+import 'package:MySchool/features/school/presentation/views/teacher/classes_info_view.dart';
 import 'package:flutter/material.dart';
 
 // Main MyChildren Page with Search and Navigation to Details
@@ -9,7 +10,8 @@ static final String id = "my_children_view";
 }
 
 class _MyChildrenViewState extends State<MyChildrenView> {
-  // Original list of all children
+  // local list of children
+  // This should ideally be fetched from a database or API
   final List<Map<String, String>> allChildren = [
     {
       "name": "Mohamed Ashraf",
@@ -17,17 +19,17 @@ class _MyChildrenViewState extends State<MyChildrenView> {
       "image": "https://img.icons8.com/?size=256w&id=7820&format=png"
     },
     {
-      "name": "Mohamed Ashraf",
+      "name": "Ahmed Ashraf",
       "class": "Class 2",
       "image": "https://img.icons8.com/?size=256w&id=7820&format=png"
     },
     {
-      "name": "Mohamed Ashraf",
+      "name": "Mahmoud Ashraf",
       "class": "Class 3",
       "image": "https://img.icons8.com/?size=256w&id=7820&format=png"
     },
     {
-      "name": "Mohamed Ashraf",
+      "name": "Mostafa Ashraf",
       "class": "Class 4",
       "image": "https://img.icons8.com/?size=256w&id=7820&format=png"
     },
@@ -53,7 +55,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
     });
   }
 
-  // Highlight matching part of the name in blue
+  // Highlight matching part of the name in blue 
   List<TextSpan> highlightMatch(String source, String query) {
     if (query.isEmpty) return [TextSpan(text: source)];
 
@@ -154,10 +156,9 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => StudentDetailsPage(
-                                    name: child['name']!,
+                                  builder: (_) =>ClassesinfoView(
                                     studentClass: child['class']!,
-                                    imageUrl: child['image']!,
+                                    studentName: child['name']!,
                                   ),
                                 ),
                               );
@@ -212,49 +213,6 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                         ],
                       ),
                     ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// 🔎 Student Details Page
-class StudentDetailsPage extends StatelessWidget {
-  final String name;
-  final String studentClass;
-  final String imageUrl;
-
-  const StudentDetailsPage({
-    super.key,
-    required this.name,
-    required this.studentClass,
-    required this.imageUrl,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(name),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.network(imageUrl, width: 100, height: 100),
-            ),
-            SizedBox(height: 16),
-            Text(
-              name,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              studentClass,
-              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
             ),
           ],
         ),

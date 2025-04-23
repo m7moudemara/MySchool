@@ -1,6 +1,3 @@
-
-
-
 import 'package:dio/dio.dart';
 import 'auth_remote_data_source.dart';
 
@@ -19,38 +16,80 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         '/users',
         queryParameters: {
           'idNumber': idNumber,
-          'password': password,
         },
       );
 
-      if (response.data.isEmpty) {
-        return {'success': false, 'error': 'Invalid credentials'};
+
+      if (response.data == null || response.data.isEmpty) {
+        return {
+          'success': false,
+          'message': 'No user found with this ID number',
+        };
       }
 
-      final user = response.data[0];
-      final role = user['role']; // optional: parseUserRole later
+      final List users = response.data;
+      final user = users.firstWhere(
+        (u) => u['password'] == password,
+        orElse: () => null,
+      );
 
-      return {'success': true, 'user': user, 'role': role};
+      if (user == null) {
+        return {
+          'success': false,
+          'message': 'Incorrect password',
+        };
+      }
+
+      return {
+        'success': true,
+        'user': user,
+        'role': user['role'],
+      };
+    } on DioException catch (e) {
+      print('Login Error: ${e.message}');
+      return {
+        'success': false,
+        'message': e.response?.data['message'] ?? 'Network error occurred'
+      };
     } catch (e) {
-      return {'success': false, 'error': 'Login failed. Please try again.'};
+      return {
+        'success': false,
+        'message': 'Unexpected error occurred',
+      };
     }
   }
-  
-// TODO: Handle response (optional)
-//   Future<void> sendResetCode(String email) async {
-//   final response = await dio.post(
-//     "$baseUrl/auth/send-reset-code",
-//     data: {"email": email},
-//   );
-// }
 
-// TODO: Implement the use case for verifying the code sent to the user's email.
-// Future<void> resetPassword(String email, String newPassword) async {
-//   await dio.post(
-//     "$baseUrl/auth/reset-password",
-//     data: {"email": email, "password": newPassword},
-//   );
-// }
+  @override
+  Future<bool> isFirstLogin(String userId) async {
+    try {
+      final response = await dio.get('/users/$userId');
+      final data = response.data;
 
+      if (data['is_first_login'] is bool) {
+        return data['is_first_login'];
+      } else if (data['is_first_login'] is String) {
+        return data['is_first_login'].toLowerCase() == 'true';
+      } else if (data['is_first_login'] is int) {
+        return data['is_first_login'] == 1;
+      }
+      return true;
+    } on DioException catch (e) {
+      return true;
+    }
+  }
 
+  @override
+  Future<void> changePassword(String userId, String newPassword) async {
+    try {
+      await dio.put(
+        '/users/$userId',
+        data: {
+          'password': newPassword,
+          'is_first_login': false,
+        },
+      );
+    } on DioException catch (e) {
+      throw Exception('Failed to change password: ${e.message}');
+    }
+  }
 }

@@ -1,4 +1,3 @@
-// lib/features/school/presentation/views/parent/parent_dashboard_view.dart
 
 import 'package:MySchool/features/school/data/config/academics_items_config.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
@@ -8,9 +7,6 @@ import 'package:MySchool/features/school/data/models/parent_model.dart';
 import 'package:MySchool/features/notifications/presentation/views/notifications_view.dart';
 import 'package:MySchool/features/school/presentation/widgets/custom_card_widget.dart';
 import 'package:MySchool/features/school/presentation/widgets/custom_academics_widget.dart';
-
-import '../../../../main_wrapper/domain/entities/user_role.dart';
-
 class ParentDashboardView extends StatefulWidget {
   static const String id = '/ParentDashboard';
 

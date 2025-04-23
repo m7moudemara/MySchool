@@ -1,11 +1,11 @@
-import 'package:MySchool/features/main_wrapper/presentation/views/login_view.dart';
+import 'package:MySchool/features/auth/presentation/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../features/main_wrapper/domain/entities/user_role.dart';
 
 class AppColors{
   static const Color kPrimaryColor = Color(0xff103568);
+  static const Color  absentColor = Color(0xffC53F3F);
 
 static const Color kSecondaryColor = Color(0xff3620C2);
 

@@ -68,6 +68,7 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
               SliverToBoxAdapter(
                 child: UserCard(
                   user: Teacher(
+                      isFirstLogin: teacher?.isFirstLogin ?? false, 
                     id: "id",
                     name: teacher?.name ?? '',
                     imageUrl: teacher?.imageUrl ?? '',

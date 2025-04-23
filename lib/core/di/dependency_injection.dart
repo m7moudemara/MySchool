@@ -1,6 +1,7 @@
 import 'package:MySchool/core/app_session.dart';
 import 'package:MySchool/core/network/dio_client.dart';
-import 'package:MySchool/features/main_wrapper/domain/entities/user_role.dart';
+import 'package:MySchool/features/auth/domain/usecases/change_password_usecase.dart';
+import 'package:MySchool/features/auth/domain/repositories/check_first_time_repository.dart';
 import 'package:MySchool/features/notifications/data/datasources/notification_remote_data_source.dart';
 import 'package:MySchool/features/notifications/data/repositories/notification_repository_impl.dart';
 import 'package:MySchool/features/notifications/domain/usecases/get_notifications_usecase.dart';
@@ -17,18 +18,18 @@ import 'package:MySchool/features/school/presentation/cubits/children_cubit.dart
 import 'package:MySchool/features/school/presentation/cubits/parent_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/student_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/teacher_cubit.dart';
+import 'package:MySchool/features/time_table/data/datasources/timetable_local_data_source_impl.dart';
+import 'package:MySchool/features/time_table/data/repositories/timetable_repository_impl.dart';
+import 'package:MySchool/features/time_table/domain/usecases/get_timetable_for_day.dart';
+import 'package:MySchool/features/time_table/presentation/cubits/timetable_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:MySchool/features/school/data/data_sources/local_data_source_impl.dart';
-import 'package:MySchool/features/school/data/data_sources/intro_local_data_source_impl.dart';
-import 'package:MySchool/features/school/data/repositories/splash_repository_impl.dart';
-import 'package:MySchool/features/school/data/repositories/intro_repository_impl.dart';
+import 'package:MySchool/core/presentation/intro/data/data_sources/intro_local_data_source_impl.dart';
+import 'package:MySchool/core/presentation/intro/data/repositories/intro_repository_impl.dart';
 
-import 'package:MySchool/features/school/domain/usecases/check_first_time_use_case.dart';
-import 'package:MySchool/features/school/domain/usecases/mark_intro_seen_usecase.dart';
+import 'package:MySchool/core/presentation/intro/domain/usecases/mark_intro_seen_usecase.dart';
 
-import 'package:MySchool/features/school/presentation/cubits/splash/splash_cubit.dart';
-import 'package:MySchool/features/school/presentation/cubits/intro/intro_cubit.dart';
+import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit.dart';
 
 import '../../features/auth/data/data_sources/auth_remote_data_source_impl.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
@@ -45,7 +46,6 @@ import '../../features/school/presentation/cubits/selected_account/account_selec
 //// import 'package:MySchool/features/school/data/data_sources/remote_data_source_impl.dart';
 
 class AppDependencies {
-  late final SplashCubit splashCubit;
   late final IntroCubit introCubit;
   late final LoginCubit loginCubit;
   late final ParentCubit parentCubit;
@@ -53,16 +53,11 @@ class AppDependencies {
   late final TeacherCubit teacherCubit;
   late final ChildrenCubit childrenCubit;
   late final NotificationCubit notificationCubit;
-
+  late final TimeTableCubit timeTableCubit;
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
 
-    //! ========================== Splash ====================================
-    final splashLocal = LocalDataSourceImpl(prefs); // ✅ Local حالياً
-    final splashRepo = SplashRepositoryImpl(splashLocal);
-    final checkFirstTimeUseCase = CheckFirstTimeUseCase(splashRepo);
-    splashCubit = SplashCubit(checkFirstTimeUseCase);
-
+   
     /*
     // ❗️✅ لما تكون جاهز تستخدم API (بدل الـ Local) استخدم ده:
 
@@ -94,8 +89,17 @@ class AppDependencies {
     final dio = DioClient.create();
     final authRemoteDataSource = AuthRemoteDataSourceImpl(dio);
     final authRepository = AuthRepositoryImpl(authRemoteDataSource);
+    
+    final checkFirstLoginUseCase = CheckFirstLoginUseCase(authRepository);
+    final changePasswordUseCase = ChangePasswordUseCase(authRepository);
+    
     final loginUseCase = LoginUseCase(authRepository);
-    loginCubit = LoginCubit(loginUseCase);
+    
+    
+    loginCubit = LoginCubit(
+      loginUseCase: loginUseCase,
+      checkFirstLoginUseCase: checkFirstLoginUseCase,
+    );
 
     //! ========================== Users ====================================
     // Remote data source
@@ -127,5 +131,13 @@ class AppDependencies {
     final notificationRepo = NotificationRepositoryImpl(notificationRemote);
     final getNotificationsUseCase = GetNotificationsUseCase(notificationRepo);
     notificationCubit = NotificationCubit(getNotificationsUseCase);
+
+    //! ========================== Time Table ====================================
+    final localTimeTableDataSource = TimeTableLocalDataSourceImpl();
+    final timeTableRepository = TimeTableRepositoryImpl(localTimeTableDataSource);
+    final getTimetableUseCase = GetTimetableForDayUseCase(timeTableRepository);
+    timeTableCubit = TimeTableCubit(getTimetableUseCase);
+
+
   }
 }

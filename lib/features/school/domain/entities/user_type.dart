@@ -9,8 +9,7 @@ abstract class IUser {
   String get displayInfo;
   int? get totalDays;
   int? get absentDays;
-  bool get showAttendance;
   UserType get type;
-
+bool get isFirstLogin;
   get idNumber => null;
 }

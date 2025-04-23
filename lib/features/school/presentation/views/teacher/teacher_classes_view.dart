@@ -1,4 +1,4 @@
-import 'package:MySchool/features/school/presentation/views/teacher/classes_details.dart';
+import 'package:MySchool/features/school/presentation/views/teacher/classes_info_view.dart';
 import 'package:flutter/material.dart';
 
 class TeacherClassesView extends StatefulWidget {

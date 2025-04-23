@@ -1,21 +1,8 @@
-import 'package:MySchool/core/constants.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/parent/parent_views.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
-import 'package:MySchool/features/school/presentation/views/parent/parent_dashboard_view.dart';
-import 'package:MySchool/features/school/presentation/views/parent/parent_chat_view.dart';
-import 'package:MySchool/features/school/presentation/views/parent/parent_group_chat_view.dart';
-import 'package:MySchool/features/school/presentation/views/parent/parent_profile_view.dart';
-import 'package:MySchool/features/school/presentation/views/student/student_conversation_view.dart';
-import 'package:MySchool/features/school/presentation/views/student/time_table_view.dart';
-import 'package:MySchool/features/school/presentation/views/student/student_dashboard.dart';
-import 'package:MySchool/features/school/presentation/views/student/student_profile_view.dart';
-import 'package:MySchool/features/school/presentation/views/teacher/teacher_dashboard.dart';
-import 'package:MySchool/features/school/presentation/views/teacher/teacher_group_chat_view.dart';
-import 'package:MySchool/features/school/presentation/views/teacher/teacher_profile_view.dart';
 import 'package:MySchool/features/main_wrapper/presentation/widgets/buttom_navigation_bar_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/user_role.dart';
 import 'student/student_view.dart';
 import 'teacher/teacher_views.dart';
 

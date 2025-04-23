@@ -6,9 +6,6 @@ import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/widgets/custom_academics_widget.dart';
 import 'package:MySchool/features/school/presentation/widgets/custom_card_widget.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../main_wrapper/domain/entities/user_role.dart';
-
 class StudentDashBoard extends StatefulWidget {
   static String id = '/StudentDashBoard';
 
@@ -78,6 +75,7 @@ void initState() {
                       SliverToBoxAdapter(
                         child: UserCard(
                           user: Student(
+                              isFirstLogin: student?.isFirstLogin ?? false, 
                             name: student?.name ?? 'Student Name',
                             className: 'Class 5',
                             imageUrl:

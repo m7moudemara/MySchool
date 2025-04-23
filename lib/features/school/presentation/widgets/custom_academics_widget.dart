@@ -1,14 +1,7 @@
-import 'package:MySchool/core/constants.dart';
 import 'package:MySchool/features/school/data/config/academics_items_config.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
-import 'package:MySchool/holder.dart';
-import 'package:MySchool/features/school/presentation/views/student/attendance_view.dart';
-import 'package:MySchool/features/school/presentation/views/student/homework_view.dart';
-import 'package:MySchool/features/school/presentation/views/result_view.dart';
-import 'package:MySchool/features/school/presentation/views/teacher/teacher_classes_view.dart';
 import 'package:flutter/material.dart';
 
-import '../../../main_wrapper/domain/entities/user_role.dart';
 
 class RoleBasedAcademicsCompo extends StatelessWidget {
   final UserType currentUserRole;

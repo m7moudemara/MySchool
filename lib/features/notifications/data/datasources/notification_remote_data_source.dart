@@ -1,5 +1,4 @@
 // todo: Replace mock list with API call when .NET backend is ready
-import 'package:MySchool/features/main_wrapper/domain/entities/user_role.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 
 import '../models/notification_model.dart';

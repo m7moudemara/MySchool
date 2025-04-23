@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             color: isLoading
-                ? AppColors.kSecondaryColor.withOpacity(0.5)
+                ? AppColors.kSecondaryColor.withValues(alpha:  1.5)
                 : AppColors.kSecondaryColor,
             borderRadius: BorderRadius.circular(8),
           ),
