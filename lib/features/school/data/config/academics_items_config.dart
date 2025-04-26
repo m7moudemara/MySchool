@@ -1,13 +1,13 @@
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/views/parent/children_details.dart';
-import 'package:MySchool/features/school/presentation/views/teacher/home_work.dart';
+import 'package:MySchool/features/homework/presentation/views/home_work.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_attendance.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_result_view.dart';
 
 import '../../../main_wrapper/domain/entities/user_role.dart';
 import '../../../grades/presentation/views/grades_view.dart';
 import '../../presentation/views/student/attendance_view.dart';
-import '../../presentation/views/student/homework_view.dart';
+import '../../../homework/presentation/views/homework_view.dart';
 import '../../presentation/views/teacher/teacher_classes_view.dart';
 
 class AcademicsItem {

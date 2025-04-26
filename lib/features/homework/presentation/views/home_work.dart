@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:MySchool/features/school/presentation/views/teacher/create_homework.dart';
+import 'package:MySchool/features/homework/presentation/views/create_homework.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -306,7 +306,6 @@ void _removeExpiredHomework() {
   }
 }
 
-// Model class for HomeworkItem// تعديل الكلاس
 class HomeworkItem {
   final String title;
   final String subject;
@@ -323,7 +322,6 @@ class HomeworkItem {
   });
 }
 
-// ViewAttachmentPage (نفسه لكن محدث شوي)
 class ViewAttachmentPage extends StatelessWidget {
   final PlatformFile file;
   const ViewAttachmentPage({super.key, required this.file});

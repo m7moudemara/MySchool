@@ -15,6 +15,7 @@ class _HomeworkViewState extends State<HomeworkView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        
         backgroundColor: Colors.white,
         title: const Text('Homework'), centerTitle: true),
       body: SingleChildScrollView(
@@ -104,42 +105,6 @@ class _HomeworkViewState extends State<HomeworkView> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildDayCard({
-    required String day,
-    required String date,
-    bool isToday = false,
-  }) {
-    return Container(
-      width: 66,
-      decoration: BoxDecoration(
-        color: isToday ? const Color(0xFF0C46C4) : const Color(0xFFF2F2F2),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            date,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: isToday ? Colors.white : const Color(0xFF2F2E41),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            day,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: isToday ? Colors.white : const Color(0xFF2F2E41),
-            ),
-          ),
-        ],
       ),
     );
   }

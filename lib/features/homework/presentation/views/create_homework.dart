@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:MySchool/features/school/presentation/views/teacher/home_work.dart';
+import 'package:MySchool/features/homework/presentation/views/home_work.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,36 +43,40 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                   ),
                 ],
               ),
-            
+
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 20,
+                ),
                 child: Column(
-                  
-                  
                   children: [
-                     Padding(
-                       padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 4),
-                       child: Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                       Navigator.pop(context);
-                              },
-                              child: const Icon(Icons.close, color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 4,
+                      ),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Icon(Icons.close, color: Colors.white),
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            'Create Homework',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                            const SizedBox(width: 10),
-                            const Text(
-                              'Create Homework',
-                              style: TextStyle(
-                                       color: Colors.white,
-                                       fontSize: 18,
-                                       fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                     ),
-                    Container(    
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -96,9 +100,12 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                                 isDense: true,
                               ),
                               items:
-                                  ['Class 1', 'Class 2', 'Class 3', 'Class 4'].map((
-                                    String value,
-                                  ) {
+                                  [
+                                    'Class 1',
+                                    'Class 2',
+                                    'Class 3',
+                                    'Class 4',
+                                  ].map((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Text(value),
@@ -178,24 +185,36 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                    
+
                           // Attachment
                           ElevatedButton.icon(
                             onPressed: () {
-                              showModalBottomSheet(
+                              showDialog(
                                 context: context,
                                 builder:
-                                    (_) => SafeArea(
-                                      child: Column(
+                                    (_) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      content: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           ListTile(
                                             leading: const Icon(Icons.image),
-                                            title: const Text('Pick Image'),
+                                            title: const Text(
+                                              'Upload Image',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15.43,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
                                             onTap: () async {
                                               Navigator.pop(context);
-                                              final XFile? image = await ImagePicker()
-                                                  .pickImage(
+                                              final XFile? image =
+                                                  await ImagePicker().pickImage(
                                                     source: ImageSource.gallery,
                                                   );
                                               if (image != null) {
@@ -217,23 +236,34 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                                             leading: const Icon(
                                               Icons.insert_drive_file,
                                             ),
-                                            title: const Text('Pick File'),
+                                            title: const Text(
+                                              'Upload File',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15.43,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
                                             onTap: () async {
                                               Navigator.pop(context);
                                               FilePickerResult? result =
-                                                  await FilePicker.platform.pickFiles(
-                                                    allowMultiple: false,
-                                                    type: FileType.custom,
-                                                    allowedExtensions: [
-                                                      'jpg',
-                                                      'png',
-                                                      'pdf',
-                                                      'doc',
-                                                    ],
-                                                  );
+                                                  await FilePicker.platform
+                                                      .pickFiles(
+                                                        allowMultiple: false,
+                                                        type: FileType.custom,
+                                                        allowedExtensions: [
+                                                          'jpg',
+                                                          'png',
+                                                          'pdf',
+                                                          'doc',
+                                                        ],
+                                                      );
                                               if (result != null) {
                                                 setState(() {
-                                                  attachedFile = result.files.first;
+                                                  attachedFile =
+                                                      result.files.first;
                                                 });
                                               }
                                             },
@@ -244,25 +274,28 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                               );
                             },
                             icon: const Icon(Icons.attach_file),
-                            label: const Text("Attach File"),
+                            label: const Text("Attachment"),
                           ),
-                    
+
                           const SizedBox(height: 30),
-                    
+
                           // Submit
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF0C46C4),
-                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 15,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                               onPressed: () {
                                 try {
-                                  final dateParts = dueDateController.text.split('/');
+                                  final dateParts = dueDateController.text
+                                      .split('/');
                                   final time = timeController.text;
                                   final parsedTime = TimeOfDay(
                                     hour: int.parse(time.split(':')[0]),
@@ -270,12 +303,14 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                                       time.split(':')[1].split(' ')[0],
                                     ),
                                   );
-                                  final isPM = time.toLowerCase().contains('pm');
-                    
+                                  final isPM = time.toLowerCase().contains(
+                                    'pm',
+                                  );
+
                                   int hour = parsedTime.hour;
                                   if (isPM && hour < 12) hour += 12;
                                   if (!isPM && hour == 12) hour = 0;
-                    
+
                                   final deadline = DateTime(
                                     int.parse(dateParts[2]),
                                     int.parse(dateParts[1]),
@@ -283,7 +318,7 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                                     hour,
                                     parsedTime.minute,
                                   );
-                    
+
                                   final homework = HomeworkItem(
                                     title: topicController.text,
                                     subject: selectedClass ?? 'Unknown',
@@ -291,7 +326,7 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                                     attachmentFile: attachedFile,
                                     deadline: deadline,
                                   );
-                    
+
                                   Navigator.pop(context, homework);
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -303,7 +338,7 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                                   );
                                 }
                               },
-                    
+
                               child: const Text(
                                 'Share Homework',
                                 style: TextStyle(
