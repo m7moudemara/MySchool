@@ -23,10 +23,7 @@ class _NotificationsViewState extends State<NotificationsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF161C2B)),
-          onPressed: () => Navigator.pop(context),
-        ),
+        centerTitle: true,
         titleSpacing: 0,
         title: Text(
           "Notification",
@@ -48,7 +45,7 @@ class _NotificationsViewState extends State<NotificationsView> {
               itemBuilder: (context, index) {
                 final n = state.notifications[index];
                 return ListTile(
-                  leading: Icon(Icons.person),
+                  leading: Image.asset("assets/notificationLocalIcon.png"),
                   title: Text(n.title),
                   subtitle: Text(n.message),
                   trailing: Text(
