@@ -37,6 +37,7 @@ class CustomTextFormField extends StatelessWidget {
         controller: controller,
         focusNode: focusNode,
         obscureText: obscureText,
+        textInputAction: TextInputAction.done,
         keyboardType: keyboardType,
         onChanged: onChanged,
         onFieldSubmitted: onFieldSubmitted,

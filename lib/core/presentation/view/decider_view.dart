@@ -5,6 +5,7 @@ import 'package:MySchool/features/auth/presentation/views/login_view.dart';
 
 class DeciderView extends StatefulWidget {
   const DeciderView({super.key});
+  
 
   @override
   State<DeciderView> createState() => _DeciderViewState();

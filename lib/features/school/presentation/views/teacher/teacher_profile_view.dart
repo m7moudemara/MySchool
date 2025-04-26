@@ -1,5 +1,6 @@
 import 'package:MySchool/core/constants.dart';
 import 'package:MySchool/core/app_session.dart';
+import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/cubits/profile_cubit/profile_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/profile_cubit/profile_state.dart';
@@ -127,6 +128,17 @@ class _TeacherProfileViewState extends State<TeacherProfileView> {
           _buildInfoItem("assets/image.png", "Graduated at University", null),
           SizedBox(height: 16),
           _buildInfoItem("assets/school.png", "Teacher in School", null),
+          SizedBox(height: 16),
+          _buildInfoItem("assets/newPassword.png", "Change Password", () {
+            Navigator.pushNamed(
+              context,
+              CreateNewPasswordView.id,
+              arguments: {
+                'userId': AppSession.currentUser?.id,
+                'isFirstLogin': false,
+              },
+            );
+          }),
           SizedBox(height: 16),
           _buildInfoItem("assets/logout.png", "Logout", () {
             logout(context);

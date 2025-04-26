@@ -1,8 +1,10 @@
 import 'package:MySchool/core/app_session.dart';
+import 'package:MySchool/core/constants.dart';
 import 'package:MySchool/core/widgets/custom_snack_bar.dart';
 import 'package:MySchool/features/auth/data/repositories/mock_reset_password_repository.dart';
 import 'package:MySchool/features/auth/domain/usecases/reset_password_usecase.dart';
 import 'package:MySchool/features/auth/presentation/views/login_view.dart';
+import 'package:MySchool/features/main_wrapper/domain/entities/user_role.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/main_wrapper_view.dart';
 import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:MySchool/features/school/data/models/teacher_model.dart';
@@ -26,19 +28,12 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
   final _oldPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-
   late String userId;
-  late final ResetPasswordUseCase _resetPasswordUseCase;
-  late bool isFirstLogin;
+
+  bool isFirstLogin = false;
   bool _showPassword = false;
   bool isLoading = false;
   bool _showConfirmationDialog = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _resetPasswordUseCase = ResetPasswordUseCase(MockResetPasswordRepository());
-  }
 
   @override
   void didChangeDependencies() {
@@ -46,7 +41,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
     final args = ModalRoute.of(context)?.settings.arguments;
     if (args != null && args is Map<String, dynamic>) {
       userId = args['userId'] ?? '';
-      isFirstLogin = args['isFirstLogin'] ?? false;
+      isFirstLogin = args['is_first_login'] ?? false;
     }
   }
 
@@ -61,39 +56,59 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
       _showConfirmationDialog = true;
     });
 
-    Future.delayed(const Duration(seconds: 5), () {
+  Future.delayed(const Duration(seconds: 3), () {
+    if (isFirstLogin) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        LoginView.id,
+        (route) => false,
+      );
+    } else {
       Navigator.pushReplacementNamed(context, LoginView.id);
-    });
+    }
+  });
   }
 
-Future<bool> _validateOldPassword(String userId, String oldPassword) async {
-  try {
-    final dio = Dio();
-    final response = await dio.get(
-      "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
-      options: Options(
-        validateStatus: (status) => status != null && status < 500,
-      ),
-    );
+  Future<bool> _validateOldPassword(String userId, String oldPassword) async {
+    try {
+      final dio = Dio();
+      final response = await dio.get(
+        "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
+        options: Options(
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      );
 
-    if (response.statusCode == 200 && response.data != null) {
-      final userData = response.data;
-      if (userData["password"] == oldPassword) {
-        return true;
+      if (response.statusCode == 200 && response.data != null) {
+        final userData = response.data;
+        if (userData["password"] == oldPassword) {
+          return true;
+        } else {
+          CustomSnackBar.show(
+            context,
+            "Old password is incorrect",
+            type: SnackBarType.error,
+          );
+          return false;
+        }
       } else {
-        CustomSnackBar.show(context, "Old password is incorrect",type: SnackBarType.error);
+        CustomSnackBar.show(
+          context,
+          "Failed to validate password. User not found.",
+          type: SnackBarType.error,
+        );
+
         return false;
       }
-    } else {
-        CustomSnackBar.show(context, "Failed to validate password. User not found.",type: SnackBarType.error);
-      
+    } catch (e) {
+      CustomSnackBar.show(
+        context,
+        "Error validating password: $e",
+        type: SnackBarType.error,
+      );
       return false;
     }
-  } catch (e) {
-        CustomSnackBar.show(context, "Error validating password: $e",type: SnackBarType.error);
-    return false;
   }
-}
 
   @override
   void dispose() {
@@ -106,16 +121,24 @@ Future<bool> _validateOldPassword(String userId, String oldPassword) async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:
+          isFirstLogin
+              ? null
+              : AppBar(
+                title: Text(
+                  'Change Password',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15.14,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                centerTitle: true,
+                backgroundColor: Colors.white,
+              ),
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text("Create New Password"),
-      ),
+
       body: SafeArea(
         child: Stack(
           children: [
@@ -127,19 +150,19 @@ Future<bool> _validateOldPassword(String userId, String oldPassword) async {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 20),
-                    const Text(
-                      "Create New Password",
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      "Your new password must be different from your previous password",
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                      textAlign: TextAlign.center,
-                    ),
+                    isFirstLogin
+                        ? Text(
+                          'Change Password',
+                          style: TextStyle(
+                            color: const Color(0xFF2F496E),
+                            fontSize: 24.71,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.12,
+                          ),
+                        )
+                        : const SizedBox(),
+
                     const SizedBox(height: 20),
 
                     // Old Password Field
@@ -148,7 +171,7 @@ Future<bool> _validateOldPassword(String userId, String oldPassword) async {
                       hintText: "Old Password",
                       obscureText: !_showPassword,
                       validator: (value) {
-                        if (value == null || value.isEmpty ) {
+                        if (value == null || value.isEmpty) {
                           return 'Please enter your old password';
                         }
                         return null;
@@ -202,62 +225,64 @@ Future<bool> _validateOldPassword(String userId, String oldPassword) async {
                     const SizedBox(height: 20),
 
                     //  Submit Button
-                 CustomButton(
-                  isLoading: isLoading,
-  onTap: () async {
-    if (_formKey.currentState?.validate() != true) return;
-     setState(() => isLoading = true);
+                    CustomButton(
+                      isLoading: isLoading,
+                      onTap: () async {
+                        if (_formKey.currentState?.validate() != true) return;
+                        setState(() => isLoading = true);
 
-    // Check old password 
-    
-      final isValid = await _validateOldPassword(userId, _oldPasswordController.text);
-      if (!isValid) {
-         setState(() => isLoading = false);
-        return; 
-      }
-    final dio = Dio();
-    try {
-      await dio.put(
-        "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
-        data: {
-          "password": _newPasswordController.text,
-          "is_first_login": false,
-        },
-      );
+                        try {
+                          final isValid = await _validateOldPassword(
+                            userId,
+                            _oldPasswordController.text,
+                          );
 
-      if (isFirstLogin) {
-        final user = AppSession.currentUser;
-        if (user != null) {
-          UserType userType;
+                          if (!isValid) {
+                            setState(() => isLoading = false);
+                            return;
+                          }
 
-          if (user is Student) {
-            userType = UserType.student;
-          } else if (user is Teacher) {
-            userType = UserType.teacher;
-          } else {
-            userType = UserType.parent;
-          }
+                          final dio = Dio();
 
-          Navigator.pushReplacementNamed(
-            context,
-            MainWrapperView.id,
-            arguments: RouteArguments(role: userType),
-          );
-        } else {
-          _showSuccessDialog();
-        }
-      } else {
-        _showSuccessDialog();
-      }
-    } catch (e) {
-      CustomSnackBar.show(context, "Error updating password: $e",type: SnackBarType.error );
-    }
-    finally {
-      setState(() => isLoading = false);
-    }
-  },
-  text: isFirstLogin ? "Set Password" : "Reset Password",
-),
+                          await dio.put(
+                            "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
+                            data: {
+                              "password": _newPasswordController.text,
+                              "is_first_login": false,
+                            },
+                          );
+                          if (isFirstLogin) {
+                            final user = AppSession.currentUser;
+                            if (user != null) {
+                              UserType userType;
+
+                              if (user is Student) {
+                                userType = UserType.student;
+                              } else if (user is Teacher) {
+                                userType = UserType.teacher;
+                              } else {
+                                userType = UserType.parent;
+                              }
+                                _showSuccessDialog();
+                            } 
+                          }
+                          
+                          else {
+                           _showSuccessDialog();
+                          }
+                        } catch (e) {
+                          CustomSnackBar.show(
+                            context,
+                            "Error updating password: $e",
+                            type: SnackBarType.error,
+                          );
+                        } finally {
+                          setState(() => isLoading = false);
+                        }
+                      },
+
+                      text: isFirstLogin ? "Verify" : "Change Password",
+                    ),
                     const SizedBox(height: 100),
                   ],
                 ),

@@ -1,4 +1,5 @@
 
+import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:flutter/material.dart';
 import 'package:MySchool/core/constants.dart';
@@ -90,6 +91,17 @@ class ParentProfileView extends StatelessWidget {
       child: Column(
         children: [
           _buildInfoItem("assets/id.png", user.id, null),
+          SizedBox(height: 16),
+          _buildInfoItem("assets/newPassword.png", "Change Password", () {
+            Navigator.pushNamed(
+              context,
+              CreateNewPasswordView.id,
+              arguments: {
+                'userId': AppSession.currentUser?.id,
+                'isFirstLogin': false,
+              },
+            );
+          }),
           const SizedBox(height: 16),
           _buildInfoItem("assets/logout.png", "Logout", () {
             logout(context);
