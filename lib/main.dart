@@ -1,4 +1,3 @@
-import 'package:MySchool/features/auth/presentation/cubit/current_user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/login/login_cubit.dart';
 import 'package:MySchool/features/notifications/presentation/cubit/notification_cubit.dart';
 import 'package:MySchool/features/time_table/presentation/cubits/timetable_cubit.dart';
