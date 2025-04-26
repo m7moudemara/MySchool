@@ -1,4 +1,4 @@
-import 'package:MySchool/features/time_table/domain/entities/lesson.dart';
+import 'package:MySchool/features/time_table/domain/entities/lesson_entity.dart';
 import 'package:MySchool/features/time_table/domain/repositories/timetable_repository.dart';
 
 class GetTimetableForDayUseCase {
@@ -6,7 +6,7 @@ class GetTimetableForDayUseCase {
 
   GetTimetableForDayUseCase(this.repository);
 
-  List<Lesson> call(String day) {
+  List<LessonEntity> call(String day) {
     return repository.getLessonsForDay(day);
   }
 }

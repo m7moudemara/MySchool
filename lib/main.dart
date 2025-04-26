@@ -1,3 +1,4 @@
+import 'package:MySchool/features/auth/presentation/cubit/current_user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/login/login_cubit.dart';
 import 'package:MySchool/features/notifications/presentation/cubit/notification_cubit.dart';
 import 'package:MySchool/features/time_table/presentation/cubits/timetable_cubit.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+         BlocProvider(create: (_) => deps.currentUserCubit),
         BlocProvider(create: (_) => ProfileCubit()),
         BlocProvider(create: (_) => deps.introCubit),
         BlocProvider<LoginCubit>(create: (_) => deps.loginCubit),
@@ -34,8 +36,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => deps.teacherCubit),
         BlocProvider(create: (_) => deps.childrenCubit),
         BlocProvider<NotificationCubit>(create: (_) => deps.notificationCubit),
-BlocProvider<TimeTableCubit>(create: (_) => deps.timeTableCubit),
-
+        BlocProvider<TimeTableCubit>(create: (_) => deps.timeTableCubit),
+        BlocProvider(create: (_) => deps.gradeCubit), 
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

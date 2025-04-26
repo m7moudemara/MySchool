@@ -10,6 +10,6 @@ abstract class IUser {
   int? get totalDays;
   int? get absentDays;
   UserType get type;
-bool get isFirstLogin;
+  bool get isFirstLogin;
   get idNumber => null;
 }

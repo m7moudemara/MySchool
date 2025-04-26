@@ -6,6 +6,7 @@ import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/widgets/custom_academics_widget.dart';
 import 'package:MySchool/features/school/presentation/widgets/custom_card_widget.dart';
 import 'package:flutter/material.dart';
+
 class StudentDashBoard extends StatefulWidget {
   static String id = '/StudentDashBoard';
 
@@ -16,20 +17,20 @@ class StudentDashBoard extends StatefulWidget {
 }
 
 class _StudentDashBoardState extends State<StudentDashBoard> {
-Student? student;  
+  Student? student;
 
- @override
-void initState() {
-  super.initState();
+  @override
+  void initState() {
+    super.initState();
 
-  final user = AppSession.currentUser;
+    final user = AppSession.currentUser;
 
-  if (user is Student) {
-    student = user;
-  } else {
-    student = null;
+    if (user is Student) {
+      student = user;
+    } else {
+      student = null;
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +62,8 @@ void initState() {
                       SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20.0),
-                          child: const Text(
-                            "Hi there, Welcome!",
+                          child: Text(
+                            "Hi there, Welcome ${student?.name}!",
                             style: TextStyle(
                               color: Color(0xff3F3D56),
                               fontSize: 16,
@@ -75,14 +76,15 @@ void initState() {
                       SliverToBoxAdapter(
                         child: UserCard(
                           user: Student(
-                              isFirstLogin: student?.isFirstLogin ?? false, 
+                            isFirstLogin: student?.isFirstLogin ?? false,
                             name: student?.name ?? 'Student Name',
                             className: 'Class 5',
                             imageUrl:
                                 student?.imageUrl ?? 'assets/Mini Avatar.png',
                             totalDays: 100,
                             absentDays: 30,
-                            id: '', parentId: '',
+                            id: '',
+                            parentId: '',
                           ),
                         ),
                       ),

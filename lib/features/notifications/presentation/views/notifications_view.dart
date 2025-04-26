@@ -48,6 +48,7 @@ class _NotificationsViewState extends State<NotificationsView> {
               itemBuilder: (context, index) {
                 final n = state.notifications[index];
                 return ListTile(
+                  leading: Icon(Icons.person),
                   title: Text(n.title),
                   subtitle: Text(n.message),
                   trailing: Text(

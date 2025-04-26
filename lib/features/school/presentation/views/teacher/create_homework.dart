@@ -332,7 +332,7 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 12), // عشان تص ALIGN مع التكسيت
+          padding: const EdgeInsets.only(top: 12),
           child: Image.asset(image, height: 24, width: 24),
         ),
         const SizedBox(width: 10),

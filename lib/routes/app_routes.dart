@@ -19,7 +19,7 @@ import 'package:MySchool/features/auth/presentation/views/login_view.dart';
 import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/notifications/presentation/views/notifications_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/homework_view.dart';
-import 'package:MySchool/features/school/presentation/views/result_view.dart';
+import 'package:MySchool/features/grades/presentation/views/grades_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/attendance_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/student_chat_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/student_conversation_view.dart';
@@ -42,10 +42,11 @@ class AppRoutes {
     IntroView.id: (context) => IntroView(),
     LoginView.id: (context) => LoginView(),
     StudentDashBoard.id: (context) => StudentDashBoard(),
+    GradesView.id : (context) => GradesView(),
     CreateNewPasswordView.id: (context) => CreateNewPasswordView(),
     NotificationsView.id: (context) => NotificationsView(),
     HomeworkView.id: (context) => HomeworkView(),
-    ResultView.id: (context) => ResultView(),
+
     AttendanceView.id: (context) => AttendanceView(),
     StudentChatView.id: (context) => StudentChatView(),
     StudentConversationView.id: (context) => StudentConversationView(),

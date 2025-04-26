@@ -35,7 +35,7 @@ class Student extends IUser {
 
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
-      isFirstLogin : json['isFirstLogin'] ?? true,
+      isFirstLogin : json['is_first_login'] ?? true,
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       imageUrl: json['imageUrl'] ?? '',

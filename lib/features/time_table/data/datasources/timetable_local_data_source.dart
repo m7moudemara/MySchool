@@ -1,5 +1,5 @@
-import 'package:MySchool/features/time_table/domain/entities/lesson.dart';
+import 'package:MySchool/features/time_table/domain/entities/lesson_entity.dart';
 
 abstract class TimeTableLocalDataSource {
-  List<Lesson> getLessonsForDay(String day);
+  List<LessonEntity> getLessonsForDay(String day);
 }

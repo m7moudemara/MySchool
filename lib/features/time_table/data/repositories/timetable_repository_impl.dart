@@ -1,5 +1,5 @@
 import 'package:MySchool/features/time_table/data/datasources/timetable_local_data_source.dart';
-import 'package:MySchool/features/time_table/domain/entities/lesson.dart';
+import 'package:MySchool/features/time_table/domain/entities/lesson_entity.dart';
 import 'package:MySchool/features/time_table/domain/repositories/timetable_repository.dart';
 
 class TimeTableRepositoryImpl implements TimeTableRepository {
@@ -8,7 +8,7 @@ class TimeTableRepositoryImpl implements TimeTableRepository {
   TimeTableRepositoryImpl(this.localDataSource);
 
   @override
-  List<Lesson> getLessonsForDay(String day) {
+  List<LessonEntity> getLessonsForDay(String day) {
     return localDataSource.getLessonsForDay(day);
   }
 }

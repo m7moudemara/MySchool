@@ -2,6 +2,11 @@ import 'package:MySchool/core/app_session.dart';
 import 'package:MySchool/core/network/dio_client.dart';
 import 'package:MySchool/features/auth/domain/usecases/change_password_usecase.dart';
 import 'package:MySchool/features/auth/domain/repositories/check_first_time_repository.dart';
+import 'package:MySchool/features/auth/presentation/cubit/current_user_cubit.dart';
+import 'package:MySchool/features/grades/data/data_sources/results_api.dart';
+import 'package:MySchool/features/grades/data/repositories/grades_repository.dart';
+import 'package:MySchool/features/grades/domain/usecases/get_grades_use_case.dart';
+import 'package:MySchool/features/grades/presentation/cubits/grade_cubit.dart';
 import 'package:MySchool/features/notifications/data/datasources/notification_remote_data_source.dart';
 import 'package:MySchool/features/notifications/data/repositories/notification_repository_impl.dart';
 import 'package:MySchool/features/notifications/domain/usecases/get_notifications_usecase.dart';
@@ -22,6 +27,7 @@ import 'package:MySchool/features/time_table/data/datasources/timetable_local_da
 import 'package:MySchool/features/time_table/data/repositories/timetable_repository_impl.dart';
 import 'package:MySchool/features/time_table/domain/usecases/get_timetable_for_day.dart';
 import 'package:MySchool/features/time_table/presentation/cubits/timetable_cubit.dart';
+import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:MySchool/core/presentation/intro/data/data_sources/intro_local_data_source_impl.dart';
@@ -54,10 +60,13 @@ class AppDependencies {
   late final ChildrenCubit childrenCubit;
   late final NotificationCubit notificationCubit;
   late final TimeTableCubit timeTableCubit;
+  late final GradeCubit gradeCubit;
+  late final CurrentUserCubit currentUserCubit;
+  
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
 
-   
+     currentUserCubit = CurrentUserCubit(); 
     /*
     // ❗️✅ لما تكون جاهز تستخدم API (بدل الـ Local) استخدم ده:
 
@@ -89,13 +98,12 @@ class AppDependencies {
     final dio = DioClient.create();
     final authRemoteDataSource = AuthRemoteDataSourceImpl(dio);
     final authRepository = AuthRepositoryImpl(authRemoteDataSource);
-    
+
     final checkFirstLoginUseCase = CheckFirstLoginUseCase(authRepository);
     final changePasswordUseCase = ChangePasswordUseCase(authRepository);
-    
+
     final loginUseCase = LoginUseCase(authRepository);
-    
-    
+
     loginCubit = LoginCubit(
       loginUseCase: loginUseCase,
       checkFirstLoginUseCase: checkFirstLoginUseCase,
@@ -134,10 +142,27 @@ class AppDependencies {
 
     //! ========================== Time Table ====================================
     final localTimeTableDataSource = TimeTableLocalDataSourceImpl();
-    final timeTableRepository = TimeTableRepositoryImpl(localTimeTableDataSource);
+    final timeTableRepository = TimeTableRepositoryImpl(
+      localTimeTableDataSource,
+    );
     final getTimetableUseCase = GetTimetableForDayUseCase(timeTableRepository);
     timeTableCubit = TimeTableCubit(getTimetableUseCase);
 
+    //! ============================== Grades ======================================
+     final dioo = Dio();
+
+    // إنشاء الـ ResultsApi باستخدام نفس الـ Dio
+    final resultsApi = ResultsApi(dioo);
+    final gradesDataSource = GradesRemoteDataSource(dioo);
+
+    // إنشاء الـ Repository
+    final gradesRepository = GradesRepositoryImpl(gradesDataSource);
+
+    // إنشاء الـ UseCase
+    final getGradesUseCase = GetGradesUseCase(gradesRepository);
+
+    // إنشاء الـ Cubit
+    gradeCubit = GradeCubit(getGradesUseCase);
 
   }
 }

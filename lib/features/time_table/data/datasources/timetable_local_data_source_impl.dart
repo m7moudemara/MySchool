@@ -1,12 +1,12 @@
 import 'dart:ui';
 
 import 'package:MySchool/features/time_table/data/datasources/timetable_local_data_source.dart';
-import 'package:MySchool/features/time_table/domain/entities/lesson.dart';
+import 'package:MySchool/features/time_table/domain/entities/lesson_entity.dart';
 
 class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
-  final Map<String, List<Lesson>> localLessons = {
+  final Map<String, List<LessonEntity>> localLessons = {
     "Saturday": [
-      Lesson(
+      LessonEntity(
         time: '9:00 AM',
         endTime: '9:50 AM',
         teacher: 'د/ أحمد محمود',
@@ -14,7 +14,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffE8DBFC),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '9:50 AM',
         endTime: '10:00 AM',
         teacher: 'فترة راحة',
@@ -22,7 +22,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:00 AM',
         endTime: '10:50 AM',
         teacher: 'أ/ سارة خالد',
@@ -30,7 +30,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffD4F0FC),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:50 AM',
         endTime: '11:00 AM',
         teacher: 'فترة راحة',
@@ -38,7 +38,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '11:00 AM',
         endTime: '11:50 AM',
         teacher: 'أ/ محمد علي',
@@ -46,7 +46,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffFFE8E8),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '11:50 AM',
         endTime: '12:00 PM',
         teacher: 'فترة راحة',
@@ -56,7 +56,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
       ),
     ],
     "Sunday": [
-      Lesson(
+      LessonEntity(
         time: '9:00 AM',
         endTime: '9:50 AM',
         teacher: 'أ/ ياسمين أحمد',
@@ -64,7 +64,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffE8F7FC),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '9:50 AM',
         endTime: '10:00 AM',
         teacher: 'فترة راحة',
@@ -72,7 +72,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:00 AM',
         endTime: '10:50 AM',
         teacher: 'د/ خالد عمر',
@@ -80,7 +80,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffFCEDE8),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:50 AM',
         endTime: '11:00 AM',
         teacher: 'فترة راحة',
@@ -88,7 +88,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '11:00 AM',
         endTime: '11:50 AM',
         teacher: 'أ/ نورا محمد',
@@ -98,7 +98,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
       ),
     ],
     "Monday": [
-      Lesson(
+      LessonEntity(
         time: '9:00 AM',
         endTime: '9:50 AM',
         teacher: 'أ/ علي حسين',
@@ -106,7 +106,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffFCE8FC),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '9:50 AM',
         endTime: '10:00 AM',
         teacher: 'فترة راحة',
@@ -114,7 +114,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:00 AM',
         endTime: '10:50 AM',
         teacher: 'د/ مريم وليد',
@@ -122,7 +122,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffE8E8FC),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:50 AM',
         endTime: '11:00 AM',
         teacher: 'فترة راحة',
@@ -130,7 +130,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '11:00 AM',
         endTime: '11:50 AM',
         teacher: 'أ/ أحمد سامي',
@@ -140,7 +140,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
       ),
     ],
     "Tuesday": [
-      Lesson(
+      LessonEntity(
         time: '9:00 AM',
         endTime: '9:50 AM',
         teacher: 'أ/ سامية رجب',
@@ -148,7 +148,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffFCE8E8),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '9:50 AM',
         endTime: '10:00 AM',
         teacher: 'فترة راحة',
@@ -156,7 +156,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:00 AM',
         endTime: '10:50 AM',
         teacher: 'د/ وليد كمال',
@@ -164,7 +164,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffE8FCE8),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:50 AM',
         endTime: '11:00 AM',
         teacher: 'فترة راحة',
@@ -172,7 +172,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '11:00 AM',
         endTime: '11:50 AM',
         teacher: 'أ/ هبة نور',
@@ -182,7 +182,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
       ),
     ],
     "Wednesday": [
-      Lesson(
+      LessonEntity(
         time: '9:00 AM',
         endTime: '9:50 AM',
         teacher: 'أ/ عماد فتحي',
@@ -190,7 +190,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffE8E8FC),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '9:50 AM',
         endTime: '10:00 AM',
         teacher: 'فترة راحة',
@@ -198,7 +198,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:00 AM',
         endTime: '10:50 AM',
         teacher: 'د/ نادية علي',
@@ -206,7 +206,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffE8DBFC),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:50 AM',
         endTime: '11:00 AM',
         teacher: 'فترة راحة',
@@ -214,7 +214,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '11:00 AM',
         endTime: '11:50 AM',
         teacher: 'أ/ كريم أسامة',
@@ -224,7 +224,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
       ),
     ],
     "Thursday": [
-      Lesson(
+      LessonEntity(
         time: '9:00 AM',
         endTime: '9:50 AM',
         teacher: 'أ/ إيمان سعد',
@@ -232,7 +232,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffFFE8E8),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '9:50 AM',
         endTime: '10:00 AM',
         teacher: 'فترة راحة',
@@ -240,7 +240,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:00 AM',
         endTime: '10:50 AM',
         teacher: 'د/ حسام الدين',
@@ -248,7 +248,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffFCEDE8),
         isBreak: false,
       ),
-      Lesson(
+      LessonEntity(
         time: '10:50 AM',
         endTime: '11:00 AM',
         teacher: 'فترة راحة',
@@ -256,7 +256,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
         color: Color(0xffF5F5F5),
         isBreak: true,
       ),
-      Lesson(
+      LessonEntity(
         time: '11:00 AM',
         endTime: '11:50 AM',
         teacher: 'أ/ منى طارق',
@@ -269,7 +269,7 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
   };
 
   @override
-  List<Lesson> getLessonsForDay(String day) {
+  List<LessonEntity> getLessonsForDay(String day) {
     return localLessons[day] ?? [];
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Lesson {
+class LessonEntity {
   final String time;
   final String endTime;
   final String teacher;
@@ -8,7 +8,7 @@ class Lesson {
   final Color color;
   final bool isBreak;
 
-  Lesson({
+  LessonEntity({
     required this.time,
     required this.endTime,
     required this.teacher,

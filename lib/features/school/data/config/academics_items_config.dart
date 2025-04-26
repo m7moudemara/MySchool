@@ -5,7 +5,7 @@ import 'package:MySchool/features/school/presentation/views/teacher/teacher_atte
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_result_view.dart';
 
 import '../../../main_wrapper/domain/entities/user_role.dart';
-import '../../presentation/views/result_view.dart';
+import '../../../grades/presentation/views/grades_view.dart';
 import '../../presentation/views/student/attendance_view.dart';
 import '../../presentation/views/student/homework_view.dart';
 import '../../presentation/views/teacher/teacher_classes_view.dart';
@@ -41,7 +41,7 @@ final List<AcademicsItem> allAcademicsItems = [
   AcademicsItem(
     title: 'Results',
     iconPath: 'assets/results.png',
-    routeName: ResultView.id,
+    routeName: GradesView.id,
     visibleFor: UserType.student,
   ),
 

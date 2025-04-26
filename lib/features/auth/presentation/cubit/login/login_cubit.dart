@@ -17,7 +17,6 @@ class LoginCubit extends Cubit<LoginState> {
   emit(LoginLoading());
   
   final result = await loginUseCase(idNumber: idNumber, password: password);
-  print('Login Result: $result'); // Debug log
 
   if (result['success'] == true) {
     final userId = result['user']['id'].toString();

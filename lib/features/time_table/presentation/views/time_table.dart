@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:MySchool/features/time_table/domain/entities/lesson.dart';
+import 'package:MySchool/features/time_table/domain/entities/lesson_entity.dart';
 import 'package:MySchool/features/time_table/presentation/cubits/timetable_cubit.dart';
 
 class TimeTableView extends StatefulWidget {
@@ -130,7 +130,7 @@ class _TimeTableViewState extends State<TimeTableView> {
   }
 
   Widget buildCombinedTimetable(
-    Lesson lesson, {
+    LessonEntity lesson, {
     bool isFirstItem = false,
     bool isLastItem = false,
   }) {
@@ -158,7 +158,7 @@ class _TimeTableViewState extends State<TimeTableView> {
             children: [
               SizedBox(height: height / 4),
               Padding(
-                padding: EdgeInsets.only(bottom: space),
+                padding: EdgeInsets.only(bottom: space,),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
