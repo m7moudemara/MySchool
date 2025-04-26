@@ -1,6 +1,6 @@
 import 'package:MySchool/features/main_wrapper/presentation/views/parent/parent_views.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
-import 'package:MySchool/features/main_wrapper/presentation/widgets/buttom_navigation_bar_widget.dart';
+import 'package:MySchool/core/widgets/buttom_navigation_bar_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'student/student_view.dart';

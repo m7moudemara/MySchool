@@ -1,17 +1,16 @@
 import 'package:MySchool/core/app_session.dart';
+import 'package:MySchool/core/widgets/custom_snack_bar.dart';
 import 'package:MySchool/features/auth/data/repositories/mock_reset_password_repository.dart';
 import 'package:MySchool/features/auth/domain/usecases/reset_password_usecase.dart';
 import 'package:MySchool/features/auth/presentation/views/login_view.dart';
-import 'package:MySchool/features/main_wrapper/domain/entities/user_role.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/main_wrapper_view.dart';
-import 'package:MySchool/features/school/data/models/parent_model.dart';
 import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:MySchool/features/school/data/models/teacher_model.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/routes/app_routes.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import '../../../main_wrapper/presentation/widgets/custom_button.dart';
+import '../widgets/custom_button.dart';
 import '../../../school/presentation/widgets/custom_text_field.dart';
 
 class CreateNewPasswordView extends StatefulWidget {
@@ -24,23 +23,16 @@ class CreateNewPasswordView extends StatefulWidget {
 
 class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
   final _formKey = GlobalKey<FormState>();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  late String userId;
+  final _oldPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  late String userId;
   late final ResetPasswordUseCase _resetPasswordUseCase;
   late bool isFirstLogin;
-
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-   final args = ModalRoute.of(context)?.settings.arguments;
-if (args != null && args is Map<String, dynamic>) {
-  userId = args['userId'] ?? '';
-  isFirstLogin = args['isFirstLogin'] ?? false;
-}
-  }
+  bool _showPassword = false;
+  bool isLoading = false;
+  bool _showConfirmationDialog = false;
 
   @override
   void initState() {
@@ -48,8 +40,15 @@ if (args != null && args is Map<String, dynamic>) {
     _resetPasswordUseCase = ResetPasswordUseCase(MockResetPasswordRepository());
   }
 
-  bool _showPassword = false;
-  bool _showConfirmationDialog = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args != null && args is Map<String, dynamic>) {
+      userId = args['userId'] ?? '';
+      isFirstLogin = args['isFirstLogin'] ?? false;
+    }
+  }
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -67,9 +66,39 @@ if (args != null && args is Map<String, dynamic>) {
     });
   }
 
+Future<bool> _validateOldPassword(String userId, String oldPassword) async {
+  try {
+    final dio = Dio();
+    final response = await dio.get(
+      "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
+      options: Options(
+        validateStatus: (status) => status != null && status < 500,
+      ),
+    );
+
+    if (response.statusCode == 200 && response.data != null) {
+      final userData = response.data;
+      if (userData["password"] == oldPassword) {
+        return true;
+      } else {
+        CustomSnackBar.show(context, "Old password is incorrect",type: SnackBarType.error);
+        return false;
+      }
+    } else {
+        CustomSnackBar.show(context, "Failed to validate password. User not found.",type: SnackBarType.error);
+      
+      return false;
+    }
+  } catch (e) {
+        CustomSnackBar.show(context, "Error validating password: $e",type: SnackBarType.error);
+    return false;
+  }
+}
+
   @override
   void dispose() {
-    _passwordController.dispose();
+    _oldPasswordController.dispose();
+    _newPasswordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
   }
@@ -77,6 +106,7 @@ if (args != null && args is Map<String, dynamic>) {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -111,6 +141,22 @@ if (args != null && args is Map<String, dynamic>) {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
+
+                    // Old Password Field
+                    CustomTextFormField(
+                      controller: _oldPasswordController,
+                      hintText: "Old Password",
+                      obscureText: !_showPassword,
+                      validator: (value) {
+                        if (value == null || value.isEmpty ) {
+                          return 'Please enter your old password';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+
+                    // New Password Field
                     CustomTextFormField(
                       controller: _newPasswordController,
                       hintText: "New Password",
@@ -126,18 +172,22 @@ if (args != null && args is Map<String, dynamic>) {
                       },
                     ),
                     const SizedBox(height: 10),
+
+                    // Confirm New Password
                     CustomTextFormField(
                       controller: _confirmPasswordController,
                       hintText: "Confirm New Password",
                       obscureText: !_showPassword,
                       validator: (value) {
-                        if (value != _passwordController.text) {
+                        if (value != _newPasswordController.text) {
                           return 'Passwords do not match';
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 10),
+
+                    //  Show Password
                     Row(
                       children: [
                         Checkbox(
@@ -150,43 +200,44 @@ if (args != null && args is Map<String, dynamic>) {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    CustomButton(
-                      onTap: () async {
-                        if (_newPasswordController.text !=
-                            _confirmPasswordController.text) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Passwords do not match"),
-                            ),
-                          );
-                          return;
-                        }
 
-                        final dio = Dio();
-                        try {
-                          await dio.put(
-                            "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
-                            data: {
-                              "password": _newPasswordController.text,
-                            "is_first_login" : false,  
-                              },
-                          );
-   if (isFirstLogin) {
-          final user = AppSession.currentUser;
-          if (user != null) {
-        UserType userType;
+                    //  Submit Button
+                 CustomButton(
+                  isLoading: isLoading,
+  onTap: () async {
+    if (_formKey.currentState?.validate() != true) return;
+     setState(() => isLoading = true);
+
+    // Check old password 
     
-    if (user is Student) {
-      userType = UserType.student;
-    } else if (user is Teacher) {
-      userType = UserType.teacher;
-    } else if (user is Parent) {
-      userType = UserType.parent;
-    } else {
-      userType = UserType.student; 
-    }
-          
-          
+      final isValid = await _validateOldPassword(userId, _oldPasswordController.text);
+      if (!isValid) {
+         setState(() => isLoading = false);
+        return; 
+      }
+    final dio = Dio();
+    try {
+      await dio.put(
+        "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
+        data: {
+          "password": _newPasswordController.text,
+          "is_first_login": false,
+        },
+      );
+
+      if (isFirstLogin) {
+        final user = AppSession.currentUser;
+        if (user != null) {
+          UserType userType;
+
+          if (user is Student) {
+            userType = UserType.student;
+          } else if (user is Teacher) {
+            userType = UserType.teacher;
+          } else {
+            userType = UserType.parent;
+          }
+
           Navigator.pushReplacementNamed(
             context,
             MainWrapperView.id,
@@ -194,13 +245,17 @@ if (args != null && args is Map<String, dynamic>) {
           );
         } else {
           _showSuccessDialog();
-        }}
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: $e")),
-        );
+        }
+      } else {
+        _showSuccessDialog();
       }
-    },
+    } catch (e) {
+      CustomSnackBar.show(context, "Error updating password: $e",type: SnackBarType.error );
+    }
+    finally {
+      setState(() => isLoading = false);
+    }
+  },
   text: isFirstLogin ? "Set Password" : "Reset Password",
 ),
                     const SizedBox(height: 100),
@@ -208,6 +263,8 @@ if (args != null && args is Map<String, dynamic>) {
                 ),
               ),
             ),
+
+            //  Dialog
             if (_showConfirmationDialog)
               Center(
                 child: Container(
@@ -226,10 +283,7 @@ if (args != null && args is Map<String, dynamic>) {
                     ],
                   ),
                   child: SingleChildScrollView(
-                    child: Image.asset(
-                      "assets/congratulation.png",
-                    
-                    ),
+                    child: Image.asset("assets/congratulation.png"),
                   ),
                 ),
               ),

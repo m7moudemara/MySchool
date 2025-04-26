@@ -11,7 +11,7 @@ import 'package:MySchool/core/app_session.dart';
 import 'package:MySchool/routes/app_routes.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/main_wrapper_view.dart';
 import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/features/main_wrapper/presentation/widgets/custom_button.dart';
+import 'package:MySchool/features/auth/presentation/widgets/custom_button.dart';
 import 'package:MySchool/features/school/presentation/widgets/custom_text_field.dart';
 
 import '../cubit/login/login_cubit.dart';

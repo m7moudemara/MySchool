@@ -59,7 +59,7 @@ class CustomTextFormField extends StatelessWidget {
 
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 22,
-            vertical: 14,
+            vertical: 22,
           ),
         ),
       ),
