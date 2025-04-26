@@ -217,7 +217,7 @@ class _TimeTableViewState extends State<TimeTableView> {
                       color: const Color(0xFF3C3C3C),
                     ),
                     title: Text(
-                      lesson.teacher,
+                      lesson.subject,
                       style: const TextStyle(
                         color: Color(0xFF3C3C3C),
                         fontFamily: 'Poppins',
@@ -226,7 +226,7 @@ class _TimeTableViewState extends State<TimeTableView> {
                     ),
                     subtitle: !lesson.isBreak
                         ? Text(
-                            lesson.subject,
+                            lesson.teacher,
                             style: const TextStyle(
                               color: Color(0xFF5F5F5F),
                               fontFamily: 'Poppins',
