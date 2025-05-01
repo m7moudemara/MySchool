@@ -1,13 +1,12 @@
-import 'package:MySchool/core/constants.dart';
 import 'package:MySchool/core/utils/size_config.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class UserCard extends StatelessWidget {
+class CustomInfoCardWidget extends StatelessWidget {
   final IUser user;
 
-  const UserCard({super.key, required this.user});
+  const CustomInfoCardWidget({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
