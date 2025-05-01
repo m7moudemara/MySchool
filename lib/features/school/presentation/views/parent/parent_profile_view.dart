@@ -1,9 +1,10 @@
 
+import 'package:MySchool/core/di/get_it.dart';
+import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:flutter/material.dart';
 import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/core/app_session.dart';
 
 class ParentProfileView extends StatelessWidget {
   const ParentProfileView({super.key});
@@ -11,7 +12,7 @@ class ParentProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final IUser? user = AppSession.currentUser;
+    final IUser?  user = getIt<UserCubit>().state;
 
     if (user == null) {
       return const Scaffold(
@@ -97,7 +98,7 @@ class ParentProfileView extends StatelessWidget {
               context,
               CreateNewPasswordView.id,
               arguments: {
-                'userId': AppSession.currentUser?.id,
+                'userId':  getIt<UserCubit>().state!.id,
                 'isFirstLogin': false,
               },
             );

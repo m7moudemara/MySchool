@@ -1,5 +1,6 @@
 import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/core/app_session.dart';
+import 'package:MySchool/core/di/get_it.dart';
+import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/cubits/profile_cubit/profile_cubit.dart';
@@ -19,7 +20,7 @@ class _TeacherProfileViewState extends State<TeacherProfileView> {
   @override
   void initState() {
     super.initState();
-    final user = AppSession.currentUser;
+    final user = getIt<UserCubit>().state;
     if (user != null) {
       context.read<ProfileCubit>().loadProfile(user);
     }
@@ -89,7 +90,7 @@ class _TeacherProfileViewState extends State<TeacherProfileView> {
                           horizontal: 61,
                           vertical: 15,
                         ),
-                        child: _buildInfoCard(user),
+                        child: _buildInfoCard(),
                       ),
                       const SizedBox(height: 30),
                     ],
@@ -110,7 +111,7 @@ class _TeacherProfileViewState extends State<TeacherProfileView> {
     );
   }
 
-  Widget _buildInfoCard(IUser user) {
+  Widget _buildInfoCard() {
     return Container(
       width: double.infinity,
       constraints: const BoxConstraints(minHeight: 200),
@@ -121,7 +122,7 @@ class _TeacherProfileViewState extends State<TeacherProfileView> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          _buildInfoItem("assets/id.png", user.id, null),
+          _buildInfoItem("assets/id.png", getIt<UserCubit>().state!.id, null),
           SizedBox(height: 16),
           _buildInfoItem("assets/teachericon.png", "Mathematics Teacher", null),
           SizedBox(height: 16),
@@ -134,7 +135,7 @@ class _TeacherProfileViewState extends State<TeacherProfileView> {
               context,
               CreateNewPasswordView.id,
               arguments: {
-                'userId': AppSession.currentUser?.id,
+                'userId': getIt<UserCubit>().state!.id,
                 'isFirstLogin': false,
               },
             );

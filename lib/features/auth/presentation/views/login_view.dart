@@ -1,3 +1,5 @@
+import 'package:MySchool/core/di/get_it.dart';
+import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/main_wrapper/domain/entities/user_role.dart';
 import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/school/data/models/parent_model.dart';
@@ -6,8 +8,6 @@ import 'package:MySchool/features/school/data/models/teacher_model.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:MySchool/core/app_session.dart';
-
 import 'package:MySchool/routes/app_routes.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/main_wrapper_view.dart';
 import 'package:MySchool/core/constants.dart';
@@ -76,7 +76,8 @@ class _LoginViewState extends State<LoginView> {
                 user = Parent.fromJson(userJson);
               }
 
-              AppSession.currentUser = user;
+              getIt<UserCubit>().setUser(user);
+
 
               Navigator.pushReplacementNamed(
                 context,

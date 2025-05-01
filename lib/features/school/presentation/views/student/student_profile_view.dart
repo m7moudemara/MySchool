@@ -1,5 +1,6 @@
 import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/core/app_session.dart';
+import 'package:MySchool/core/di/get_it.dart';
+import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/cubits/profile_cubit/profile_cubit.dart';
@@ -19,7 +20,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
   @override
   void initState() {
     super.initState();
-    final user = AppSession.currentUser;
+    final user = getIt<UserCubit>().state;
     if (user != null) {
       context.read<ProfileCubit>().loadProfile(user);
     }
@@ -135,7 +136,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
               context,
               CreateNewPasswordView.id,
               arguments: {
-                'userId': AppSession.currentUser?.id,
+                'userId': getIt<UserCubit>().state?.id,
                 'isFirstLogin': false,
               },
             );

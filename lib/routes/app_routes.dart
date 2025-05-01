@@ -8,13 +8,13 @@ import 'package:MySchool/features/school/presentation/views/teacher/teacher_atte
 import 'package:MySchool/features/homework/presentation/views/teacher_homework_view.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_result_view.dart';
 import 'package:MySchool/features/school/presentation/views/parent/parent_chat_view.dart';
-import 'package:MySchool/features/school/presentation/views/parent/parent_dashboard_view.dart';
+import 'package:MySchool/features/dashbord/presentation/views/parent_dashboard_view.dart';
 import 'package:MySchool/features/school/presentation/views/parent/parent_group_chat_view.dart';
 import 'package:MySchool/features/school/presentation/views/parent/parent_profile_view.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_classes_view.dart';
 import 'package:MySchool/features/time_table/presentation/views/time_table.dart';
 import 'package:flutter/material.dart';
-import 'package:MySchool/features/school/presentation/views/student/student_dashboard.dart';
+import 'package:MySchool/features/dashbord/presentation/views/student_dashboard.dart';
 import 'package:MySchool/features/auth/presentation/views/login_view.dart';
 import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/notifications/presentation/views/notifications_view.dart';

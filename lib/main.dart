@@ -1,7 +1,8 @@
 import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit.dart';
-import 'package:MySchool/features/auth/presentation/cubit/current_user_cubit.dart';
+import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/login/login_cubit.dart';
+import 'package:MySchool/features/dashbord/presentation/cubits/dashboard_cubit.dart';
 import 'package:MySchool/features/grades/presentation/cubits/grade_cubit.dart';
 import 'package:MySchool/features/notifications/presentation/cubit/notification_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/children_cubit.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => getIt<CurrentUserCubit>()),
+        BlocProvider(create: (_) => getIt<UserCubit>()),
+        BlocProvider(create: (_) => getIt<DashboardCubit>()),
         BlocProvider(create: (_) => ProfileCubit()),
         BlocProvider(create: (_) => getIt<IntroCubit>()),
         BlocProvider<LoginCubit>(create: (_) => getIt<LoginCubit>()),

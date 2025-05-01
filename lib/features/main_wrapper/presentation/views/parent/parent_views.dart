@@ -1,4 +1,4 @@
-import 'package:MySchool/features/school/presentation/views/parent/parent_dashboard_view.dart';
+import 'package:MySchool/features/dashbord/presentation/views/parent_dashboard_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../school/presentation/views/parent/parent_chat_view.dart';

@@ -1,5 +1,3 @@
-// di.dart
-import 'package:MySchool/core/app_session.dart';
 import 'package:MySchool/core/network/dio_client.dart';
 import 'package:MySchool/core/presentation/intro/data/data_sources/intro_local_data_source_impl.dart';
 import 'package:MySchool/core/presentation/intro/data/repositories/intro_repository_impl.dart';
@@ -10,8 +8,9 @@ import 'package:MySchool/features/auth/data/repositories/auth_repository_impl.da
 import 'package:MySchool/features/auth/domain/repositories/check_first_time_repository.dart';
 import 'package:MySchool/features/auth/domain/usecases/change_password_usecase.dart';
 import 'package:MySchool/features/auth/domain/usecases/login_usecase.dart';
-import 'package:MySchool/features/auth/presentation/cubit/current_user_cubit.dart';
+import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/login/login_cubit.dart';
+import 'package:MySchool/features/dashbord/presentation/cubits/dashboard_cubit.dart';
 import 'package:MySchool/features/grades/data/data_sources/results_api.dart';
 import 'package:MySchool/features/grades/data/repositories/grades_repository.dart';
 import 'package:MySchool/features/grades/domain/usecases/get_grades_use_case.dart';
@@ -45,7 +44,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
 final getIt = GetIt.instance;
-final user = AppSession.currentUser;
 Future<void> setupDependencies() async {
   // Initialize SharedPreferences
   final prefs = await SharedPreferences.getInstance();
@@ -53,6 +51,7 @@ Future<void> setupDependencies() async {
 
   // Initialize Dio clients
   getIt.registerSingleton<Dio>(DioClient.create());
+  getIt.registerFactory(() => DashboardCubit());
   
   // Register other dependencies...
   await _setupIntroDependencies();
@@ -87,7 +86,8 @@ Future<void> _setupAuthDependencies() async {
     checkFirstLoginUseCase: getIt<CheckFirstLoginUseCase>(),
   ));
   
-  getIt.registerFactory(() => CurrentUserCubit());
+  getIt.registerLazySingleton<UserCubit>(() => UserCubit());
+
 }
 
 Future<void> _setupUserDependencies() async {
