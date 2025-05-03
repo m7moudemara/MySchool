@@ -1,4 +1,3 @@
-import 'package:MySchool/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
@@ -189,8 +188,14 @@ class _StudentChatViewState extends State<StudentChatView> {
                       onSubmitted: (_) => _sendMessage(),
                     ),
                   ),
-                  Icon(Icons.camera_alt_rounded),
-                  Icon(Icons.mic_rounded),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.camera_alt_rounded),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.mic_rounded),
+                  ),
                   
                 ],
               ),
