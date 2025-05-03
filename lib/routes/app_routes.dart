@@ -7,7 +7,7 @@ import 'package:MySchool/features/homework/presentation/views/home_work.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_attendance.dart';
 import 'package:MySchool/features/homework/presentation/views/teacher_homework_view.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_result_view.dart';
-import 'package:MySchool/features/school/presentation/views/parent/parent_chat_view.dart';
+import 'package:MySchool/features/school/presentation/views/parent/parent_messages_view.dart';
 import 'package:MySchool/features/dashbord/presentation/views/parent_dashboard_view.dart';
 import 'package:MySchool/features/school/presentation/views/parent/parent_group_chat_view.dart';
 import 'package:MySchool/features/school/presentation/views/parent/parent_profile_view.dart';
@@ -22,7 +22,7 @@ import 'package:MySchool/features/homework/presentation/views/homework_view.dart
 import 'package:MySchool/features/grades/presentation/views/grades_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/attendance_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/student_chat_view.dart';
-import 'package:MySchool/features/school/presentation/views/student/student_conversation_view.dart';
+import 'package:MySchool/features/school/presentation/views/student/student_messages_view.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/main_wrapper_view.dart';
 
 class AppRoutes {
@@ -46,14 +46,13 @@ class AppRoutes {
     CreateNewPasswordView.id: (context) => CreateNewPasswordView(),
     NotificationsView.id: (context) => NotificationsView(),
     HomeworkView.id: (context) => HomeworkView(),
-
     AttendanceView.id: (context) => AttendanceView(),
     StudentChatView.id: (context) => StudentChatView(),
-    StudentConversationView.id: (context) => StudentConversationView(),
+    StudentMessagesView.id: (context) => StudentMessagesView(),
     TimeTableView.id: (context) => TimeTableView(),
     TeacherClassesView.id: (context) => TeacherClassesView(),
     ParentDashboardView.id: (context) => ParentDashboardView(),
-    ParentChatView.id: (context) => ParentChatView(),
+    ParentMessagesView.id: (context) => ParentMessagesView(),
     ParentGroupChatView.id: (context) => ParentGroupChatView(),
     ParentProfileView.id: (context) => const ParentProfileView(),
     MyChildrenView.id: (context) => MyChildrenView(),

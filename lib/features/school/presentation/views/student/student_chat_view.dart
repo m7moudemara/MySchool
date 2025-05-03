@@ -119,76 +119,84 @@ class _StudentChatViewState extends State<StudentChatView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'School Chat',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: AppColors.kPrimaryColor,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _fetchMessages,
-              child:
-                  _isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : ListView.builder(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        itemCount: _messages.length,
-                        itemBuilder: (context, index) {
-                          final message = _messages[index];
-                          return ChatBubble(
-                            text: message['text'],
-                            isMe: message['sender']['id'] == 'current_user',
-                            time: message['timestamp'],
-                          );
-                        },
-                      ),
+        leading: Icon(Icons.person),
+        title: Column(
+          children: [
+            const Text(
+              'name',
+              style: TextStyle(color: Colors.black),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 32),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(
-                      hintText: "Type Message",
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: TextButton(
-                          onPressed: _sendMessage,
-                          child: Text(
-                            'Send',
-                            style: TextStyle(
-                              color: const Color(0xFF041571),
-                              fontSize: 13,
-                              fontFamily: 'Maison Neue',
-                              fontWeight: FontWeight.w700,
-                            ),
+            const Text(
+              'Active Now',
+              style: TextStyle(color: Colors.black45,fontSize: 12),
+            ),
+          ],
+        ),
+        backgroundColor:Colors.white, 
+      ),
+      body: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: _fetchMessages,
+                child:
+                    _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          itemCount: _messages.length,
+                          itemBuilder: (context, index) {
+                            final message = _messages[index];
+                            return ChatBubble(
+                              text: message['text'],
+                              isMe: message['sender']['id'] == 'current_user',
+                              time: message['timestamp'],
+                            );
+                          },
+                        ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 32),
+              child: Row(
+                children: [
+                  Icon(Icons.attachment),
+                  Expanded(
+                    child: TextField(
+                      controller: _messageController,
+                      decoration: InputDecoration(
+                        hintText: "Write your message",
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: TextButton(
+                            onPressed: _sendMessage,
+                            child: Icon(Icons.send_outlined)
                           ),
                         ),
+                        hintStyle: TextStyle(
+                          color: const Color(0xF9414141),
+                          fontSize: 13,
+                          fontFamily: 'Maison Neue',
+                          fontWeight: FontWeight.w700,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        contentPadding: const EdgeInsets.only(left: 31),
                       ),
-                      hintStyle: TextStyle(
-                        color: const Color(0xF9414141),
-                        fontSize: 13,
-                        fontFamily: 'Maison Neue',
-                        fontWeight: FontWeight.w700,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      contentPadding: const EdgeInsets.only(left: 31),
+                      onSubmitted: (_) => _sendMessage(),
                     ),
-                    onSubmitted: (_) => _sendMessage(),
                   ),
-                ),
-              ],
+                  Icon(Icons.camera_alt_rounded),
+                  Icon(Icons.mic_rounded),
+                  
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -217,7 +225,7 @@ class ChatBubble extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(
-          color: isMe ? AppColors.kSecondaryColor : AppColors.kDarkColor,
+          color: isMe ? Color(0xff0C46C4) :Color(0xffF2F7FB),
           borderRadius:
               isMe
                   ? const BorderRadius.only(

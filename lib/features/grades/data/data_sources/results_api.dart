@@ -2,13 +2,11 @@ import 'package:MySchool/features/grades/data/models/subject_model.dart';
 import 'package:dio/dio.dart';
 import '../../../school/data/models/result_model.dart';
 
-import 'package:dio/dio.dart';
-import '../../../school/data/models/result_model.dart';
 
 class ResultsApi {
   final Dio _dio;
 
-  ResultsApi(this._dio); // تم تعديل الكود لتمرير Dio عبر constructor
+  ResultsApi(this._dio); 
 
   Future<List<ResultModel>> fetchResults() async {
     try {
@@ -31,7 +29,7 @@ class GradesRemoteDataSource implements IGradesRemoteDataSource {
 
   @override
   Future<Subject> getGrades(String studentId) async {
-    final response = await dio.get('https://6800fd7981c7e9fbcc411c4e.mockapi.io/result/$studentId'); // تأكد من إضافة الـ URL كامل هنا
+    final response = await dio.get('https://6800fd7981c7e9fbcc411c4e.mockapi.io/result/$studentId'); 
     return Subject.fromJson(response.data);
   }
 }

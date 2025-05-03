@@ -2,11 +2,9 @@ import 'package:MySchool/features/grades/data/models/pdf_generator.dart';
 import 'package:MySchool/features/grades/presentation/cubits/grade_cubit.dart';
 import 'package:MySchool/features/grades/presentation/widgets/grade_circle_widget.dart';
 import 'package:MySchool/features/grades/presentation/widgets/subject_list_widget.dart';
-import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/core/utils/grade_utils.dart';
 
 class GradesView extends StatelessWidget {
   const GradesView({super.key});
