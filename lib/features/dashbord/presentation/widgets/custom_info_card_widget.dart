@@ -22,7 +22,7 @@ class CustomInfoCardWidget extends StatelessWidget {
             color: const Color(0xFF0C46C4),
             borderRadius: BorderRadius.circular(8),
           ),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
