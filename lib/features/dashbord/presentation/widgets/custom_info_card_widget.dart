@@ -59,7 +59,10 @@ class CustomInfoCardWidget extends StatelessWidget {
                 ],
               ),
                if (user.type == UserType.student)
-                _buildAttendanceSection(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: _buildAttendanceSection(),
+                ),
                 
               
             ],

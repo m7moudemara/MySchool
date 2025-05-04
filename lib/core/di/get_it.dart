@@ -3,7 +3,7 @@ import 'package:MySchool/core/presentation/intro/data/data_sources/intro_local_d
 import 'package:MySchool/core/presentation/intro/data/repositories/intro_repository_impl.dart';
 import 'package:MySchool/core/presentation/intro/domain/usecases/mark_intro_seen_usecase.dart';
 import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit.dart';
-import 'package:MySchool/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
+import 'package:MySchool/features/auth/data/data_sources/mock/mock_auth_remote_data_source_impl.dart';
 import 'package:MySchool/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MySchool/features/auth/domain/repositories/check_first_time_repository.dart';
 import 'package:MySchool/features/auth/domain/usecases/change_password_usecase.dart';
@@ -74,8 +74,8 @@ Future<void> _setupIntroDependencies() async {
 }
 
 Future<void> _setupAuthDependencies() async {
-  getIt.registerFactory(() => AuthRemoteDataSourceImpl(getIt<Dio>()));
-  getIt.registerFactory(() => AuthRepositoryImpl(getIt<AuthRemoteDataSourceImpl>()));
+  getIt.registerFactory(() => MockAuthRemoteDataSourceImpl(getIt<Dio>()));
+  getIt.registerFactory(() => AuthRepositoryImpl(getIt<MockAuthRemoteDataSourceImpl>()));
   
   getIt.registerFactory(() => LoginUseCase(getIt<AuthRepositoryImpl>()));
   getIt.registerFactory(() => CheckFirstLoginUseCase(getIt<AuthRepositoryImpl>()));

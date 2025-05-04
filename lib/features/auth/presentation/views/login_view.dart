@@ -1,4 +1,5 @@
 import 'package:MySchool/core/di/get_it.dart';
+import 'package:MySchool/core/widgets/custom_snack_bar.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/main_wrapper/domain/entities/user_role.dart';
 import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
@@ -54,16 +55,13 @@ class _LoginViewState extends State<LoginView> {
       body: SafeArea(
         child: BlocConsumer<LoginCubit, LoginState>(
           listener: (context, state) {
+            //! Error State
             if (state is LoginFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.error),
-                  backgroundColor: Colors.red,
-                ),
-              );
+               CustomSnackBar.show(context, state.error ,type: SnackBarType.error);
             }
-
+            //! Success
             if (state is LoginSuccess) {
+              CustomSnackBar.show(context, "Login Success" ,type: SnackBarType.success);
               final userJson = state.userJson;
               final role = parseUserRole(userJson['role']);
               late IUser user;
@@ -86,6 +84,7 @@ class _LoginViewState extends State<LoginView> {
               );
             }
             if (state is FirstLoginRequired) {
+              CustomSnackBar.show(context, "Plesse Change Your Password Now !" ,type: SnackBarType.warning);
               Navigator.pushReplacementNamed(
                 context,
                 CreateNewPasswordView.id,
