@@ -1,6 +1,9 @@
 import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/core/widgets/custom_snack_bar.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
+import 'package:MySchool/features/auth/presentation/widgets/hello_text.dart';
+import 'package:MySchool/features/auth/presentation/widgets/login_form.dart';
+import 'package:MySchool/features/auth/presentation/widgets/login_image.dart';
 import 'package:MySchool/features/main_wrapper/domain/entities/user_role.dart';
 import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/school/data/models/parent_model.dart';
@@ -11,9 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:MySchool/routes/app_routes.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/main_wrapper_view.dart';
-import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/features/auth/presentation/widgets/custom_button.dart';
-import 'package:MySchool/features/school/presentation/widgets/custom_text_field.dart';
+
 
 import '../cubit/login/login_cubit.dart';
 import '../cubit/login/login_state.dart';
@@ -125,106 +126,6 @@ class _LoginViewState extends State<LoginView> {
             );
           },
         ),
-      ),
-    );
-  }
-}
-
-class LoginImage extends StatelessWidget {
-  const LoginImage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Image(
-      image: AssetImage("assets/login_image.png"),
-      height: 238,
-      width: 238,
-    );
-  }
-}
-
-class HelloText extends StatelessWidget {
-  const HelloText({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      "Hello, Login to continue using our app",
-      style: TextStyle(color: AppColors.kSecondaryColor, fontSize: 16),
-    );
-  }
-}
-
-class LoginForm extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController idNumberController;
-  final TextEditingController passwordController;
-  final bool isLoading;
-  final bool obscurePassword;
-  final VoidCallback onPasswordVisibilityToggle;
-  final Future<void> Function() onSubmit;
-
-  const LoginForm({
-    super.key,
-    required this.formKey,
-    required this.idNumberController,
-    required this.passwordController,
-    required this.isLoading,
-    required this.obscurePassword,
-    required this.onPasswordVisibilityToggle,
-    required this.onSubmit,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Column(
-        children: [
-          //! ID Number
-          CustomTextFormField(
-            controller: idNumberController,
-            hintText: "ID Number",
-            // keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your ID number';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 15),
-          //! Password
-          CustomTextFormField(
-            hintText: "Password",
-            controller: passwordController,
-            obscureText: obscurePassword,
-
-            suffixIcon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: IconButton(
-                icon: Icon(
-                  obscurePassword
-                      ? Icons.visibility_off_outlined
-                      : Icons.visibility_outlined,
-                ),
-                onPressed: onPasswordVisibilityToggle,
-              ),
-            ),
-
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your password';
-              }
-              if (value.length < 6) {
-                return 'Password must be at least 6 characters';
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: 10),
-          CustomButton(onTap: onSubmit, text: "Login", isLoading: isLoading),
-        ],
       ),
     );
   }
