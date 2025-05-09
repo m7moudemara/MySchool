@@ -1,40 +1,52 @@
-import 'package:MySchool/core/di/get_it.dart';
-import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
-import 'package:MySchool/features/school/presentation/views/student/student_chat_view.dart';
+import 'package:MySchool/features/chat/data/models/chat_contact.dart';
+import 'package:MySchool/features/chat/data/models/chat_message.dart';
+import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
 import 'package:flutter/material.dart';
 
-class TeacherMessagesView extends StatefulWidget {
-  static final String id = "/TeacherConversationView";
+class CommonChatLayout extends StatefulWidget {
+  final String title;
+  final List<String> tabs;
+  final List<ChatMessage> Function() getMessages;
+  final List<ChatContact> Function() getContacts;
+  final void Function(BuildContext context, ChatContact contact) onChatTap;
 
-  const TeacherMessagesView({super.key});
+  const CommonChatLayout({
+    super.key,
+    required this.title,
+    required this.tabs,
+    required this.getMessages,
+    required this.getContacts,
+    required this.onChatTap,
+  });
 
   @override
-  State<TeacherMessagesView> createState() => _TeacherMessagesViewState();
+  State<CommonChatLayout> createState() => _CommonChatLayoutState();
 }
 
-class _TeacherMessagesViewState extends State<TeacherMessagesView> {
+class _CommonChatLayoutState extends State<CommonChatLayout> {
   int _selectedTab = 0;
-  final _students = [];
-  final _parents = [];
-  bool _hasMessages = false;
 
   @override
   Widget build(BuildContext context) {
+    final messages = widget.getMessages();
+    final contacts = widget.getContacts();
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: Container(
-            decoration: BoxDecoration(
+            margin: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
               color: Color(0xffE8E8E8),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.search),
+            child: const Icon(Icons.search, color: Colors.black),
           ),
-          title: const Text(
-            'Chat',
-            style: TextStyle(
+          title: Text(
+            widget.title,
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 24,
               fontFamily: 'Maison Neue',
@@ -42,69 +54,51 @@ class _TeacherMessagesViewState extends State<TeacherMessagesView> {
             ),
           ),
           centerTitle: true,
-          actions: [
-            CircleAvatar(
-              child: Image.network(getIt<UserCubit>().state?.imageUrl ?? ''),
+        ),
+        body: Column(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Color(0xFFEEEEEE), width: 1),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(widget.tabs.length, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: TextButton(
+                      onPressed: () => setState(() => _selectedTab = index),
+                      child: Text(
+                        widget.tabs[index],
+                        style: TextStyle(
+                          color: _selectedTab == index
+                              ? const Color(0xFF0C46C4)
+                              : Colors.black,
+                          fontSize: 18,
+                          fontFamily: 'Lexend',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+            Expanded(
+              child: _selectedTab == 0
+                  ? _buildMessagesContent(messages)
+                  : _buildContactsContent(contacts),
             ),
           ],
         ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Color(0xFFEEEEEE), width: 1),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildTabButton('Students', 0),
-                    const SizedBox(width: 40),
-                    _buildTabButton('Parents', 1),
-                  ],
-                ),
-              ),
-              Expanded(
-                child:
-                    _selectedTab == 0
-                        ? _buildMessagesContent()
-                        : _buildTeachersContent(),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
 
-  Widget _buildTabButton(String text, int tabIndex) {
-    return TextButton(
-      onPressed: () {
-        setState(() {
-          _selectedTab = tabIndex;
-        });
-      },
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color:
-              _selectedTab == tabIndex ? const Color(0xFF0C46C4) : Colors.black,
-          fontSize: 18,
-          fontFamily: 'Lexend',
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMessagesContent() {
-    if (!_hasMessages) {
+  Widget _buildMessagesContent(List<ChatMessage> messages) {
+    if (messages.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -132,7 +126,7 @@ class _TeacherMessagesViewState extends State<TeacherMessagesView> {
               ),
               const SizedBox(height: 15),
               const Text(
-                'No chat in your inbox yet.\nStart chatting with your Teachers',
+                'No chat in your inbox yet.\n Start chatting with your Teachers',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFF868686),
@@ -149,12 +143,12 @@ class _TeacherMessagesViewState extends State<TeacherMessagesView> {
 
     return ListView.builder(
       padding: const EdgeInsets.only(top: 10),
-      itemCount: _students.length,
+      itemCount: messages.length,
       itemBuilder: (context, index) {
-        final message = _students[index];
+        final message = messages[index];
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(message.image ?? ''),
+            backgroundImage: NetworkImage(message.image),
             radius: 22,
           ),
           title: Text(
@@ -182,43 +176,39 @@ class _TeacherMessagesViewState extends State<TeacherMessagesView> {
             ],
           ),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => StudentChatView()),
-            );
+            Navigator.pushNamed(context, ChatView.id);
           },
         );
       },
     );
   }
 
-  Widget _buildTeachersContent() {
+  Widget _buildContactsContent(List<ChatContact> contacts) {
     return ListView.builder(
       padding: const EdgeInsets.only(top: 10),
-      itemCount: _parents.length,
+      itemCount: contacts.length,
       itemBuilder: (context, index) {
-        final teacher = _parents[index];
+        final contact = contacts[index];
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(teacher.image),
+            backgroundImage: NetworkImage(contact.image),
             radius: 22,
           ),
           title: Text(
-            teacher.name,
+            contact.name,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
-          subtitle: Text(teacher.subject),
+          subtitle: Text(contact.subtitle),
           trailing: Text(
-            teacher.lastSeen,
+            contact.status,
             style: TextStyle(
-              color:
-                  teacher.lastSeen == 'Online'
-                      ? Colors.green
-                      : Colors.grey[600],
+              color: contact.status == 'Online'
+                  ? Colors.green
+                  : Colors.grey[600],
               fontSize: 12,
             ),
           ),
-          onTap: () {},
+          onTap: () => widget.onChatTap(context, contact),
         );
       },
     );

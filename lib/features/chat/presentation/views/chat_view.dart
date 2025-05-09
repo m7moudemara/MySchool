@@ -1,15 +1,17 @@
+import 'package:MySchool/core/widgets/custom_snack_bar.dart';
+import 'package:MySchool/features/chat/presentation/widgets/chat_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
-class StudentChatView extends StatefulWidget {
-  const StudentChatView({super.key});
-  static String id = "/StudentChatView";
+class ChatView extends StatefulWidget {
+  const ChatView({super.key});
+  static String id = "/ChatView";
 
   @override
-  State<StudentChatView> createState() => _StudentChatViewState();
+  State<ChatView> createState() => _ChatViewState();
 }
 
-class _StudentChatViewState extends State<StudentChatView> {
+class _ChatViewState extends State<ChatView> {
   final TextEditingController _messageController = TextEditingController();
   final Dio _dio = Dio();
   bool _isLoading = false;
@@ -23,14 +25,14 @@ class _StudentChatViewState extends State<StudentChatView> {
     _setupDio();
     _fetchMessages();
   }
-
+  //! Dio Request
   void _setupDio() {
     _dio.options.baseUrl =
         'https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool';
     _dio.options.connectTimeout = const Duration(seconds: 5);
     _dio.options.receiveTimeout = const Duration(seconds: 3);
   }
-
+  //! Get All Messages
   Future<void> _fetchMessages() async {
     setState(() => _isLoading = true);
     try {
@@ -51,12 +53,12 @@ class _StudentChatViewState extends State<StudentChatView> {
         });
       }
     } on DioException catch (e) {
-      _showErrorSnackbar('Failed to load messages: ${e.message}');
+      CustomSnackBar.show(context,e.message.toString() , type: SnackBarType.error);
     } finally {
       setState(() => _isLoading = false);
     }
   }
-
+  //! Send Messages
   Future<void> _sendMessage() async {
     final text = _messageController.text.trim();
     if (text.isEmpty) return;
@@ -99,7 +101,7 @@ class _StudentChatViewState extends State<StudentChatView> {
         });
       }
     } on DioException catch (e) {
-      _showErrorSnackbar('Failed to send message: ${e.message}');
+      CustomSnackBar.show(context,e.message.toString() , type: SnackBarType.error);
       setState(() {
         _messages.removeWhere((m) => m['id'].toString().startsWith('temp_'));
       });
@@ -108,11 +110,6 @@ class _StudentChatViewState extends State<StudentChatView> {
     }
   }
 
-  void _showErrorSnackbar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.red),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -204,84 +201,5 @@ class _StudentChatViewState extends State<StudentChatView> {
         ),
       ),
     );
-  }
-}
-
-class ChatBubble extends StatelessWidget {
-  final String text;
-  final bool isMe;
-  final String? time;
-
-  const ChatBubble({
-    super.key,
-    required this.text,
-    required this.isMe,
-    this.time,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.7,
-        ),
-        padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        decoration: BoxDecoration(
-          color: isMe ? Color(0xff0C46C4) :Color(0xffF2F7FB),
-          borderRadius:
-              isMe
-                  ? const BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
-                  )
-                  : const BorderRadius.only(
-                    topRight: Radius.circular(16),
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
-                  ),
-        ),
-        child: Column(
-          crossAxisAlignment:
-              isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: [
-            Text(
-              text,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontFamily: 'Maison Neue',
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            if (time != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  _formatTime(time!),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 9,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  String _formatTime(String isoTime) {
-    try {
-      final dateTime = DateTime.parse(isoTime);
-      return '${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
-    } catch (e) {
-      return isoTime;
-    }
   }
 }
