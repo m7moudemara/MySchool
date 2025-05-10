@@ -26,7 +26,18 @@ class HelpCenterView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: const EdgeInsets.all( 18.0),
+              child: Text('  Contact',style: TextStyle(
+color: Colors.black.withValues(alpha: 153),
+fontSize: 16.35,
+fontFamily: 'Poppins',
+fontWeight: FontWeight.w600,
+height: 1.20,
+),),
+            ),
             _buildContactItem(
               image: 'assets/wtsUp.png',
               title: "WhatsApp",

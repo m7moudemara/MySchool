@@ -1,6 +1,6 @@
 import 'package:MySchool/features/grades/data/models/subject_model.dart';
 import 'package:dio/dio.dart';
-import '../../../school/data/models/result_model.dart';
+
 
 
 class ResultsApi {
@@ -8,11 +8,11 @@ class ResultsApi {
 
   ResultsApi(this._dio); 
 
-  Future<List<ResultModel>> fetchResults() async {
+  Future<List<Subject>> fetchResults() async {
     try {
       final response = await _dio.get('https://6800fd7981c7e9fbcc411c4e.mockapi.io/result');
       List data = response.data;
-      return data.map((item) => ResultModel.fromJson(item)).toList();
+      return data.map((item) => Subject.fromJson(item)).toList();
     } catch (e) {
       throw Exception("Failed to load results: $e");
     }

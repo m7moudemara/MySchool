@@ -1,4 +1,4 @@
-import 'package:MySchool/features/school/data/config/academics_items_config.dart';
+import 'package:MySchool/features/dashbord/presentation/widgets/academics_items_config.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:flutter/material.dart';
 

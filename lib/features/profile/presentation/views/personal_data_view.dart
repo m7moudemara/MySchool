@@ -21,16 +21,16 @@ class PersonalDataView extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "Personal Data",
-         textAlign: TextAlign.center,
-style: TextStyle(
-color:  Color(0xFF225FFF),
-fontSize: 24,
-fontFamily: 'League Spartan',
-fontWeight: FontWeight.w600,
-),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Color(0xFF225FFF),
+            fontSize: 24,
+            fontFamily: 'League Spartan',
+            fontWeight: FontWeight.w600,
+          ),
         ),
         backgroundColor: Colors.transparent,
-        
+
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
@@ -38,31 +38,45 @@ fontWeight: FontWeight.w600,
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
-             CircleAvatar( radius: 60 ,backgroundImage: NetworkImage(user.imageUrl)),
-              Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Text(
+            CircleAvatar(
+              radius: 60,
+              backgroundImage: NetworkImage(user.imageUrl),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 7.0),
+              child: Text(
+                user.name,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontFamily: 'League Spartan',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Text(
               user.name,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 24,
+                color: const Color(0xA8868686),
+                fontSize: 14.33,
                 fontFamily: 'League Spartan',
                 fontWeight: FontWeight.w600,
               ),
             ),
-          ),
-          Text(
-    user.name,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-        color: const Color(0xA8868686),
-        fontSize: 14.33,
-        fontFamily: 'League Spartan',
-        fontWeight: FontWeight.w600,
-    ),
-),
-
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 18.0),
+              child: Text(
+                '  Account Details',
+                style: TextStyle(
+                  color: const Color(0xC61F1F1F),
+                  fontSize: 17.45,
+                  fontFamily: 'League Spartan',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
             _buildDataItem("ID", user.id),
             _buildDataItem("Birthday", "Not set"),
             _buildDataItem("Gender", "Not set"),
@@ -95,7 +109,7 @@ fontWeight: FontWeight.w600,
               color: Colors.black54,
             ),
           ),
-          
+
           Text(
             value,
             style: const TextStyle(fontSize: 14, color: Colors.black87),
