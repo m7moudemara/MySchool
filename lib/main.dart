@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:MySchool/routes/app_routes.dart';
-import 'package:MySchool/features/school/presentation/cubits/profile_cubit/profile_cubit.dart';
+import 'package:MySchool/features/profile/presentation/cubits/profile_cubit/profile_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
