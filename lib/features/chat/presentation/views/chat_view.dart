@@ -25,6 +25,7 @@ class _ChatViewState extends State<ChatView> {
     _setupDio();
     _fetchMessages();
   }
+
   //! Dio Request
   void _setupDio() {
     _dio.options.baseUrl =
@@ -32,6 +33,7 @@ class _ChatViewState extends State<ChatView> {
     _dio.options.connectTimeout = const Duration(seconds: 5);
     _dio.options.receiveTimeout = const Duration(seconds: 3);
   }
+
   //! Get All Messages
   Future<void> _fetchMessages() async {
     setState(() => _isLoading = true);
@@ -53,11 +55,16 @@ class _ChatViewState extends State<ChatView> {
         });
       }
     } on DioException catch (e) {
-      CustomSnackBar.show(context,e.message.toString() , type: SnackBarType.error);
+      CustomSnackBar.show(
+        context,
+        e.message.toString(),
+        type: SnackBarType.error,
+      );
     } finally {
       setState(() => _isLoading = false);
     }
   }
+
   //! Send Messages
   Future<void> _sendMessage() async {
     final text = _messageController.text.trim();
@@ -101,7 +108,11 @@ class _ChatViewState extends State<ChatView> {
         });
       }
     } on DioException catch (e) {
-      CustomSnackBar.show(context,e.message.toString() , type: SnackBarType.error);
+      CustomSnackBar.show(
+        context,
+        e.message.toString(),
+        type: SnackBarType.error,
+      );
       setState(() {
         _messages.removeWhere((m) => m['id'].toString().startsWith('temp_'));
       });
@@ -110,25 +121,20 @@ class _ChatViewState extends State<ChatView> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.person),
         title: Column(
           children: [
+            const Text('name', style: TextStyle(color: Colors.black)),
             const Text(
-              'name',
-              style: TextStyle(color: Colors.black),
-            ),
-            const Text(
-              'Active Now',
-              style: TextStyle(color: Colors.black45,fontSize: 12),
+              'state',
+              style: TextStyle(color: Colors.black45, fontSize: 12),
             ),
           ],
         ),
-        backgroundColor:Colors.white, 
+        backgroundColor: Colors.white,
       ),
       body: Container(
         color: Colors.white,
@@ -168,7 +174,7 @@ class _ChatViewState extends State<ChatView> {
                           padding: const EdgeInsets.only(right: 20.0),
                           child: TextButton(
                             onPressed: _sendMessage,
-                            child: Icon(Icons.send_outlined)
+                            child: Icon(Icons.send_outlined),
                           ),
                         ),
                         hintStyle: TextStyle(
@@ -193,7 +199,6 @@ class _ChatViewState extends State<ChatView> {
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(Icons.mic_rounded),
                   ),
-                  
                 ],
               ),
             ),
