@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/notifications/presentation/views/notifications_view.dart';
-import 'package:MySchool/features/school/data/config/academics_items_config.dart';
+import 'package:MySchool/features/dashbord/presentation/widgets/academics_items_config.dart';
 import 'package:MySchool/features/school/data/models/parent_model.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/dashbord/presentation/widgets/custom_info_card_widget.dart';
