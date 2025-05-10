@@ -1,16 +1,18 @@
+import 'package:MySchool/core/di/get_it.dart';
+import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/chat/data/models/chat_contact.dart';
 import 'package:MySchool/features/chat/data/models/chat_message.dart';
 import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
 import 'package:flutter/material.dart';
 
-class CommonChatLayout extends StatefulWidget {
+class ChatLayout extends StatefulWidget {
   final String title;
   final List<String> tabs;
   final List<ChatMessage> Function() getMessages;
   final List<ChatContact> Function() getContacts;
   final void Function(BuildContext context, ChatContact contact) onChatTap;
 
-  const CommonChatLayout({
+  const ChatLayout({
     super.key,
     required this.title,
     required this.tabs,
@@ -20,10 +22,11 @@ class CommonChatLayout extends StatefulWidget {
   });
 
   @override
-  State<CommonChatLayout> createState() => _CommonChatLayoutState();
+  State<ChatLayout> createState() => _ChatLayoutState();
 }
 
-class _CommonChatLayoutState extends State<CommonChatLayout> {
+class _ChatLayoutState extends State<ChatLayout> {
+   late final user = getIt<UserCubit>().state;
   int _selectedTab = 0;
 
   @override
@@ -53,15 +56,15 @@ class _CommonChatLayoutState extends State<CommonChatLayout> {
               fontWeight: FontWeight.w700,
             ),
           ),
+          actions: [
+          CircleAvatar( radius: 25 ,backgroundImage: NetworkImage(user?.imageUrl ?? 'assets/Mini Avatar.png')),
+          ],
           centerTitle: true,
         ),
         body: Column(
           children: [
             Container(
               decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Color(0xFFEEEEEE), width: 1),
-                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

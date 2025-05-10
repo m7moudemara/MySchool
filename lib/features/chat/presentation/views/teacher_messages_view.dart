@@ -1,7 +1,7 @@
 import 'package:MySchool/features/chat/data/models/chat_contact.dart';
 import 'package:MySchool/features/chat/data/models/chat_message.dart';
 import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
-import 'package:MySchool/features/chat/presentation/widgets/common_chat_layout.dart';
+import 'package:MySchool/features/chat/presentation/widgets/chat_layout.dart';
 import 'package:flutter/material.dart';
 
 class TeacherMessagesView extends StatelessWidget {
@@ -11,7 +11,7 @@ class TeacherMessagesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CommonChatLayout(
+    return ChatLayout(
       title: 'Chat',
       tabs: ['Messages', 'People'],
       getMessages: () => [
