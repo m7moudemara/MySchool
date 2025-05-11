@@ -11,8 +11,7 @@ class TeacherClassesView extends StatefulWidget {
 }
 
 class _TeacherClassesViewState extends State<TeacherClassesView> {
-  int _currentView = 0; // 0 for grid view, 1 for list view
-  int _currentClassIndex = 0; // 0 for all, 1-4 for classes
+  int _currentClassIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,27 +28,11 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
           ),
         ),
       ),
-      body: _currentView == 0 ? _buildGridView() : _buildListView(),
+      body:  _buildListView(),
     );
   }
 
-  Widget _buildGridView() {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-      ),
-      itemCount: classes.length,
-      itemBuilder: (context, index) {
-        final item = classes[index];
-        return _buildAcademicsItem(context, item, index + 1);
-      },
-    );
-  }
+
 
   Widget _buildListView() {
     return Padding(
@@ -70,43 +53,6 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildAcademicsItem(BuildContext context, Classes item, int classIndex) {
-    return Column(
-      children: [
-        InkWell(
-          onTap: () {
-        setState(() {
-          _currentView = 1;
-          _currentClassIndex = classIndex;
-        });
-          },
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            width: 100,
-            height: 100,
-            decoration: ShapeDecoration(
-              color: const Color(0xffE9F9F5),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: Image.asset(item.iconPath, height: 60, width: 60),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          item.title,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 15,
-            fontFamily: 'Open Sans',
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ],
     );
   }
 
@@ -311,37 +257,3 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
   }
 }
 
-final List<Classes> classes = [
-  Classes(
-    title: 'Class 1',
-    iconPath: 'assets/classes.png',
-    routeName: '',
-  ),
-  Classes(
-    title: 'Class 2',
-    iconPath: 'assets/classes.png',
-    routeName: '',
-  ),
-  Classes(
-    title: 'Class 3',
-    iconPath: 'assets/classes.png',
-    routeName: '',
-  ),
-  Classes(
-    title: 'Class 4',
-    iconPath: 'assets/classes.png',
-    routeName: '',
-  ),
-];
-
-class Classes {
-  final String title;
-  final String iconPath;
-  final String routeName;
-
-  Classes({
-    required this.title,
-    required this.iconPath,
-    required this.routeName,
-  });
-}

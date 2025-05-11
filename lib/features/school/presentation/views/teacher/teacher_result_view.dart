@@ -46,14 +46,14 @@ class _TeacherResultViewState extends State<TeacherResultView> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-    'Result',
-    style: TextStyle(
-        color: Colors.black,
-        fontSize: 20,
-        fontFamily: 'Inter',
-        fontWeight: FontWeight.w700,
-    ),
-),
+          'Result',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -65,7 +65,7 @@ class _TeacherResultViewState extends State<TeacherResultView> {
             child: Column(
               children: [
                 // Back button
-           
+
                 // Class, term and subject selection row
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -341,7 +341,6 @@ class _TeacherResultViewState extends State<TeacherResultView> {
     final gradeController = TextEditingController(
       text: student.grade.toString(),
     );
-   
 
     showDialog(
       context: context,
@@ -351,9 +350,7 @@ class _TeacherResultViewState extends State<TeacherResultView> {
             content: TextField(
               controller: gradeController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(  
-                border: OutlineInputBorder(),
-              ),
+              decoration: InputDecoration(border: OutlineInputBorder()),
             ),
 
             actions: [

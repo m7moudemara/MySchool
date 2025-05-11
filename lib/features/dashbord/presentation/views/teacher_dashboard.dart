@@ -7,7 +7,7 @@ import 'package:MySchool/features/dashbord/presentation/widgets/academics_items_
 import 'package:MySchool/features/school/data/models/teacher_model.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/dashbord/presentation/widgets/custom_info_card_widget.dart';
-import 'package:MySchool/features/school/presentation/widgets/custom_academics_widget.dart';
+import 'package:MySchool/features/dashbord/presentation/widgets/custom_academics_widget.dart';
 
 class TeacherDashBoard extends StatelessWidget {
   static String id = '/TeacherDashBoard';

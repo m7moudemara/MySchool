@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class TeacherAttendanceView extends StatefulWidget {
   const TeacherAttendanceView({super.key});
   static const String id = "/TeacherAttendanceView";
-  
+
   @override
   State<TeacherAttendanceView> createState() => _TeacherAttendanceViewState();
 }
@@ -14,10 +14,10 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
   String selectedClass = 'Class 1';
   String selectedSubject = 'English';
   DateTime selectedDate = DateTime.now();
-  
+
   // Dropdown options
   final List<String> classes = ['Class 1', 'Class 2', 'Class 3', 'Class 4'];
-  
+
   // Students list and attendance status
   List<StudentAttendance> students = [
     StudentAttendance(name: 'Mohamed Ashraf'),
@@ -39,31 +39,29 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-    'Attendance',
-    style: TextStyle(
-        color: Colors.black,
-        fontSize: 20,
-        fontFamily: 'Inter',
-        fontWeight: FontWeight.w700,
-    ),
-),
+          'Attendance',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
             width: screenWidth,
-            constraints: BoxConstraints(
-              minHeight: screenHeight,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
+            constraints: BoxConstraints(minHeight: screenHeight),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             child: Column(
               children: [
-         
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -85,21 +83,22 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
                             DropdownButton<String>(
                               isExpanded: true,
                               value: selectedClass,
-                              items: classes.map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: TextStyle(
-                                      color: Color(0xFF2F394B),
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.04,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
+                              items:
+                                  classes.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(
+                                          color: Color(0xFF2F394B),
+                                          fontSize: 14,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 0.04,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
                               onChanged: (newValue) {
                                 setState(() {
                                   selectedClass = newValue!;
@@ -110,9 +109,7 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
                           ],
                         ),
                       ),
-                      
-            
-                      
+
                       // Date selection
                       Flexible(
                         child: Column(
@@ -140,7 +137,7 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
                                       color: const Color(0xFFB6C8E2),
                                     ),
                                     borderRadius: BorderRadius.circular(3),
-                                ),
+                                  ),
                                 ),
                                 child: Center(
                                   child: Text(
@@ -162,7 +159,7 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
                     ],
                   ),
                 ),
-                
+
                 // Students table header
                 Container(
                   width: double.infinity,
@@ -205,7 +202,7 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
                     ],
                   ),
                 ),
-                
+
                 // Students list
                 ListView.builder(
                   shrinkWrap: true,
@@ -215,7 +212,7 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
                     return _buildStudentAttendanceItem(students[index]);
                   },
                 ),
-                
+
                 // Save button
                 Padding(
                   padding: const EdgeInsets.all(16),
@@ -249,7 +246,7 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
 
   Widget _buildStudentAttendanceItem(StudentAttendance student) {
     final isPresent = student.isPresent ?? false;
-    
+
     return Container(
       width: double.infinity,
       height: 56,
@@ -271,7 +268,7 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
               ),
             ),
           ),
-          
+
           // Present checkbox
           GestureDetector(
             onTap: () {
@@ -288,17 +285,19 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
                     width: 1,
-                    color: isPresent ? Color(0xFF0C46C4) : const Color(0xFFB6C8E2),
+                    color:
+                        isPresent ? Color(0xFF0C46C4) : const Color(0xFFB6C8E2),
                   ),
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              child: isPresent
-                  ? Icon(Icons.check, size: 14, color: Colors.white)
-                  : null,
+              child:
+                  isPresent
+                      ? Icon(Icons.check, size: 14, color: Colors.white)
+                      : null,
             ),
           ),
-          
+
           // Absent checkbox
           GestureDetector(
             onTap: () {
@@ -315,14 +314,18 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
                     width: 1,
-                    color: !isPresent ? Color(0xFFF76565) : const Color(0xFFB6C8E2),
+                    color:
+                        !isPresent
+                            ? Color(0xFFF76565)
+                            : const Color(0xFFB6C8E2),
                   ),
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              child: !isPresent
-                  ? Icon(Icons.close, size: 14, color: Colors.white)
-                  : null,
+              child:
+                  !isPresent
+                      ? Icon(Icons.close, size: 14, color: Colors.white)
+                      : null,
             ),
           ),
         ],
@@ -347,34 +350,37 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
   void _saveAttendance() {
     final presentCount = students.where((s) => s.isPresent ?? false).length;
     final absentCount = students.length - presentCount;
-    
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Confirm Attendance'),
-        content: Text('Attendance will be saved for:\n'
-                     'Class: $selectedClass\n'
-                     'Subject: $selectedSubject\n'
-                     'Date: ${DateFormat('d/M/y').format(selectedDate)}\n\n'
-                     'Present: $presentCount\n'
-                     'Absent: $absentCount'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+      builder:
+          (context) => AlertDialog(
+            title: Text('Confirm Attendance'),
+            content: Text(
+              'Attendance will be saved for:\n'
+              'Class: $selectedClass\n'
+              'Subject: $selectedSubject\n'
+              'Date: ${DateFormat('d/M/y').format(selectedDate)}\n\n'
+              'Present: $presentCount\n'
+              'Absent: $absentCount',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Attendance saved successfully')),
+                  );
+                  // Here you would add code to save to database
+                },
+                child: Text('Confirm'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Attendance saved successfully')),
-              );
-              // Here you would add code to save to database
-            },
-            child: Text('Confirm'),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -382,9 +388,6 @@ class _TeacherAttendanceViewState extends State<TeacherAttendanceView> {
 class StudentAttendance {
   String name;
   bool? isPresent;
-  
-  StudentAttendance({
-    required this.name,
-    this.isPresent,
-  });
+
+  StudentAttendance({required this.name, this.isPresent});
 }
