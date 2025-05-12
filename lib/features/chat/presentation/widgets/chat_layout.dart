@@ -26,14 +26,8 @@ class ChatLayout extends StatefulWidget {
 }
 
 class _ChatLayoutState extends State<ChatLayout> {
-   late final user = getIt<UserCubit>().state;
+  late final user = getIt<UserCubit>().state;
   int _selectedTab = 0;
-<<<<<<< HEAD:lib/features/school/presentation/views/student/student_messages_view.dart
-  final _messages = [];
-  final _teachers = [];
-  bool _hasMessages = false;
-=======
->>>>>>> f9b13da594b71e8c788f151a75fd8cd75746711b:lib/features/chat/presentation/widgets/chat_layout.dart
 
   @override
   Widget build(BuildContext context) {
@@ -63,15 +57,19 @@ class _ChatLayoutState extends State<ChatLayout> {
             ),
           ),
           actions: [
-          CircleAvatar( radius: 25 ,backgroundImage: NetworkImage(user?.imageUrl ?? 'assets/Mini Avatar.png')),
+            CircleAvatar(
+              radius: 25,
+              backgroundImage: NetworkImage(
+                user?.imageUrl ?? 'assets/Mini Avatar.png',
+              ),
+            ),
           ],
           centerTitle: true,
         ),
         body: Column(
           children: [
             Container(
-              decoration: const BoxDecoration(
-              ),
+              decoration: const BoxDecoration(),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(widget.tabs.length, (index) {
@@ -82,9 +80,10 @@ class _ChatLayoutState extends State<ChatLayout> {
                       child: Text(
                         widget.tabs[index],
                         style: TextStyle(
-                          color: _selectedTab == index
-                              ? const Color(0xFF0C46C4)
-                              : Colors.black,
+                          color:
+                              _selectedTab == index
+                                  ? const Color(0xFF0C46C4)
+                                  : Colors.black,
                           fontSize: 18,
                           fontFamily: 'Lexend',
                           fontWeight: FontWeight.w500,
@@ -96,55 +95,13 @@ class _ChatLayoutState extends State<ChatLayout> {
               ),
             ),
             Expanded(
-              child: _selectedTab == 0
-                  ? _buildMessagesContent(messages)
-                  : _buildContactsContent(contacts),
+              child:
+                  _selectedTab == 0
+                      ? _buildMessagesContent(messages)
+                      : _buildContactsContent(contacts),
             ),
           ],
         ),
-<<<<<<< HEAD:lib/features/school/presentation/views/student/student_messages_view.dart
-        body: SafeArea(
-          child: Column(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const StudentChatView();
-                      },
-                    ),
-                  );
-                },
-                icon: Icon(Icons.add),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Color(0xFFEEEEEE), width: 1),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildTabButton('Message', 0),
-                    const SizedBox(width: 40),
-                    _buildTabButton('Teachers', 1),
-                  ],
-                ),
-              ),
-              Expanded(
-                child:
-                    _selectedTab == 0
-                        ? _buildMessagesContent()
-                        : _buildTeachersContent(),
-              ),
-            ],
-          ),
-        ),
-=======
->>>>>>> f9b13da594b71e8c788f151a75fd8cd75746711b:lib/features/chat/presentation/widgets/chat_layout.dart
       ),
     );
   }
@@ -254,9 +211,8 @@ class _ChatLayoutState extends State<ChatLayout> {
           trailing: Text(
             contact.status,
             style: TextStyle(
-              color: contact.status == 'Online'
-                  ? Colors.green
-                  : Colors.grey[600],
+              color:
+                  contact.status == 'Online' ? Colors.green : Colors.grey[600],
               fontSize: 12,
             ),
           ),
