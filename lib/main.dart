@@ -1,3 +1,4 @@
+import 'package:MySchool/core/databases/cache/cache_helper.dart';
 import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
@@ -14,11 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:MySchool/routes/app_routes.dart';
-import 'package:MySchool/features/school/presentation/cubits/profile_cubit/profile_cubit.dart';
+import 'package:MySchool/features/profile/presentation/cubits/profile_cubit/profile_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupDependencies();
+  CacheHelper().init();
   runApp(MyApp());
 }
 

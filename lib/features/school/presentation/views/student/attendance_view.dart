@@ -1,6 +1,6 @@
 import 'package:MySchool/core/constants.dart';
 import 'package:MySchool/core/utils/size_config.dart';
-import 'package:MySchool/features/school/presentation/widgets/progress_circle.dart';
+import 'package:MySchool/features/attendace/progress_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

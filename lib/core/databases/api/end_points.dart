@@ -14,7 +14,10 @@ class ApiKey {
   static String status = "status";
   static String errMessage = "message";
   static String token = "token";
+  static String expiration = "expiration";
   static String isFirstLogin = "must_change_password";
+  static String role = "role";
+
   static String id = "id";
 
   static String name = "name";
