@@ -14,9 +14,7 @@ class StudentMessagesView extends StatefulWidget {
 
 class _StudentMessagesViewState extends State<StudentMessagesView> {
   int _selectedTab = 0;
-  final _messages = [
-  
-  ];
+  final _messages = [];
   final _teachers = [];
   bool _hasMessages = false;
 
@@ -53,7 +51,19 @@ class _StudentMessagesViewState extends State<StudentMessagesView> {
         body: SafeArea(
           child: Column(
             children: [
-          
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const StudentChatView();
+                      },
+                    ),
+                  );
+                },
+                icon: Icon(Icons.add),
+              ),
               Container(
                 decoration: const BoxDecoration(
                   border: Border(
