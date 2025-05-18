@@ -1,4 +1,3 @@
-import 'package:MySchool/core/databases/cache/cache_helper.dart';
 import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
@@ -20,7 +19,6 @@ import 'package:MySchool/features/profile/presentation/cubits/profile_cubit/prof
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupDependencies();
-  CacheHelper().init();
   runApp(MyApp());
 }
 
