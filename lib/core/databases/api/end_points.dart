@@ -1,5 +1,5 @@
 class EndPoints {
-  static const String baserUrl = "http://my-shcool.runasp.net";
+  static const String baseUrl = "http://my-shcool.runasp.net";
   //! Login EndPoints 
   static const String login = "/api/auth/login";
   static const String changePassword = "/api/auth/change-password";
