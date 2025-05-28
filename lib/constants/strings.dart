@@ -1,0 +1,1 @@
+const String baseUrl = 'http://my-shcool.runasp.net';
