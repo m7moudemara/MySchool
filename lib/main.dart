@@ -1,3 +1,4 @@
+import 'package:MySchool/controllers/shared_pref_controller.dart';
 import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
@@ -15,6 +16,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:MySchool/routes/app_routes.dart';
 import 'package:MySchool/features/profile/presentation/cubits/profile_cubit/profile_cubit.dart';
+
+SharedPrefController sharedPrefController = SharedPrefController();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -30,7 +30,6 @@ class CustomInfoCardWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ListTile(
-                      
                       title: Text(
                       user.name,
                     style: TextStyle(
@@ -51,7 +50,8 @@ class CustomInfoCardWidget extends StatelessWidget {
                         ),
                         trailing:CircleAvatar(
                                 radius: 30,
-                                backgroundImage: NetworkImage(user.imageUrl),
+                                backgroundImage: AssetImage('assets/profile.png'),
+                                // backgroundImage: NetworkImage(user.imageUrl),
                                 backgroundColor: Colors.grey[300],
                               ) ,
                     ),

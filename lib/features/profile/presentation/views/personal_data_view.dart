@@ -40,7 +40,8 @@ class PersonalDataView extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 60,
-              backgroundImage: NetworkImage(user.imageUrl),
+              backgroundImage: AssetImage('assets/profile.png'),
+              // backgroundImage: NetworkImage(user.imageUrl),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 7.0),
@@ -77,7 +78,7 @@ class PersonalDataView extends StatelessWidget {
                 ),
               ),
             ),
-            _buildDataItem("ID", user.id),
+            _buildDataItem("ID", user.id.toString()),
             _buildDataItem("Birthday", "Not set"),
             _buildDataItem("Gender", "Not set"),
             _buildDataItem("Address", "Not set"),

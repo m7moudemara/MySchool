@@ -2,7 +2,8 @@ import 'package:MySchool/features/school/domain/entities/user_type.dart';
 
 class Student extends IUser {
   @override
-  final String id;
+  final int id;
+  // final String id;
   @override
   final String name;
   @override
