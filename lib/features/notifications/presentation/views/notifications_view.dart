@@ -44,12 +44,14 @@ class _NotificationsViewState extends State<NotificationsView> {
               itemCount: state.notifications.length,
               itemBuilder: (context, index) {
                 final n = state.notifications[index];
+                DateTime utcTime1 = DateTime.parse(n.date.toString());
+                DateTime localTime = utcTime1.add(Duration(hours: 3));
                 return ListTile(
                   leading: Image.asset("assets/notificationLocalIcon.png"),
                   title: Text(n.title),
                   subtitle: Text(n.message),
                   trailing: Text(
-                    '${n.date.hour}:${n.date.minute}',
+                    '${localTime.hour}:${localTime.minute}',
                     style: const TextStyle(fontSize: 12),
                   ),
                 );

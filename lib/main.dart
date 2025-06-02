@@ -21,6 +21,7 @@ import 'package:MySchool/features/profile/presentation/cubits/profile_cubit/prof
 
 import 'features/school/presentation/views/student/data/attendence_cubit.dart';
 
+
 SharedPrefController sharedPrefController = SharedPrefController();
 
 void main() async {

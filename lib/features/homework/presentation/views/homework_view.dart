@@ -48,10 +48,27 @@ class _HomeworkViewState extends State<HomeworkView> {
               itemCount: state.homeWorks.length,
               itemBuilder: (context, index) {
                 final homework = state.homeWorks[index];
-                final dueDate = timeago.format(
-                  homework.dueDate,
-                  locale: 'en_short',
-                );
+
+                // final eventTime = DateTime.parse(
+                //   homework.dueDate.toString(),
+                // ); // your future event
+                // final now = DateTime.now();
+
+                // final difference = eventTime.difference(now);
+
+                // if (difference.isNegative) {
+                //   print("The event has already passed.");
+                // } else {
+                //   final days = difference.inDays;
+                //   final hours = difference.inHours % 24;
+                //   final minutes = difference.inMinutes % 60;
+
+                //   print(
+                //     "Time left: $days days, $hours hours, $minutes minutes",
+                //   );
+                // }
+                DateTime eventTime = DateTime.parse(homework.dueDate);
+                final dueDate = timeago.format(eventTime, locale: 'en_short');
                 return homework.is_deadline_passed
                     ? SizedBox.shrink()
                     : _buildHomeworkItem(

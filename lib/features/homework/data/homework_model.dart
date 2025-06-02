@@ -2,7 +2,7 @@ class HomeworkModel {
   final int id;
   final String title;
   final String description;
-  final DateTime dueDate;
+  final String dueDate;
   final bool is_deadline_passed ;
 
   HomeworkModel( {required this.is_deadline_passed,
@@ -19,17 +19,18 @@ class HomeworkModel {
       id: map['id'] as int,
       title: map['subject']['name'] as String,
       description: map['subject']['description'] as String,
-      dueDate: DateTime.parse(map['deadline'] as String),
+      dueDate: map['deadline'],
+      // dueDate: DateTime.parse(map['deadline'] as String),
     );
   }
 
   // Method to convert HomeworkModel to a map
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'title': title,
-      'description': description,
-      'dueDate': dueDate.toIso8601String(),
-    };
-  }
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'id': id,
+  //     'title': title,
+  //     'description': description,
+  //     'dueDate': dueDate.toIso8601String(),
+  //   };
+  // }
 }

@@ -25,6 +25,7 @@ dependencies:
   rflutter_alert: ^2.0.7
   shared_preferences: ^2.2.2
   timeago: ^3.7.1
+  timezone: ^0.10.1
 
 dev_dependencies:
   flutter_lints: ^5.0.0
