@@ -19,14 +19,14 @@ class LoginCubit extends Cubit<LoginState> {
     final result = await loginUseCase(idNumber: idNumber, password: password);
 
     if (result['success'] == true) {
-      final userId = result['user']['id'].toString();
       // final isFirstLogin = await checkFirstLoginUseCase(userId);
       final isFirstLogin = result['user']['must_change_password'];
 
+      print(result);
       if (isFirstLogin) {
         emit(FirstLoginRequired(userJson: result['user']));
       } else {
-        emit(LoginSuccess(userJson: result['user']));
+        emit(LoginSuccess(userJson: result['user'], dashboardJson: result['dashboard']));
       }
     } else {
       emit(LoginFailure(error: result['message']));

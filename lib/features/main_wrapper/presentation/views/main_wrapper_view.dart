@@ -37,7 +37,8 @@ class _MainWrapperViewState extends State<MainWrapperView> {
       case UserType.teacher:
         //! If User is Teacher
         return getTeacherViews();
-      case UserType.parent:
+      case UserType.guardian:
+      // case UserType.parent:
         //! If User is Parent
         return getParentViews();
       default:

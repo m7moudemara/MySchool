@@ -8,10 +8,16 @@ class Teacher extends IUser {
   final String name;
   @override
   final String imageUrl;
-@override
+  @override
   final bool isFirstLogin;
   final String department;
-
+  final String className;
+  final String user_name;
+  final String date_of_birth;
+  final String gender;
+  final String address;
+  @override
+  final String phone;
   @override
   String get displayInfo => department;
   @override
@@ -19,11 +25,16 @@ class Teacher extends IUser {
   @override
   final int? absentDays = null;
 
-
   @override
   UserType get type => UserType.teacher;
 
-  Teacher( {
+  Teacher(
+    this.className,
+    this.user_name,
+    this.date_of_birth,
+    this.gender,
+    this.address,
+    this.phone, {
     required this.isFirstLogin,
     required this.id,
     required this.name,
@@ -33,11 +44,65 @@ class Teacher extends IUser {
 
   factory Teacher.fromJson(Map<String, dynamic> json) {
     return Teacher(
-      isFirstLogin : json['isFirstLogin'] ?? true,
+      json['className'] ?? '',
+      json['user_name'] ?? '',
+      json['date_of_birth'] ?? '',
+      json['gender'] ?? '',
+      json['address'] ?? '',
+      json['phone_number'] ?? '',
+      isFirstLogin: json['isFirstLogin'] ?? true,
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
       department: json['department'] ?? '',
+    );
+  }
+}
+
+class TeacherDashboardUser implements DashboardUser {
+  @override
+  final int id;
+  @override
+  final String name;
+  @override
+  final String address;
+  @override
+  final String date_of_birth;
+  @override
+  final String gender;
+  @override
+  final String last_active_time;
+  @override
+  final String phone_number;
+  @override
+  final int total_notifications; // Placeholder for total notifications
+  @override
+  String get className => ''; // Teachers may not have a class name
+  @override
+  final int totalDays = 0; // Placeholder for total days
+  @override
+  final int absentDays = 0; // Placeholder for absent days
+  TeacherDashboardUser({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.date_of_birth,
+    required this.gender,
+    required this.last_active_time,
+    required this.phone_number,
+    required this.total_notifications,
+  });
+
+  factory TeacherDashboardUser.fromJson(Map<String, dynamic> json) {
+    return TeacherDashboardUser(
+      id: json['account']['id'] ?? 0,
+      name: json['account']['name'] ?? '',
+      address: json['account']['address'] ?? '',
+      date_of_birth: json['account']['date_of_birth'] ?? false,
+      gender: json['account']['gender'] ?? '',
+      last_active_time: json['account']['last_active_time'] ?? '',
+      phone_number: json['account']['phone_number'] ?? '',
+      total_notifications: json['account']['total_notifications'] ?? 0,
     );
   }
 }

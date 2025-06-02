@@ -28,11 +28,9 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
           ),
         ),
       ),
-      body:  _buildListView(),
+      body: _buildListView(),
     );
   }
-
-
 
   Widget _buildListView() {
     return Padding(
@@ -42,15 +40,13 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
           // Search Bar
           _buildSearchBar(context),
           const SizedBox(height: 24),
-          
+
           // Class Filter Tabs with horizontal scrolling
           _buildClassFilterTabs(),
           const SizedBox(height: 16),
-          
+
           // Students List based on selected tab
-          Expanded(
-            child: _buildStudentsList(context),
-          ),
+          Expanded(child: _buildStudentsList(context)),
         ],
       ),
     );
@@ -91,7 +87,7 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
 
   Widget _buildClassFilterTabs() {
     final tabs = ['All Students', 'Class 1', 'Class 2', 'Class 3', 'Class 4'];
-    
+
     return SizedBox(
       height: 40,
       child: ListView(
@@ -107,7 +103,10 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
                     _currentClassIndex = index;
                   });
                 },
-                child: _buildFilterTab(tabs[index], isActive: _currentClassIndex == index),
+                child: _buildFilterTab(
+                  tabs[index],
+                  isActive: _currentClassIndex == index,
+                ),
               ),
             );
           }),
@@ -159,9 +158,10 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
       displayedStudents = allStudents;
     } else {
       // Specific class (1-4)
-      displayedStudents = allStudents.where((student) {
-        return student['class'] == 'Class $_currentClassIndex';
-      }).toList();
+      displayedStudents =
+          allStudents.where((student) {
+            return student['class'] == 'Class $_currentClassIndex';
+          }).toList();
     }
 
     return ListView.separated(
@@ -177,16 +177,21 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
     );
   }
 
-  Widget _buildStudentCard(BuildContext context, String name, String className) {
+  Widget _buildStudentCard(
+    BuildContext context,
+    String name,
+    String className,
+  ) {
     return InkWell(
-      onTap: (){
-         Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ClassesinfoView(
-            studentName: name,
-            studentClass: className,
-          )));
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) =>
+                    ClassesinfoView(studentName: name, studentClass: className),
+          ),
+        );
       },
       child: Container(
         width: double.infinity,
@@ -214,13 +219,14 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(16),
                   image: const DecorationImage(
-                    image: NetworkImage("https://placehold.co/48x54"),
+                    image: AssetImage('assets/profile.png'),
+                    // image: NetworkImage("https://placehold.co/48x54"),
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
               const SizedBox(width: 14),
-              
+
               // Student Info
               Expanded(
                 child: Column(
@@ -256,4 +262,3 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
     );
   }
 }
-

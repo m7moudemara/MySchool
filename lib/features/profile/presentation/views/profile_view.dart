@@ -58,7 +58,11 @@ class _ProfileViewState extends State<ProfileView> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          CircleAvatar( radius: 60 ,backgroundImage: NetworkImage(user.imageUrl)),
+          CircleAvatar(
+            radius: 60,
+            backgroundImage: AssetImage('assets/profile.png'),
+          ),
+          // CircleAvatar( radius: 60 ,backgroundImage: NetworkImage(user.imageUrl)),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Text(
@@ -89,16 +93,15 @@ class _ProfileViewState extends State<ProfileView> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-         
-          _buildInfoItem("assets/person.png", "Personal data", (){
+          _buildInfoItem("assets/person.png", "Personal data", () {
             Navigator.pushNamed(context, PersonalDataView.id);
           }),
           SizedBox(height: 16),
-          _buildInfoItem("assets/setting.png", "Settings", (){
+          _buildInfoItem("assets/setting.png", "Settings", () {
             Navigator.pushNamed(context, SettingsView.id);
           }),
           SizedBox(height: 16),
-          _buildInfoItem("assets/help.png", "Help center", (){
+          _buildInfoItem("assets/help.png", "Help center", () {
             Navigator.pushNamed(context, HelpCenterView.id);
           }),
           SizedBox(height: 16),
@@ -113,18 +116,17 @@ class _ProfileViewState extends State<ProfileView> {
   Widget _buildInfoItem(String image, String value, VoidCallback? onTap) {
     return ListTile(
       onTap: onTap,
-      leading:
-            Image.asset(image, width: 29, height: 29),
-          title:     Text(
-            value,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 12,
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          trailing: Icon(Icons.arrow_forward_ios,color: Color(0xffCAD6FF),),
+      leading: Image.asset(image, width: 29, height: 29),
+      title: Text(
+        value,
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 12,
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      trailing: Icon(Icons.arrow_forward_ios, color: Color(0xffCAD6FF)),
     );
   }
 }

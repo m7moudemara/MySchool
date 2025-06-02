@@ -56,25 +56,38 @@ class _LoginViewState extends State<LoginView> {
           listener: (context, state) {
             //! Error State
             if (state is LoginFailure) {
-               CustomSnackBar.show(context, state.error ,type: SnackBarType.error);
+              CustomSnackBar.show(
+                context,
+                state.error,
+                type: SnackBarType.error,
+              );
             }
             //! Success
             if (state is LoginSuccess) {
-              CustomSnackBar.show(context, "Login Success" ,type: SnackBarType.success);
+              CustomSnackBar.show(
+                context,
+                "Login Success",
+                type: SnackBarType.success,
+              );
               final userJson = state.userJson;
+              final dashboardJson = state.dashboardJson;
               final role = parseUserRole(userJson['role']);
               late IUser user;
+              late DashboardUser dashboardUser;
 
               if (role == UserRole.student) {
                 user = Student.fromJson(userJson);
+                dashboardUser = StudentDashboardUser.fromJson(dashboardJson);
               } else if (role == UserRole.teacher) {
                 user = Teacher.fromJson(userJson);
+                dashboardUser = TeacherDashboardUser.fromJson(dashboardJson);
               } else {
                 user = Parent.fromJson(userJson);
+                dashboardUser = ParentDashboardUser.fromJson(dashboardJson);
               }
 
               getIt<UserCubit>().setUser(user);
-
+              getIt<DashboardUserCubit>().setDashboardUser(dashboardUser);
               Navigator.pushReplacementNamed(
                 context,
                 MainWrapperView.id,
@@ -82,7 +95,11 @@ class _LoginViewState extends State<LoginView> {
               );
             }
             if (state is FirstLoginRequired) {
-              CustomSnackBar.show(context, "Plesse Change Your Password Now !" ,type: SnackBarType.warning);
+              CustomSnackBar.show(
+                context,
+                "Please Change Your Password Now !",
+                type: SnackBarType.warning,
+              );
               Navigator.pushReplacementNamed(
                 context,
                 CreateNewPasswordView.id,
@@ -127,8 +144,6 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
-
 
 // import 'dart:convert';
 

@@ -10,14 +10,11 @@ class CustomInfoCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  SizeConfig.init(context);
+    SizeConfig.init(context);
     return Column(
       children: [
         Container(
           width: double.infinity,
-     
-        
-        
           decoration: BoxDecoration(
             color: const Color(0xFF0C46C4),
             borderRadius: BorderRadius.circular(8),
@@ -31,81 +28,83 @@ class CustomInfoCardWidget extends StatelessWidget {
                   Expanded(
                     child: ListTile(
                       title: Text(
-                      user.name,
-                    style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w700,
-                            ),
-                    ),
-                    subtitle: Text(
-                          user.displayInfo,
-                       style: TextStyle(
-                            color: Colors.white.withValues(alpha: 204),
-                            fontSize: 12,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            ),
+                        user.name,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w700,
                         ),
-                        trailing:CircleAvatar(
-                                radius: 30,
-                                backgroundImage: AssetImage('assets/profile.png'),
-                                // backgroundImage: NetworkImage(user.imageUrl),
-                                backgroundColor: Colors.grey[300],
-                              ) ,
+                      ),
+                      subtitle: Text(
+                        user.displayInfo,
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 204),
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      trailing: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: AssetImage('assets/profile.png'),
+                        // backgroundImage: NetworkImage(user.imageUrl),
+                        backgroundColor: Colors.grey[300],
+                      ),
                     ),
                   ),
                 ],
               ),
-               if (user.type == UserType.student)
+              if (user.type == UserType.student)
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: _buildAttendanceSection(),
                 ),
-                
-              
             ],
           ),
         ),
-         if (user.type == UserType.student)
-                SizedBox()
-              else if (user.type == UserType.teacher)
-                 Padding(
-                   padding: const EdgeInsets.symmetric(vertical: 5.0),
-                   child: Row(
-                    
-                     children: [  
-                      Expanded(
-                        child: Container(
-                            width: 168,
-                            height: 34,
-                            decoration: ShapeDecoration(
-                                color: const Color(0x990C46C4),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                            ),
-                        ),
+        if (user.type == UserType.student)
+          SizedBox()
+        else if (user.type == UserType.teacher)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    width: 168,
+                    height: 34,
+                    decoration: ShapeDecoration(
+                      color: const Color(0x990C46C4),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                       SizedBox(width: 5,),
-                       Expanded(
-                         child: Container(
-                             width: 168,
-                             height: 34,
-                             decoration: ShapeDecoration(
-                                 color: const Color(0x990C46C4),
-                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                             ),
-                         ),
-                       ),
-                     ],
-                   ),
-                 )
-              else if (user.type == UserType.parent)
-                _buildPaymentProgressSection()
-              // else if (user.type == UserType.admin)
-              // _buildAttendanceSection()
-              else
-                const SizedBox(),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 5),
+                Expanded(
+                  child: Container(
+                    width: 168,
+                    height: 34,
+                    decoration: ShapeDecoration(
+                      color: const Color(0x990C46C4),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else if (user.type == UserType.guardian)
+          // else if (user.type == UserType.parent)
+          _buildPaymentProgressSection()
+        // else if (user.type == UserType.admin)
+        // _buildAttendanceSection()
+        else
+          const SizedBox(),
       ],
     );
   }
@@ -122,7 +121,7 @@ class CustomInfoCardWidget extends StatelessWidget {
               style: TextStyle(fontSize: 12, color: Colors.white),
             ),
             Text(
-              '${((user.totalDays! - user.absentDays!) / user.totalDays! * 100).toStringAsFixed(1)}%',
+              '${(((user.totalDays ?? 0) - (user.absentDays ?? 0)) / ((user.totalDays ?? 1)) * 100).toStringAsFixed(1)}%',
               style: const TextStyle(color: Colors.white, fontSize: 14),
             ),
           ],
@@ -183,11 +182,11 @@ Widget _buildPaymentProgressSection() {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
     child: Container(
-         decoration: BoxDecoration(
-              color: const Color(0xFF0C46C4),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: const EdgeInsets.all(16),  
+      decoration: BoxDecoration(
+        color: const Color(0xFF0C46C4),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [

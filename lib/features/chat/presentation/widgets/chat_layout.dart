@@ -59,9 +59,10 @@ class _ChatLayoutState extends State<ChatLayout> {
           actions: [
             CircleAvatar(
               radius: 25,
-              backgroundImage: NetworkImage(
-                user?.imageUrl ?? 'assets/Mini Avatar.png',
-              ),
+              backgroundImage: AssetImage('assets/profile.png'),
+              //               backgroundImage: NetworkImage(
+              //   user?.imageUrl ?? 'assets/Mini Avatar.png',
+              // ),
             ),
           ],
           centerTitle: true,
@@ -157,7 +158,8 @@ class _ChatLayoutState extends State<ChatLayout> {
         final message = messages[index];
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(message.image),
+            backgroundImage: AssetImage('assets/profile.png'),
+            // backgroundImage: NetworkImage(message.image),
             radius: 22,
           ),
           title: Text(
@@ -200,7 +202,8 @@ class _ChatLayoutState extends State<ChatLayout> {
         final contact = contacts[index];
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(contact.image),
+            backgroundImage: AssetImage('assets/profile.png'),
+            // backgroundImage: NetworkImage(contact.image),
             radius: 22,
           ),
           title: Text(

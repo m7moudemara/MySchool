@@ -41,7 +41,8 @@ class NotificationRemoteDataSourceImpl implements NotificationRemoteDataSource {
           date: DateTime.now().subtract(const Duration(hours: 2)),
         ),
       ];
-    } else if (usertype == UserType.parent) {
+    } else if (usertype == UserType.guardian) {
+    // } else if (usertype == UserType.parent) {
       return [
         NotificationModel(
           id: '1',

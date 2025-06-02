@@ -57,7 +57,7 @@ class PersonalDataView extends StatelessWidget {
               ),
             ),
             Text(
-              user.name,
+              user.user_name,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: const Color(0xA8868686),
@@ -78,12 +78,13 @@ class PersonalDataView extends StatelessWidget {
                 ),
               ),
             ),
-            _buildDataItem("ID", user.id.toString()),
-            _buildDataItem("Birthday", "Not set"),
-            _buildDataItem("Gender", "Not set"),
-            _buildDataItem("Address", "Not set"),
-            _buildDataItem("Phone", "Not set"),
-            _buildDataItem("Email", "Not set"),
+            _buildDataItem("ID", user.user_name),
+            _buildDataItem("Birthday", user.date_of_birth),
+            _buildDataItem("Class", 'Class ${user.className}'),
+            _buildDataItem("Gender", user.gender),
+            _buildDataItem("Address", user.address),
+            _buildDataItem("Phone", user.phone),
+            // _buildDataItem("Email", "Not set"),
           ],
         ),
       ),
@@ -111,9 +112,12 @@ class PersonalDataView extends StatelessWidget {
             ),
           ),
 
-          Text(
-            value,
-            style: const TextStyle(fontSize: 14, color: Colors.black87),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: const TextStyle(fontSize: 14, color: Colors.black87),
+            ),
           ),
         ],
       ),

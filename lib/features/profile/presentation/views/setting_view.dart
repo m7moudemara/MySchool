@@ -12,7 +12,7 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  bool _notificationsEnabled = true; 
+  bool _notificationsEnabled = true;
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +20,16 @@ class _SettingsViewState extends State<SettingsView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings",   textAlign: TextAlign.center,
-style: TextStyle(
-color:  Color(0xFF225FFF),
-fontSize: 24,
-fontFamily: 'League Spartan',
-fontWeight: FontWeight.w600,
-),),
+        title: const Text(
+          "Settings",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Color(0xFF225FFF),
+            fontSize: 24,
+            fontFamily: 'League Spartan',
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -50,46 +53,37 @@ fontWeight: FontWeight.w600,
     return ListTile(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       leading: Image.asset('assets/notification.png'),
-      title: 
-        const Text(
-          "Notification Setting",
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        ),
-        trailing: 
-        Switch(
-          activeTrackColor:  Color(0xff2260FF),
-          value: _notificationsEnabled,
-          onChanged: (val) {
-            setState(() {
-              _notificationsEnabled = val;
-            });
-          },
-        ),
+      title: const Text(
+        "Notification Setting",
+        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+      ),
+      trailing: Switch(
+        activeTrackColor: Color(0xff2260FF),
+        value: _notificationsEnabled,
+        onChanged: (val) {
+          setState(() {
+            _notificationsEnabled = val;
+          });
+        },
+      ),
     );
   }
 
   Widget _buildChangePasswordButton(int? userId) {
-  // Widget _buildChangePasswordButton(String? userId) {
+    // Widget _buildChangePasswordButton(String? userId) {
     return ListTile(
-      
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       onTap: () {
         Navigator.pushNamed(
           context,
           CreateNewPasswordView.id,
-          arguments: {
-            'userId': userId,
-            'isFirstLogin': false,
-          },
+          arguments: {'userId': userId, 'isFirstLogin': false},
         );
       },
       leading: Image.asset("assets/newPassword.png", width: 29, height: 29),
       title: const Text(
         "Change Password",
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-        ),
+        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
       ),
       trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xff2260FF)),
     );

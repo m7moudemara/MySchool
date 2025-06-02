@@ -1,12 +1,82 @@
+import 'dart:convert';
+
 import 'package:MySchool/core/constants.dart';
 import 'package:MySchool/core/utils/size_config.dart';
 import 'package:MySchool/features/attendace/progress_circle.dart';
+import 'package:MySchool/features/school/domain/entities/user_type.dart';
+import 'package:MySchool/features/school/presentation/views/student/attendance_student/attendance_student_cubit.dart';
+import 'package:MySchool/features/school/presentation/views/student/data/attendance_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import '../../../../../constants/strings.dart';
+import '../../../../../core/di/get_it.dart';
+import '../../../../../main.dart';
+import '../../../../auth/presentation/cubit/user_cubit.dart';
+import 'data/attendence_cubit.dart';
 
-class AttendanceView extends StatelessWidget {
+class AttendanceView extends StatefulWidget {
   const AttendanceView({super.key});
   static final String id = '/AttendanceView';
+
+  @override
+  State<AttendanceView> createState() => _AttendanceViewState();
+}
+
+class _AttendanceViewState extends State<AttendanceView> {
+  late final user = getIt<UserCubit>().state;
+
+  double get absentPercentage {
+    final absentDays = user?.absentDays ?? 0.0;
+    final totalDays = user?.totalDays ?? 0.0;
+    return (totalDays > 0) ? (absentDays / totalDays) * 100 : 0.0;
+  }
+
+  double get progressDays => 100 - absentPercentage;
+
+  fetchAttendanceData() async {
+    String? token = await sharedPrefController.getToken();
+    final url = Uri.parse('$baseUrl/api/attendances');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': ' Bearer $token',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      final returnedData = jsonDecode(response.body)['data'];
+      return returnedData;
+    } else {
+      // Handle error response
+      throw Exception(
+        'Failed to fetch attendance data: ${response.statusCode}',
+      );
+    }
+  }
+
+  Future<void> _fetchAttendanceData() async {
+    try {
+      final data = await fetchAttendanceData();
+      List<AttendanceModel> attendanceData =
+          data
+              .map<AttendanceModel>((item) => AttendanceModel.fromJson(item))
+              .toList();
+      BlocProvider.of<AttendanceStudentCubit>(
+        context,
+      ).setAttendanceData(attendanceData);
+    } catch (e) {
+      print('Error fetching attendance data: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAttendanceData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,44 +91,89 @@ class AttendanceView extends StatelessWidget {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const CalendarWidget(),
-
-              const SizedBox(height: 24),
-              Card(
-                elevation: 8.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                shadowColor: Colors.black,
-                child: ProgressCircle(
-                  proggress: 75,
-                  remaining: 25,
-                  radiusFactor: SizeConfig.screenWidth * 0.3,
-                  progressColor: AppColors.kSecondaryColor,
-                  remainingColor: AppColors.absentColor,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+        child: BlocConsumer<AttendanceStudentCubit, AttendanceStudentState>(
+          listener: (context, state) {
+            // TODO: implement listener
+            if (state is AttendanceStudentError) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
+            } else if (state is AttendanceStudentLoaded) {
+              // Handle successful data load if needed
+              print('Attendance data loaded successfully');
+            } else {
+              // Handle other states if necessary
+              print('Current state: $state');
+            }
+          },
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
                 children: [
-                  _buildLegendCircle(
-                    color: AppColors.kSecondaryColor,
-                    text: 'Present',
+                  if (state is AttendanceStudentLoading)
+                    const Center(child: CircularProgressIndicator()),
+                  if (state is AttendanceStudentError)
+                    Center(
+                      child: Text(
+                        state.message,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  if (state is AttendanceStudentLoaded)
+                    CalendarWidget(
+                      user: user,
+                      attendanceData: state.attendances,
+                    ),
+                  const SizedBox(height: 24),
+                  BlocBuilder<AttendenceCubit, AttendenceState>(
+                    builder: (context, state) {
+                      if (state is AttendenceError) {
+                        return Center(
+                          child: Text(
+                            state.message,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        );
+                      }
+                      if (state is AttendencePresentNumberChanged) {
+                        return Card(
+                          elevation: 8.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          shadowColor: Colors.black,
+                          child: ProgressCircle(
+                            proggress: state.presentNumber.toDouble(),
+                            remaining: state.absentNumber.toDouble(),
+                            radiusFactor: SizeConfig.screenWidth * 0.3,
+                            progressColor: AppColors.kSecondaryColor,
+                            remainingColor: AppColors.absentColor,
+                          ),
+                        );
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    },
                   ),
-                  const SizedBox(width: 20),
-                  _buildLegendCircle(
-                    color: AppColors.absentColor,
-                    text: 'Absent',
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildLegendCircle(
+                        color: AppColors.kSecondaryColor,
+                        text: 'Present',
+                      ),
+                      const SizedBox(width: 20),
+                      _buildLegendCircle(
+                        color: AppColors.absentColor,
+                        text: 'Absent',
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
@@ -88,7 +203,9 @@ class AttendanceView extends StatelessWidget {
 }
 
 class CalendarWidget extends StatefulWidget {
-  const CalendarWidget({super.key});
+  const CalendarWidget({super.key, this.user, this.attendanceData});
+  final IUser? user;
+  final List<AttendanceModel>? attendanceData;
 
   @override
   State<CalendarWidget> createState() => _CalendarWidgetState();
@@ -98,6 +215,34 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   late DateTime _currentMonth;
   DateTime? _selectedDate;
   final Map<DateTime, bool?> _attendanceData = {};
+  List<DateTime> selectedDates = [];
+  List<DateTime>? getAttendanceData() {
+    if (widget.attendanceData != null) {
+      List<AttendanceModel> attendanceModels =
+          widget.attendanceData!
+              .where((item) => item.status == 'Present')
+              .toList();
+      // List<DateTime> selectedDates = [];
+
+      List<DateTime> attendanceDates =
+          attendanceModels.map((e) => DateTime.parse(e.date)).toList();
+
+      for (DateTime datex in attendanceDates) {
+        if (mounted) {
+          setState(() {
+            _attendanceData[datex] =
+                datex.month == _currentMonth.month &&
+                datex.year == _currentMonth.year;
+            if (_attendanceData[datex] == true) {
+              selectedDates.add(datex);
+            }
+          });
+        }
+      }
+      return selectedDates;
+    }
+    return null;
+  }
 
   @override
   void initState() {
@@ -107,27 +252,46 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     _generateMockData();
   }
 
+  int numberOfPresent = 0;
+  int numberOfAbsent = 0;
   void _generateMockData() {
+    setState(() {
+      numberOfPresent = 0;
+      numberOfAbsent = 0;
+    });
     final firstDay = DateTime(_currentMonth.year, _currentMonth.month, 1);
     final lastDay = DateTime(_currentMonth.year, _currentMonth.month + 1, 0);
-
     _attendanceData.clear();
     for (var day = firstDay.day; day <= lastDay.day; day++) {
       final date = DateTime(_currentMonth.year, _currentMonth.month, day);
       if (date.weekday == DateTime.friday) {
-        _attendanceData[date] = null;
+        _attendanceData[date] = null; // Friday is a holiday
       } else {
-        _attendanceData[date] = day % 3 != 0;
+        _attendanceData[date] = getAttendanceData()?.contains(date) ?? false;
+        numberOfPresent +=
+            _attendanceData[date] == true ? 1 : 0; // Count present days
+        numberOfAbsent +=
+            _attendanceData[date] == false || _attendanceData[date] == null
+                ? 1
+                : 0; // Count absent days
       }
     }
+    BlocProvider.of<AttendenceCubit>(
+      context,
+    ).setPresentNumber(numberOfPresent, numberOfAbsent + numberOfPresent);
   }
 
-  int get presentCount => _attendanceData.values.where((v) => v == true).length;
-  int get absentCount => _attendanceData.values.where((v) => v == false).length;
+  int get presentCount => numberOfPresent;
+  int get absentCount => numberOfAbsent;
+  // _attendanceData.values.where((v) => v == false || v == null).length;
+  // int get presentCount => _attendanceData.values.where((v) => v == true).length;
+  // int get absentCount => _attendanceData.values.where((v) => v == false).length;
+
 
   void _nextMonth() {
     setState(() {
       _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1, 1);
+      selectedDates.clear();
       _generateMockData();
     });
   }
@@ -135,6 +299,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   void _prevMonth() {
     setState(() {
       _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1, 1);
+      selectedDates.clear();
       _generateMockData();
     });
   }
@@ -159,7 +324,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0,vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18.0,
+                    vertical: 8,
+                  ),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -237,11 +405,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                         _selectedDate?.month == date.month &&
                         _selectedDate?.year == date.year;
                     final now = DateTime.now();
-final isToday =
-    date.day == now.day &&
-    date.month == now.month &&
-    date.year == now.year;
-
+                    final isToday =
+                        date.day == now.day &&
+                        date.month == now.month &&
+                        date.year == now.year;
 
                     return GestureDetector(
                       onTap: () => setState(() => _selectedDate = date),
@@ -297,7 +464,7 @@ class _DayCell extends StatelessWidget {
           color: borderColor,
           width: isPresent != null ? 2 : 0,
         ),
-        color: isToday ? Colors.blue.withValues(alpha: 0.2 ) : null,
+        color: isToday ? Colors.blue.withValues(alpha: 0.2) : null,
       ),
       alignment: Alignment.center,
       child: Text(

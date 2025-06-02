@@ -26,67 +26,75 @@ class TeacherDashBoard extends StatelessWidget {
         }
 
         final teacher = state;
-
-        return Scaffold(
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, NotificationsView.id);
-                          },
-                          icon: const Icon(Icons.notifications),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 10)),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Text(
-                        "Hi there, Welcome ${teacher.name}!",
-                        style: const TextStyle(
-                          color: Color(0xff3F3D56),
-                          fontSize: 16,
-                          fontFamily: 'Inter',
+        return BlocBuilder<DashboardUserCubit, DashboardUser?>(
+          bloc: getIt<DashboardUserCubit>(),
+          builder: (context, state) {
+            final teacherDash = state;
+            return Scaffold(
+              body: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  NotificationsView.id,
+                                );
+                              },
+                              icon: const Icon(Icons.notifications),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                  SliverToBoxAdapter(
-                    child: CustomInfoCardWidget(user: teacher),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                  const SliverToBoxAdapter(
-                    child: Text(
-                      'Academics',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500,
+                      const SliverToBoxAdapter(child: SizedBox(height: 10)),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: Text(
+                            "Hi there, Welcome ${teacher.name}!",
+                            style: const TextStyle(
+                              color: Color(0xff3F3D56),
+                              fontSize: 16,
+                              fontFamily: 'Inter',
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                      SliverToBoxAdapter(
+                        child: CustomInfoCardWidget(user: teacher),
+                      ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                      const SliverToBoxAdapter(
+                        child: Text(
+                          'Academics',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                      SliverToBoxAdapter(
+                        child: RoleBasedAcademicsCompo(
+                          currentUserRole: UserType.teacher,
+                          items: allAcademicsItems,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                  SliverToBoxAdapter(
-                    child: RoleBasedAcademicsCompo(
-                      currentUserRole: UserType.teacher,
-                      items: allAcademicsItems,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

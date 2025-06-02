@@ -19,7 +19,6 @@
 //         },
 //       );
 
-
 //       if (response.data == null || response.data.isEmpty) {
 //         return {
 //           'success': false,
@@ -112,36 +111,72 @@ class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     try {
-    final url = Uri.parse('$baseUrl/api/auth/login');
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: jsonEncode({
-        "user_name": idNumber.trim(),
-        "password":password.trim(),
-      }),
-    );
-    if (response.statusCode == 200) {
-      final user = jsonDecode(response.body)['user'];
-      if (user == null || user.isEmpty) {
-        return {
-          'success': false,
-          'message': 'No user found with this ID number',
-        };
-      }
-      sharedPrefController.saveToken(jsonDecode(response.body)['token']);
-      print(user);
-      return {'success': true, 'user': user, 'role': user['role']};
-      // print(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to login');
-    }
+      final url = Uri.parse('$baseUrl/api/auth/login');
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          "user_name": idNumber.trim(),
+          "password": password.trim(),
+        }),
+      );
+      if (response.statusCode == 200) {
+        final user = jsonDecode(response.body)['user'];
+        if (user == null || user.isEmpty) {
+          return {
+            'success': false,
+            'message': 'No user found with this ID number',
+          };
+        }
+        sharedPrefController.saveToken(jsonDecode(response.body)['token']);
+        Map<String, dynamic> userData = await getDashboardData(
+          user['id'].toString(),
+          jsonDecode(response.body)['token'],
+          user['role'],
+        );
 
+        return {
+          'success': true,
+          'user': user,
+          'dashboard': userData,
+          'role': user['role'],
+          'token': jsonDecode(response.body)['token'],
+        };
+      } else {
+        throw Exception('Failed to login');
+      }
     } catch (e) {
       return {'success': false, 'message': 'Unexpected error occurred'};
+    }
+  }
+
+  Future<Map<String, dynamic>> getDashboardData(
+    String userId,
+    String token,
+    String role,
+  ) async {
+    try {
+      final url = Uri.parse(
+        '$baseUrl/api/dashboard/${role.toLowerCase()}/$userId',
+      );
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        throw Exception('Failed to fetch dashboard data');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error occurred: $e');
     }
   }
 
@@ -169,10 +204,7 @@ class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       await dio.put(
         '/users/$userId',
-        data: {
-          'password': newPassword,
-          'is_first_login': false,
-        },
+        data: {'password': newPassword, 'is_first_login': false},
       );
     } on DioException catch (e) {
       throw Exception('Failed to change password: ${e.message}');

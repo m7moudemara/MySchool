@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:MySchool/core/widgets/custom_snack_bar.dart';
 import 'package:MySchool/features/auth/presentation/views/login_view.dart';
-import 'package:dio/dio.dart';
+import 'package:MySchool/main.dart';
 import 'package:flutter/material.dart';
+import '../../../../constants/strings.dart';
 import '../../../school/presentation/widgets/custom_text_field.dart';
 import '../widgets/custom_button.dart';
+import 'package:http/http.dart' as http;
 
 class CreateNewPasswordView extends StatefulWidget {
   const CreateNewPasswordView({super.key});
@@ -18,7 +22,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
   final _oldPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  late String userId;
+  late int userId;
 
   bool isFirstLogin = false;
   bool _showPassword = false;
@@ -46,7 +50,9 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
       barrierDismissible: false,
       builder: (context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(69)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(69),
+          ),
           child: Image.asset("assets/congratulation.png"),
         );
       },
@@ -59,31 +65,31 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
     });
   }
 
-  Future<bool> _validateOldPassword(String userId, String oldPassword) async {
-    try {
-      final dio = Dio();
-      final response = await dio.get(
-        "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
-        options: Options(validateStatus: (status) => status != null && status < 500),
-      );
+  // Future<bool> _validateOldPassword(String userId, String oldPassword) async {
+  //   try {
+  //     final dio = Dio();
+  //     final response = await dio.get(
+  //       "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
+  //       options: Options(validateStatus: (status) => status != null && status < 500),
+  //     );
 
-      if (response.statusCode == 200 && response.data != null) {
-        final userData = response.data;
-        if (userData["password"] == oldPassword) {
-          return true;
-        } else {
-          CustomSnackBar.show(context, "Old password is incorrect", type: SnackBarType.error);
-          return false;
-        }
-      } else {
-        CustomSnackBar.show(context, "Failed to validate password. User not found.", type: SnackBarType.error);
-        return false;
-      }
-    } catch (e) {
-      CustomSnackBar.show(context, "Error validating password: $e", type: SnackBarType.error);
-      return false;
-    }
-  }
+  //     if (response.statusCode == 200 && response.data != null) {
+  //       final userData = response.data;
+  //       if (userData["password"] == oldPassword) {
+  //         return true;
+  //       } else {
+  //         CustomSnackBar.show(context, "Old password is incorrect", type: SnackBarType.error);
+  //         return false;
+  //       }
+  //     } else {
+  //       CustomSnackBar.show(context, "Failed to validate password. User not found.", type: SnackBarType.error);
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     CustomSnackBar.show(context, "Error validating password: $e", type: SnackBarType.error);
+  //     return false;
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -96,21 +102,22 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isFirstLogin
-          ? null
-          : AppBar(
-              title: const Text(
-                'Change Password',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15.14,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w700,
+      appBar:
+          isFirstLogin
+              ? null
+              : AppBar(
+                title: const Text(
+                  'Change Password',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15.14,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
+                centerTitle: true,
+                backgroundColor: Colors.white,
               ),
-              centerTitle: true,
-              backgroundColor: Colors.white,
-            ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -139,8 +146,11 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                   controller: _oldPasswordController,
                   hintText: "Old Password",
                   obscureText: !_showPassword,
-                  validator: (value) =>
-                      (value == null || value.isEmpty) ? 'Please enter your old password' : null,
+                  validator:
+                      (value) =>
+                          (value == null || value.isEmpty)
+                              ? 'Please enter your old password'
+                              : null,
                 ),
                 const SizedBox(height: 10),
 
@@ -195,24 +205,48 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                     setState(() => isLoading = true);
 
                     try {
-                      final isValid = await _validateOldPassword(userId, _oldPasswordController.text);
-                      if (!isValid) {
-                        setState(() => isLoading = false);
-                        return;
-                      }
+                      // final isValid = await _validateOldPassword(userId, _oldPasswordController.text);
+                      // if (!isValid) {
+                      //   setState(() => isLoading = false);
+                      //   return;
+                      // }
 
-                      final dio = Dio();
-                      await dio.put(
-                        "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
-                        data: {
-                          "password": _newPasswordController.text,
-                          "is_first_login": false,
-                        },
+                      // final dio = Dio();
+                      // await dio.put(
+                      //   "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
+                      //   data: {
+                      //     "password": _newPasswordController.text,
+                      //     "is_first_login": false,
+                      //   },
+                      // );
+                      String? token = await sharedPrefController.getToken();
+                      final url = Uri.parse(
+                        '$baseUrl/api/auth/change-password',
                       );
-
-                      _showSuccessDialog();
+                      final response = await http.put(
+                        url,
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Accept': 'application/json',
+                          'Authorization': 'Bearer $token',
+                        },
+                        body: jsonEncode({
+                          "new_password": _newPasswordController.text,
+                          "old_password": _oldPasswordController.text,
+                        }),
+                      );
+                      if (response.statusCode == 200) {
+                        _showSuccessDialog();
+                      } else {
+                        print(jsonDecode(response.body));
+                        throw Exception(jsonDecode(response.body));
+                      }
                     } catch (e) {
-                      CustomSnackBar.show(context, "Error updating password: $e", type: SnackBarType.error);
+                      CustomSnackBar.show(
+                        context,
+                        "Error updating password: $e",
+                        type: SnackBarType.error,
+                      );
                     } finally {
                       setState(() => isLoading = false);
                     }
