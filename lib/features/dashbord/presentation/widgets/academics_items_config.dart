@@ -74,12 +74,14 @@ final List<AcademicsItem> allAcademicsItems = [
     title: 'My Children',
     iconPath: 'assets/children.png',
     routeName: MyChildrenView.id,
-    visibleFor: UserType.parent,
+    visibleFor: UserType.guardian,
+    // visibleFor: UserType.parent,
   ),
   AcademicsItem(
     title: 'Teachers',
     iconPath: 'assets/teachers.png',
     routeName: 'parent_results_route',
-    visibleFor: UserType.parent,
+    visibleFor: UserType.guardian,
+    // visibleFor: UserType.parent,
   ),
 ];

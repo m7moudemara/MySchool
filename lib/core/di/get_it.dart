@@ -87,6 +87,7 @@ Future<void> _setupAuthDependencies() async {
   ));
   
   getIt.registerLazySingleton<UserCubit>(() => UserCubit());
+  getIt.registerLazySingleton<DashboardUserCubit>(() => DashboardUserCubit());
 
 }
 

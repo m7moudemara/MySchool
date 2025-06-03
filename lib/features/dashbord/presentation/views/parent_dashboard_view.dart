@@ -78,7 +78,8 @@ class ParentDashboardView extends StatelessWidget {
                   const SliverToBoxAdapter(child: SizedBox(height: 20)),
                   SliverToBoxAdapter(
                     child: RoleBasedAcademicsCompo(
-                      currentUserRole: UserType.parent,
+                      currentUserRole: UserType.guardian,
+                      // currentUserRole: UserType.parent,
                       items: allAcademicsItems,
                     ),
                   ),

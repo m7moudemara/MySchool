@@ -10,7 +10,8 @@ class LoginInitial extends LoginState {}
 class LoginLoading extends LoginState {}
 class LoginSuccess extends LoginState {
   final Map<String, dynamic> userJson;
-  const LoginSuccess({required this.userJson});
+  final Map<String, dynamic> dashboardJson;
+  const LoginSuccess({required this.userJson,required this.dashboardJson});
 
   @override
   List<Object?> get props => [userJson];

@@ -14,3 +14,17 @@ class UserCubit extends Cubit<IUser?> {
     emit(null);
   }
 }
+
+
+
+class DashboardUserCubit extends Cubit<DashboardUser?> {
+  DashboardUserCubit() : super(null);
+
+  void setDashboardUser(DashboardUser dashboardUser) {
+    emit(dashboardUser);
+  }
+
+  void clearDashboardUser() {
+    emit(null);
+  }
+}

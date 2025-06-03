@@ -9,13 +9,13 @@ class ProgressCircle extends StatelessWidget {
   final Color remainingColor;
   final double strokeWidth;
   final String centerText;
-  
+
   const ProgressCircle({
     super.key,
     required this.proggress,
     required this.remaining,
     this.radiusFactor = 0.3,
-    this.progressColor =  AppColors.kSecondaryColor,
+    this.progressColor = AppColors.kSecondaryColor,
     this.remainingColor = const Color(0xFFC53F3F),
     this.strokeWidth = 10.0,
     this.centerText = '',
@@ -23,7 +23,8 @@ class ProgressCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double proggressPercentage = 100 - remaining;
+    final double proggressPercentage = (proggress * 100) / (remaining);
+    // final double proggressPercentage = 100 - remaining;
     final double size = radiusFactor;
 
     return Padding(
@@ -41,7 +42,7 @@ class ProgressCircle extends StatelessWidget {
               color: remainingColor,
             ),
           ),
-          
+
           SizedBox(
             width: size,
             height: size,
@@ -53,19 +54,19 @@ class ProgressCircle extends StatelessWidget {
               strokeCap: StrokeCap.round,
             ),
           ),
-          
+
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 '${proggressPercentage.toStringAsFixed(1)}%',
-               textAlign: TextAlign.center,
-style: TextStyle(
-color: Colors.black,
-fontSize: size * 0.20,
-fontFamily: 'Roboto',
-fontWeight: FontWeight.w800,
-),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: size * 0.20,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
