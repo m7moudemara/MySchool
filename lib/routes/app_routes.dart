@@ -13,7 +13,9 @@ import 'package:MySchool/features/school/presentation/views/teacher/teacher_resu
 import 'package:MySchool/features/chat/presentation/views/parent_messages_view.dart';
 import 'package:MySchool/features/dashbord/presentation/views/parent_dashboard_view.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_classes_view.dart';
-import 'package:MySchool/features/time_table/presentation/views/time_table.dart';
+import 'package:MySchool/features/time_table/presentation/views/parent_time_table_view.dart';
+import 'package:MySchool/features/time_table/presentation/views/student_time_table_view.dart';
+import 'package:MySchool/features/time_table/presentation/views/teacher_time_table_view.dart';
 import 'package:flutter/material.dart';
 import 'package:MySchool/features/dashbord/presentation/views/student_dashboard.dart';
 import 'package:MySchool/features/auth/presentation/views/login_view.dart';
@@ -50,7 +52,6 @@ class AppRoutes {
     AttendanceView.id: (context) => AttendanceView(),
     ChatView.id: (context) => ChatView(),
     StudentMessagesView.id: (context) => StudentMessagesView(),
-    TimeTableView.id: (context) => TimeTableView(),
     TeacherClassesView.id: (context) => TeacherClassesView(),
     ParentDashboardView.id: (context) => ParentDashboardView(),
     ParentMessagesView.id: (context) => ParentMessagesView(),
@@ -63,6 +64,11 @@ class AppRoutes {
     PersonalDataView.id : (context) => const PersonalDataView(),
     SettingsView.id : (context) => const SettingsView(),
     HelpCenterView.id : (context) => const HelpCenterView(),
+    //! Time Table 
+    StudentTimeTableView.id: (context) => StudentTimeTableView(),
+    TeacherTimeTableView.id: (context) => TeacherTimeTableView(),
+    ParentTimeTableView.id: (context) => ParentTimeTableView(),
+
   };
 }
 
