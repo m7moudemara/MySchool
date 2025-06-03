@@ -83,8 +83,11 @@ class TeacherDashboardUser implements DashboardUser {
   @override
   final int absentDays = 0; // Placeholder for absent days
   final int total_students;
+  @override
   final double total;
+  @override
   final double paid;
+  @override
   final double remaining;
   TeacherDashboardUser({
     required this.id,
@@ -112,9 +115,9 @@ class TeacherDashboardUser implements DashboardUser {
       phone_number: json['account']['phone_number'] ?? '',
       total_notifications: json['account']['total_notifications'] ?? 0,
       total_students: json['total_students'] ?? 0,
-      total: json['fee_info']['total'] ?? 0,
-      paid: json['fee_info']['paid'] ?? 0,
-      remaining: json['fee_info']['remaining'] ?? 0,
+      total: 0,
+      paid: 0,
+      remaining: 0,
     );
   }
 }
