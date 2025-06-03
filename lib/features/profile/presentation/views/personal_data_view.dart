@@ -10,16 +10,11 @@ class PersonalDataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final IUser? user = getIt<UserCubit>().state;
-
     if (user == null) {
       return const Scaffold(
         body: Center(child: Text("No user data available")),
       );
     }
-    print(user);
-    print(user.date_of_birth);
-    print('xxxxxxxxxxxxxxxxxxx');
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(

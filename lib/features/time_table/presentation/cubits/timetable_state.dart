@@ -8,6 +8,7 @@ class TimeTableLoading extends TimeTableState {}
 
 class TimeTableLoaded extends TimeTableState {
   final List<LessonEntity> lessons;
+
   TimeTableLoaded(this.lessons);
 }
 

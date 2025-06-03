@@ -30,8 +30,6 @@ class ParentDashboardView extends StatelessWidget {
         return BlocBuilder<DashboardUserCubit, DashboardUser?>(
           bloc: getIt<DashboardUserCubit>(),
           builder: (context, statex) {
-            print(statex?.total_students);
-            print('xxxxxxxxxxxxxxxx');
             return Scaffold(
               body: SafeArea(
                 child: Padding(

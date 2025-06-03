@@ -62,11 +62,11 @@ class Parent extends IUser {
 
     return Parent(
       json['className'] ?? '',
-      json['user_name'] ?? '',
-      json['date_of_birth'] ?? '',
       json['gender'] ?? '',
       json['address'] ?? '',
       json['phone_number'] ?? '',
+      json['user_name'] ?? '',
+      json['date_of_birth'] ?? '',
       isFirstLogin: json['isFirstLogin'] ?? true,
       id: json['id'] ?? '',
       name: json['name'] ?? '',
