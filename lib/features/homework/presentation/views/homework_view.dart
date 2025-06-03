@@ -67,8 +67,12 @@ class _HomeworkViewState extends State<HomeworkView> {
                 //     "Time left: $days days, $hours hours, $minutes minutes",
                 //   );
                 // }
-                DateTime eventTime = DateTime.parse(homework.dueDate);
-                final dueDate = timeago.format(eventTime, locale: 'en_short');
+                var date2 = DateTime.parse("${homework.dueDate}Z").toLocal();
+                var dateFormat = date2.toLocal();
+
+                // DateTime eventTime = DateTime.parse(homework.dueDate);
+                final dueDate = timeago.format(dateFormat);
+                print(dueDate);
                 return homework.is_deadline_passed
                     ? SizedBox.shrink()
                     : _buildHomeworkItem(

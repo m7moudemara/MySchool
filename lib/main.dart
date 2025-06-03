@@ -12,6 +12,7 @@ import 'package:MySchool/features/school/presentation/cubits/parent_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/student_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/teacher_cubit.dart';
 import 'package:MySchool/features/school/presentation/views/student/attendance_student/attendance_student_cubit.dart';
+import 'package:MySchool/features/school/presentation/views/teacher/data/classes_cubit.dart';
 import 'package:MySchool/features/time_table/presentation/cubits/timetable_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<AttendenceCubit>(create: (context) => AttendenceCubit()),
         BlocProvider<HomeWorkCubit>(create: (context) => HomeWorkCubit()),
+        BlocProvider<ClassesCubit>(create: (context) => ClassesCubit()),
 
         BlocProvider(create: (_) => getIt<UserCubit>()),
         BlocProvider(create: (_) => getIt<DashboardUserCubit>()),

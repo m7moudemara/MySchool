@@ -1,5 +1,8 @@
 import 'package:MySchool/features/school/presentation/views/teacher/classes_info_view.dart';
+import 'package:MySchool/features/school/presentation/views/teacher/data/class_model.dart';
+import 'package:MySchool/features/school/presentation/views/teacher/data/classes_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TeacherClassesView extends StatefulWidget {
   static final String id = "/TeacherClassesView";
@@ -12,6 +15,13 @@ class TeacherClassesView extends StatefulWidget {
 
 class _TeacherClassesViewState extends State<TeacherClassesView> {
   int _currentClassIndex = 0;
+  String selectedClass = 'All Students';
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<ClassesCubit>(context).getClasses();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +38,24 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
           ),
         ),
       ),
-      body: _buildListView(),
+      body: BlocConsumer<ClassesCubit, ClassesState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          if (state is ClassesLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is ClassesLoaded) {
+            return _buildListView(state.classes);
+          } else {
+            return Center(child: Text('There is Error'));
+          }
+        },
+      ),
     );
   }
 
-  Widget _buildListView() {
+  Widget _buildListView(List<ClassStudentModel> classes) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -42,11 +65,11 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
           const SizedBox(height: 24),
 
           // Class Filter Tabs with horizontal scrolling
-          _buildClassFilterTabs(),
+          _buildClassFilterTabs(classes),
           const SizedBox(height: 16),
 
           // Students List based on selected tab
-          Expanded(child: _buildStudentsList(context)),
+          Expanded(child: _buildStudentsList(context, classes)),
         ],
       ),
     );
@@ -85,9 +108,14 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
     );
   }
 
-  Widget _buildClassFilterTabs() {
-    final tabs = ['All Students', 'Class 1', 'Class 2', 'Class 3', 'Class 4'];
-
+  Widget _buildClassFilterTabs(List<ClassStudentModel> classes) {
+    // final tabs = ['All Students', 'Class 1', 'Class 2', 'Class 3', 'Class 4'];
+    final tabs = ['All Students'];
+    classes.forEach((element) {
+      if (tabs.contains(element.className) == false) {
+        tabs.add(element.className);
+      }
+    });
     return SizedBox(
       height: 40,
       child: ListView(
@@ -101,6 +129,7 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
                 onTap: () {
                   setState(() {
                     _currentClassIndex = index;
+                    selectedClass = tabs[index];
                   });
                 },
                 child: _buildFilterTab(
@@ -139,29 +168,39 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
     );
   }
 
-  Widget _buildStudentsList(BuildContext context) {
+  Widget _buildStudentsList(
+    BuildContext context,
+    List<ClassStudentModel> allStudents,
+  ) {
     // Sample data - in a real app, you would fetch this based on the selected class
-    final allStudents = [
-      {'name': 'Mohamed Ashraf', 'class': 'Class 1'},
-      {'name': 'Ahmed Ali', 'class': 'Class 2'},
-      {'name': 'Sara Mohamed', 'class': 'Class 3'},
-      {'name': 'Youssef Hassan', 'class': 'Class 4'},
-      {'name': 'Fatima Mahmoud', 'class': 'Class 1'},
-      {'name': 'Omar Khaled', 'class': 'Class 2'},
-      {'name': 'Lina Samir', 'class': 'Class 3'},
-    ];
+    // final allStudents = [
+    //   {'name': 'Mohamed Ashraf', 'class': 'Class 1'},
+    //   {'name': 'Ahmed Ali', 'class': 'Class 2'},
+    //   {'name': 'Sara Mohamed', 'class': 'Class 3'},
+    //   {'name': 'Youssef Hassan', 'class': 'Class 4'},
+    //   {'name': 'Fatima Mahmoud', 'class': 'Class 1'},
+    //   {'name': 'Omar Khaled', 'class': 'Class 2'},
+    //   {'name': 'Lina Samir', 'class': 'Class 3'},
+    // ];
 
     // Filter students based on selected tab
-    List<Map<String, String>> displayedStudents = [];
+    // List<ClassStudentModel> displayedStudents = [];
+    List<ClassStudentModel> displayedStudents = [];
+    // List<Map<String, String>> displayedStudents = [];
     if (_currentClassIndex == 0) {
       // All Students
+      // displayedStudents = classes;
       displayedStudents = allStudents;
     } else {
       // Specific class (1-4)
       displayedStudents =
           allStudents.where((student) {
-            return student['class'] == 'Class $_currentClassIndex';
+            return student.className == selectedClass;
           }).toList();
+      // displayedStudents =
+      //     allStudents.where((student) {
+      //       return student['class'] == 'Class $_currentClassIndex';
+      //     }).toList();
     }
 
     return ListView.separated(
@@ -170,8 +209,12 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
       itemBuilder: (context, index) {
         return _buildStudentCard(
           context,
-          displayedStudents[index]['name']!,
-          displayedStudents[index]['class']!,
+
+          // displayedStudents[index]['name']!,
+          // displayedStudents[index]['class']!,
+          displayedStudents[index].name,
+          displayedStudents[index].className,
+          displayedStudents[index].id,
         );
       },
     );
@@ -181,6 +224,7 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
     BuildContext context,
     String name,
     String className,
+    int studentId
   ) {
     return InkWell(
       onTap: () {
@@ -189,7 +233,7 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
           MaterialPageRoute(
             builder:
                 (context) =>
-                    ClassesinfoView(studentName: name, studentClass: className),
+                    ClassesinfoView(studentName: name, studentClass: className,studentId: studentId,),
           ),
         );
       },

@@ -153,15 +153,15 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                           child: ListTile(
                             onTap: () {
                               // Navigate to details page
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) =>ClassesinfoView(
-                                    studentClass: child['class']!,
-                                    studentName: child['name']!,
-                                  ),
-                                ),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (_) =>ClassesinfoView(
+                              //       studentClass: child['class']!,
+                              //       studentName: child['name']!,
+                              //     ),
+                              //   ),
+                              // );
                             },
                             leading: ClipRRect(
                               borderRadius: BorderRadius.circular(16),

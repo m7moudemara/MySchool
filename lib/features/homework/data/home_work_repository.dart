@@ -16,8 +16,8 @@ class HomeWorkRepository {
         assignments
             .map((assignment) => HomeworkModel.fromJson(assignment))
             .toList();
-    print(homeworkList);
-    print('ffffffffffffffffffffffffffffffffffffffffffffffffffff');
+    // print(homeworkList);
+    // print('ffffffffffffffffffffffffffffffffffffffffffffffffffff');
     return homeworkList;
     // print(
     //   assignments
