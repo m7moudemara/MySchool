@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class HomeworkView extends StatefulWidget {
-  const HomeworkView({super.key});
+class StudentHomeworkView extends StatefulWidget {
+  const StudentHomeworkView({super.key});
   static String id = '/HomeworkView';
 
   @override
-  State<HomeworkView> createState() => _HomeworkViewState();
+  State<StudentHomeworkView> createState() => _StudentHomeworkViewState();
 }
 
-class _HomeworkViewState extends State<HomeworkView> {
+class _StudentHomeworkViewState extends State<StudentHomeworkView> {
   @override
   void initState() {
     super.initState();

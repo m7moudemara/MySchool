@@ -1,6 +1,6 @@
 import 'package:MySchool/features/grades/presentation/views/grades_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/attendance_view.dart';
-import 'package:MySchool/features/homework/presentation/views/teacher_homework_view.dart';
+import 'package:MySchool/features/homework/presentation/views/student_submitted_homework_view.dart';
 import 'package:flutter/material.dart';
 
 class ClassesinfoView extends StatelessWidget {
@@ -154,7 +154,7 @@ class ClassesinfoView extends StatelessWidget {
                   icon: Icons.book,
                   title: 'Homework',
                   onTap: () {
-                      Navigator.pushNamed(context, TeacherHomeworkView.id);
+                      Navigator.pushNamed(context, StudentSubmittedHomeworkView.id);
                   },
                 ),
               ],
