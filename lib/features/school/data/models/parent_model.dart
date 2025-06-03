@@ -16,6 +16,7 @@ class Parent extends IUser {
   final List<Student> children;
   final String className;
   final String user_name;
+  @override
   final String date_of_birth;
   final String gender;
   final String address;
@@ -70,7 +71,7 @@ class Parent extends IUser {
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
-      childrenInfo: json['childrenInfo'] ?? '...\'s parent',
+      childrenInfo: json['total_students'] ?? '...\'s parent',
       children: childrenList,
     );
   }
@@ -99,6 +100,10 @@ class ParentDashboardUser implements DashboardUser {
   final int totalDays = 0; // Placeholder for total days
   @override
   final int absentDays = 0; // Placeholder for absent days
+  final int total_students;
+  final double total;
+  final double paid;
+  final double remaining;
 
   ParentDashboardUser({
     required this.id,
@@ -109,6 +114,10 @@ class ParentDashboardUser implements DashboardUser {
     required this.last_active_time,
     required this.phone_number,
     required this.total_notifications,
+    required this.total_students,
+    required this.total,
+    required this.paid,
+    required this.remaining,
   });
 
   factory ParentDashboardUser.fromJson(Map<String, dynamic> json) {
@@ -121,6 +130,10 @@ class ParentDashboardUser implements DashboardUser {
       last_active_time: json['account']['last_active_time'] ?? '',
       phone_number: json['account']['phone_number'] ?? '',
       total_notifications: json['account']['total_notifications'] ?? 0,
+      total_students: json['total_students'] ?? 0,
+      total: json['fee_info']['total'] ?? 0,
+      paid: json['fee_info']['paid'] ?? 0,
+      remaining: json['fee_info']['remaining'] ?? 0,
     );
   }
 }

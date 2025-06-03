@@ -28,8 +28,8 @@ class TeacherDashBoard extends StatelessWidget {
         final teacher = state;
         return BlocBuilder<DashboardUserCubit, DashboardUser?>(
           bloc: getIt<DashboardUserCubit>(),
-          builder: (context, state) {
-            final teacherDash = state;
+          builder: (context, statex) {
+            // final teacherDash = state;
             return Scaffold(
               body: SafeArea(
                 child: Padding(
@@ -68,7 +68,7 @@ class TeacherDashBoard extends StatelessWidget {
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 20)),
                       SliverToBoxAdapter(
-                        child: CustomInfoCardWidget(user: teacher),
+                        child: CustomInfoCardWidget(user: teacher, userx: statex!,),
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 20)),
                       const SliverToBoxAdapter(

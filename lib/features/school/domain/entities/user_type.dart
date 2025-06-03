@@ -34,4 +34,8 @@ abstract class DashboardUser {
   String get className;
   int get totalDays;
   int get absentDays;
+  int get total_students;
+  double get total;
+  double get paid;
+  double get remaining;
 }

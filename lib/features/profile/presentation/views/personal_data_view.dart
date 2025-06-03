@@ -16,6 +16,9 @@ class PersonalDataView extends StatelessWidget {
         body: Center(child: Text("No user data available")),
       );
     }
+    print(user);
+    print(user.date_of_birth);
+    print('xxxxxxxxxxxxxxxxxxx');
 
     return Scaffold(
       appBar: AppBar(

@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CustomInfoCardWidget extends StatelessWidget {
+  final DashboardUser userx;
   final IUser user;
 
-  const CustomInfoCardWidget({super.key, required this.user});
+  const CustomInfoCardWidget({
+    super.key,
+    required this.user,
+    required this.userx,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +41,19 @@ class CustomInfoCardWidget extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      subtitle: Text(
-                        user.displayInfo,
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 204),
-                          fontSize: 12,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
+                      subtitle:
+                          user.type == UserType.guardian
+                              ? Text(
+                                'total students : ${userx.total_students}',
+                                // user.displayInfo,
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 204),
+                                  fontSize: 12,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )
+                              : Text(''),
                       trailing: CircleAvatar(
                         radius: 30,
                         backgroundImage: AssetImage('assets/profile.png'),
@@ -100,7 +109,7 @@ class CustomInfoCardWidget extends StatelessWidget {
           )
         else if (user.type == UserType.guardian)
           // else if (user.type == UserType.parent)
-          _buildPaymentProgressSection()
+          _buildPaymentProgressSection(userx)
         // else if (user.type == UserType.admin)
         // _buildAttendanceSection()
         else
@@ -170,14 +179,14 @@ class CustomInfoCardWidget extends StatelessWidget {
   }
 }
 
-Widget _buildPaymentProgressSection() {
-  double paidAmount = 42000;
-  double remainingAmount = 72000;
-  double schooleFees = paidAmount + remainingAmount;
-  final formatCurrency = NumberFormat.decimalPattern();
-  String paidFormatted = formatCurrency.format(paidAmount);
-  String remainingFormatted = formatCurrency.format(remainingAmount);
-  String schoolFeesFormatted = formatCurrency.format(schooleFees);
+Widget _buildPaymentProgressSection(DashboardUser userx) {
+  // double paidAmount = 42000;
+  // double remainingAmount = 72000;
+  // double schooleFees = paidAmount + remainingAmount;
+  // final formatCurrency = NumberFormat.decimalPattern();
+  // String paidFormatted = formatCurrency.format(paidAmount);
+  // String remainingFormatted = formatCurrency.format(remainingAmount);
+  // String schoolFeesFormatted = formatCurrency.format(schooleFees);
 
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
@@ -208,7 +217,8 @@ Widget _buildPaymentProgressSection() {
           SizedBox(height: 4),
           Center(
             child: Text(
-              '$schoolFeesFormatted EP',
+              '${userx.total} EP',
+              // '$schoolFeesFormatted EP',
               style: TextStyle(
                 color: const Color(0xFFF0BC70),
                 fontSize: 26,
@@ -247,11 +257,11 @@ Widget _buildPaymentProgressSection() {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '$paidFormatted EP',
+                '${userx.paid} EP',
                 style: TextStyle(fontSize: 14, color: Colors.white),
               ),
               Text(
-                '$remainingFormatted EP',
+                '${userx.remaining} EP',
                 style: TextStyle(fontSize: 14, color: Colors.white),
               ),
             ],
@@ -267,7 +277,7 @@ Widget _buildPaymentProgressSection() {
             child: Row(
               children: [
                 Expanded(
-                  flex: paidAmount.toInt(),
+                  flex: userx.paid.toInt(),
                   child: Container(
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -279,7 +289,7 @@ Widget _buildPaymentProgressSection() {
                   ),
                 ),
                 Expanded(
-                  flex: remainingAmount.toInt(),
+                  flex: userx.remaining.toInt(),
                   child: Container(
                     decoration: const BoxDecoration(
                       color: Colors.black,

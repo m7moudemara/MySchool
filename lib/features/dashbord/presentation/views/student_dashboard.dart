@@ -29,8 +29,8 @@ class StudentDashBoard extends StatelessWidget {
 
         return BlocBuilder<DashboardUserCubit, DashboardUser?>(
           bloc: getIt<DashboardUserCubit>(),
-          builder: (context, state) {
-            final studentDash = state;
+          builder: (context, statex) {
+            final studentDash = statex;
             return Scaffold(
               body: SafeArea(
                 child: Padding(
@@ -83,7 +83,7 @@ class StudentDashBoard extends StatelessWidget {
                             gender: student.gender,
                             address: student.address,
                             phone: student.phone,
-                          ),
+                          ), userx: statex!,
                         ),
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 20)),

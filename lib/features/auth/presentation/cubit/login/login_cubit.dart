@@ -24,9 +24,15 @@ class LoginCubit extends Cubit<LoginState> {
 
       print(result);
       if (isFirstLogin) {
+        print('****************');
         emit(FirstLoginRequired(userJson: result['user']));
       } else {
-        emit(LoginSuccess(userJson: result['user'], dashboardJson: result['dashboard']));
+        emit(
+          LoginSuccess(
+            userJson: result['user'],
+            dashboardJson: result['dashboard'],
+          ),
+        );
       }
     } else {
       emit(LoginFailure(error: result['message']));

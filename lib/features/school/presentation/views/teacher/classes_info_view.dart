@@ -1,14 +1,10 @@
 import 'dart:convert';
-
 import 'package:MySchool/features/grades/presentation/views/grades_view.dart';
-import 'package:MySchool/features/school/presentation/views/student/attendance_view.dart';
 import 'package:MySchool/features/homework/presentation/views/teacher_homework_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/teacher_attendance_view.dart';
-import 'package:MySchool/features/school/presentation/views/teacher/teacher_attendance.dart';
 import 'package:MySchool/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../../../constants/strings.dart';
 
 class ClassesinfoView extends StatefulWidget {
@@ -70,7 +66,6 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 var item = snapshot.data!;
-                print(item);
                 double attendance =
                     (item['present_days'] * 100) / item['total_attendance'];
                 return Padding(
