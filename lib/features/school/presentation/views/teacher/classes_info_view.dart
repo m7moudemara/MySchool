@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:MySchool/features/grades/presentation/views/grades_view.dart';
-import 'package:MySchool/features/homework/presentation/views/teacher_homework_view.dart';
-import 'package:MySchool/features/school/presentation/views/student/teacher_attendance_view.dart';
 import 'package:MySchool/main.dart';
+import 'package:MySchool/features/school/presentation/views/student/attendance_view.dart';
+import 'package:MySchool/features/homework/presentation/views/student_submitted_homework_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../constants/strings.dart';
@@ -199,30 +199,25 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
                         icon: Icons.calendar_today,
                         title: 'Attendance',
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => TeacherAttendanceStudentView(
-                                    student: item,
-                                  ),
-                            ),
-                          );
-                          // Navigator.pushNamed(context, AttendanceView.id);
+                          Navigator.pushNamed(context, AttendanceView.id);
                         },
                       ),
+
                       _buildMenuItem(
                         icon: Icons.book,
                         title: 'Homework',
                         onTap: () {
-                          Navigator.pushNamed(context, TeacherHomeworkView.id);
+                          Navigator.pushNamed(
+                            context,
+                            StudentSubmittedHomeworkView.id,
+                          );
                         },
                       ),
                     ],
                   ),
                 );
               } else if (snapshot.hasError) {
-                return Center(child: Text('${snapshot.error}'));
+                return Text('${snapshot.error}');
               } else {
                 return Center(child: CircularProgressIndicator());
               }

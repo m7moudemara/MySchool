@@ -1,11 +1,11 @@
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/views/parent/children_details.dart';
-import 'package:MySchool/features/homework/presentation/views/home_work.dart';
+import 'package:MySchool/features/homework/presentation/views/teacher_homework_view.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_attendance.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_result_view.dart';
 import '../../../grades/presentation/views/grades_view.dart';
 import '../../../school/presentation/views/student/attendance_view.dart';
-import '../../../homework/presentation/views/homework_view.dart';
+import '../../../homework/presentation/views/student_homework_view.dart';
 import '../../../school/presentation/views/teacher/teacher_classes_view.dart';
 
 class AcademicsItem {
@@ -33,7 +33,7 @@ final List<AcademicsItem> allAcademicsItems = [
   AcademicsItem(
     title: 'Homework',
     iconPath: 'assets/homework.png',
-    routeName: HomeworkView.id,
+    routeName: StudentHomeworkView.id,
     visibleFor: UserType.student,
   ),
   AcademicsItem(
@@ -53,7 +53,7 @@ final List<AcademicsItem> allAcademicsItems = [
   AcademicsItem(
     title: 'Homework',
     iconPath: 'assets/homework.png',
-    routeName: TeacherAssignmentsView.id,
+    routeName: TeacherHomeworkView.id,
     visibleFor: UserType.teacher,
   ),
   AcademicsItem(

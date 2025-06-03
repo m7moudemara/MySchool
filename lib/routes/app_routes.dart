@@ -5,10 +5,10 @@ import 'package:MySchool/features/profile/presentation/views/personal_data_view.
 import 'package:MySchool/features/profile/presentation/views/setting_view.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/views/parent/children_details.dart';
-import 'package:MySchool/features/homework/presentation/views/create_homework.dart';
-import 'package:MySchool/features/homework/presentation/views/home_work.dart';
-import 'package:MySchool/features/school/presentation/views/teacher/teacher_attendance.dart';
+import 'package:MySchool/features/homework/presentation/views/teacher_create_homework_view.dart';
 import 'package:MySchool/features/homework/presentation/views/teacher_homework_view.dart';
+import 'package:MySchool/features/school/presentation/views/teacher/teacher_attendance.dart';
+import 'package:MySchool/features/homework/presentation/views/student_submitted_homework_view.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_result_view.dart';
 import 'package:MySchool/features/chat/presentation/views/parent_messages_view.dart';
 import 'package:MySchool/features/dashbord/presentation/views/parent_dashboard_view.dart';
@@ -21,7 +21,7 @@ import 'package:MySchool/features/dashbord/presentation/views/student_dashboard.
 import 'package:MySchool/features/auth/presentation/views/login_view.dart';
 import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/notifications/presentation/views/notifications_view.dart';
-import 'package:MySchool/features/homework/presentation/views/homework_view.dart';
+import 'package:MySchool/features/homework/presentation/views/student_homework_view.dart';
 import 'package:MySchool/features/grades/presentation/views/grades_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/attendance_view.dart';
 import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
@@ -48,7 +48,7 @@ class AppRoutes {
     GradesView.id : (context) => GradesView(),
     CreateNewPasswordView.id: (context) => CreateNewPasswordView(),
     NotificationsView.id: (context) => NotificationsView(),
-    HomeworkView.id: (context) => HomeworkView(),
+    StudentHomeworkView.id: (context) => StudentHomeworkView(),
     AttendanceView.id: (context) => AttendanceView(),
     ChatView.id: (context) => ChatView(),
     StudentMessagesView.id: (context) => StudentMessagesView(),
@@ -57,8 +57,8 @@ class AppRoutes {
     ParentMessagesView.id: (context) => ParentMessagesView(),
     MyChildrenView.id: (context) => MyChildrenView(),
     TeacherHomeworkView.id: (context) => const TeacherHomeworkView(),
-    TeacherAssignmentsView.id: (context) => const TeacherAssignmentsView(),
-    CreateHomeworkview.id: (context) => const CreateHomeworkview(),
+    TeacherHomeworkView.id: (context) => const TeacherHomeworkView(),
+    TeacherCreateHomeworkview.id: (context) => const TeacherCreateHomeworkview(),
     TeacherResultView.id: (context) => const TeacherResultView(),
     TeacherAttendanceView.id: (context) => const TeacherAttendanceView(),
     PersonalDataView.id : (context) => const PersonalDataView(),

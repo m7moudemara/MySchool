@@ -1,25 +1,27 @@
 import 'dart:io';
 
-import 'package:MySchool/features/homework/presentation/views/home_work.dart';
+import 'package:MySchool/core/widgets/custom_snack_bar.dart';
+import 'package:MySchool/features/homework/domain/entities/homework_entity.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CreateHomeworkview extends StatefulWidget {
-  const CreateHomeworkview({super.key});
+class TeacherCreateHomeworkview extends StatefulWidget {
+  const TeacherCreateHomeworkview({super.key});
   static final String id = '/CreateHomeworkView';
 
   @override
-  State<CreateHomeworkview> createState() => _CreateHomeworkviewState();
+  State<TeacherCreateHomeworkview> createState() => _TeacherCreateHomeworkviewState();
 }
 
-class _CreateHomeworkviewState extends State<CreateHomeworkview> {
+class _TeacherCreateHomeworkviewState extends State<TeacherCreateHomeworkview> {
   PlatformFile? attachedFile;
   String? selectedClass;
-  final topicController = TextEditingController();
+  String? selectedSubject;
+  final homeworkTitleController = TextEditingController();
   final descriptionController = TextEditingController();
-  final dueDateController = TextEditingController();
-  final timeController = TextEditingController();
+  final startTimeController = TextEditingController();
+  final endTimeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -91,20 +93,67 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                       ),
                       child: Column(
                         children: [
+                          //! Homework Title
                           _buildInputField(
                             image: "assets/addclass.png",
-                            child: DropdownButtonFormField<String>(
-                              hint: Text("Class section"),
+                            child: TextFormField(
+                              controller: homeworkTitleController,
                               decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Homework Title',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          //! Subjects
+                          _buildInputField(
+                            image: "assets/classSection.png",
+                            child: DropdownButtonFormField<String>(
+                              hint: Text("Subject"),
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
                                 border: InputBorder.none,
                                 isDense: true,
                               ),
                               items:
                                   [
-                                    'Class 1',
-                                    'Class 2',
-                                    'Class 3',
-                                    'Class 4',
+                                    'Subject 1',
+                                    'Subject 2',
+                                    'Subject 3',
+                                    'Subject 4',
+                                    'Subject 5',
+                                  ].map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                              onChanged: (value) {
+                                selectedSubject = value;
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          //! Class Section
+                          _buildInputField(
+                            image: "assets/Section.png",
+                            child: DropdownButtonFormField<String>(
+                              hint: Text("Class Section"),
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
+                                border: InputBorder.none,
+                                isDense: true,
+                              ),
+                              items:
+                                  [
+                                    'Class A',
+                                    'Class B',
+                                    'Class C',
+                                    'Class D',
                                   ].map((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
@@ -117,36 +166,14 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          _buildInputField(
-                            image: "assets/topicname.png",
-                            child: TextFormField(
-                              controller: topicController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Topic Name',
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          _buildInputField(
-                            image: "assets/description.png",
-                            child: TextFormField(
-                              controller: descriptionController,
-                              maxLines: 3,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Homework Description',
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
+                          //! Start Time
                           _buildInputField(
                             image: "assets/duedate.png",
                             child: TextFormField(
-                              controller: dueDateController,
+                              controller: startTimeController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'Due Date',
+                                hintText: 'Start Time',
                               ),
                               readOnly: true,
                               onTap: () async {
@@ -157,20 +184,21 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                                   lastDate: DateTime(2100),
                                 );
                                 if (picked != null) {
-                                  dueDateController.text =
+                                  startTimeController.text =
                                       '${picked.day}/${picked.month}/${picked.year}';
                                 }
                               },
                             ),
                           ),
                           const SizedBox(height: 20),
+                          //! End Time
                           _buildInputField(
                             image: "assets/time.png",
                             child: TextFormField(
-                              controller: timeController,
+                              controller: endTimeController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'Time',
+                                hintText: 'End Time',
                               ),
                               readOnly: true,
                               onTap: () async {
@@ -179,107 +207,119 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                                   initialTime: TimeOfDay.now(),
                                 );
                                 if (picked != null) {
-                                  timeController.text = picked.format(context);
+                                  endTimeController.text = picked.format(context);
                                 }
                               },
                             ),
                           ),
                           const SizedBox(height: 20),
 
-                          // Attachment
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder:
-                                    (_) => AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          ListTile(
-                                            leading: const Icon(Icons.image),
-                                            title: const Text(
-                                              'Upload Image',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15.43,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400,
+                          //! Attachment
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: ElevatedButton.icon(
+                              style: ButtonStyle(
+                                side: WidgetStateProperty.all(BorderSide(
+                                  width: 1,
+                                  color: Colors.black
+                                )),
+                                backgroundColor: WidgetStateProperty.all(Colors.white),
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder:
+                                      (_) => AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15),
+                                        ),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ListTile(
+                                              leading: const Icon(Icons.image),
+                                              title: const Text(
+                                                'Upload Image',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15.43,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w400,
+                                                ),
                                               ),
+                                              onTap: () async {
+                                                Navigator.pop(context);
+                                                final XFile? image =
+                                                    await ImagePicker().pickImage(
+                                                      source: ImageSource.gallery,
+                                                    );
+                                                if (image != null) {
+                                                  final file = File(image.path);
+                                                  final bytes =
+                                                      await file.readAsBytes();
+                                                  setState(() {
+                                                    attachedFile = PlatformFile(
+                                                      name: image.name,
+                                                      path: image.path,
+                                                      size: bytes.length,
+                                                      bytes: bytes,
+                                                    );
+                                                  });
+                                                }
+                                              },
                                             ),
-                                            onTap: () async {
-                                              Navigator.pop(context);
-                                              final XFile? image =
-                                                  await ImagePicker().pickImage(
-                                                    source: ImageSource.gallery,
-                                                  );
-                                              if (image != null) {
-                                                final file = File(image.path);
-                                                final bytes =
-                                                    await file.readAsBytes();
-                                                setState(() {
-                                                  attachedFile = PlatformFile(
-                                                    name: image.name,
-                                                    path: image.path,
-                                                    size: bytes.length,
-                                                    bytes: bytes,
-                                                  );
-                                                });
-                                              }
-                                            },
-                                          ),
-                                          ListTile(
-                                            leading: const Icon(
-                                              Icons.insert_drive_file,
-                                            ),
-                                            title: const Text(
-                                              'Upload File',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15.43,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400,
+                                            ListTile(
+                                              leading: const Icon(
+                                                Icons.insert_drive_file,
                                               ),
+                                              title: const Text(
+                                                'Upload File',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15.43,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              onTap: () async {
+                                                Navigator.pop(context);
+                                                FilePickerResult? result =
+                                                    await FilePicker.platform
+                                                        .pickFiles(
+                                                          allowMultiple: false,
+                                                          type: FileType.custom,
+                                                          allowedExtensions: [
+                                                            'jpg',
+                                                            'png',
+                                                            'pdf',
+                                                            'doc',
+                                                          ],
+                                                        );
+                                                if (result != null) {
+                                                  setState(() {
+                                                    attachedFile =
+                                                        result.files.first;
+                                                  });
+                                                }
+                                              },
                                             ),
-                                            onTap: () async {
-                                              Navigator.pop(context);
-                                              FilePickerResult? result =
-                                                  await FilePicker.platform
-                                                      .pickFiles(
-                                                        allowMultiple: false,
-                                                        type: FileType.custom,
-                                                        allowedExtensions: [
-                                                          'jpg',
-                                                          'png',
-                                                          'pdf',
-                                                          'doc',
-                                                        ],
-                                                      );
-                                              if (result != null) {
-                                                setState(() {
-                                                  attachedFile =
-                                                      result.files.first;
-                                                });
-                                              }
-                                            },
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                              );
-                            },
-                            icon: const Icon(Icons.attach_file),
-                            label: const Text("Attachment"),
+                                );
+                              },
+                              icon: const Icon(Icons.attach_file,color: Colors.black,),
+                              label: const Text("Attachment",style: TextStyle(
+                                color: Colors.black
+                              ),),
+                            ),
                           ),
 
                           const SizedBox(height: 30),
 
-                          // Submit
+                          //! Submit
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
@@ -294,9 +334,9 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                               ),
                               onPressed: () {
                                 try {
-                                  final dateParts = dueDateController.text
+                                  final dateParts = startTimeController.text
                                       .split('/');
-                                  final time = timeController.text;
+                                  final time = endTimeController.text;
                                   final parsedTime = TimeOfDay(
                                     hour: int.parse(time.split(':')[0]),
                                     minute: int.parse(
@@ -318,27 +358,23 @@ class _CreateHomeworkviewState extends State<CreateHomeworkview> {
                                     hour,
                                     parsedTime.minute,
                                   );
+                                  
 
-                                  final homework = HomeworkItem(
-                                    title: topicController.text,
-                                    subject: selectedClass ?? 'Unknown',
-                                    assignedStudents: 0,
+                                  final homework = HomeworkEntity(
+                                    title: homeworkTitleController.text ,
+                                    subject: selectedSubject ?? 'Unknown',
                                     attachmentFile: attachedFile,
                                     deadline: deadline,
                                   );
 
                                   Navigator.pop(context, homework);
                                 } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'Please select a valid date and time.',
-                                      ),
-                                    ),
+                                  CustomSnackBar.show(  context, "Required Start and End Time",
+                                    type: SnackBarType.error,
                                   );
                                 }
                               },
-
+                              //! Button
                               child: const Text(
                                 'Share Homework',
                                 style: TextStyle(
