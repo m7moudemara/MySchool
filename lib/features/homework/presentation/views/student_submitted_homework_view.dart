@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class StudentSubmittedHomeworkView extends StatelessWidget {
   const StudentSubmittedHomeworkView({super.key});
-  static const String id = '/TeacherHomeworkView';
+  static const String id = '/StudentSubmittedHomeworkView';
 
   @override
   Widget build(BuildContext context) {

@@ -2,20 +2,17 @@ import 'package:flutter/material.dart';
 
 class TeacherResultView extends StatefulWidget {
   const TeacherResultView({super.key});
-  static const String id = 'teacher_result_view';
+  static const String id = '/TeacherResultView';
 
   @override
   State<TeacherResultView> createState() => _TeacherResultViewState();
 }
 
 class _TeacherResultViewState extends State<TeacherResultView> {
-  // Class data
-  String selectedClass = 'Class 1';
   String selectedTerm = 'First';
   String selectedSubject = 'Math';
 
   // Dropdown options
-  final List<String> classes = ['Class 1', 'Class 2', 'Class 3', 'Class 4'];
   final List<String> terms = ['First', 'Second'];
   final List<String> subjects = [
     'English',
@@ -43,6 +40,12 @@ class _TeacherResultViewState extends State<TeacherResultView> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
@@ -72,52 +75,7 @@ class _TeacherResultViewState extends State<TeacherResultView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Class dropdown
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Class',
-                              style: TextStyle(
-                                color: Color(0xFFB6C8E2),
-                                fontSize: 10,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.04,
-                              ),
-                            ),
-                            DropdownButton<String>(
-                              isExpanded: true,
-                              value: selectedClass,
-                              items:
-                                  classes.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                          color: Color(0xFF2F394B),
-                                          fontSize: 14,
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.04,
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedClass = newValue!;
-                                });
-                              },
-                              underline: Container(),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      // Term dropdown
+                      //! Term dropdown
                       Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +120,7 @@ class _TeacherResultViewState extends State<TeacherResultView> {
                         ),
                       ),
 
-                      // Subject dropdown
+                      //! Subject dropdown
                       Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +179,7 @@ class _TeacherResultViewState extends State<TeacherResultView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Student',
+                          'Students',
                           style: TextStyle(
                             color: Color(0xFF2F394B),
                             fontSize: 16,
