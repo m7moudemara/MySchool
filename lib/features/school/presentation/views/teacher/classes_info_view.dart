@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:MySchool/features/grades/presentation/views/grades_view.dart';
-import 'package:MySchool/main.dart';
 import 'package:MySchool/features/school/presentation/views/student/attendance_view.dart';
 import 'package:MySchool/features/homework/presentation/views/student_submitted_homework_view.dart';
 import 'package:flutter/material.dart';
@@ -186,14 +184,14 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
 
                       const SizedBox(height: 24),
 
-                      // Menu items
-                      _buildMenuItem(
-                        icon: Icons.assignment,
-                        title: 'Results',
-                        onTap: () {
-                          Navigator.pushNamed(context, GradesView.id);
-                        },
-                      ),
+                // Menu items
+                _buildMenuItem(
+                  icon: Icons.assignment,
+                  title: 'Results',
+                  onTap: () {
+                  Navigator.pushNamed(context, GradesView.id);
+                  },
+                ),
 
                       _buildMenuItem(
                         icon: Icons.calendar_today,

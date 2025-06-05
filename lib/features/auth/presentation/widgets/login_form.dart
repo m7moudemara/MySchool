@@ -1,5 +1,5 @@
 import 'package:MySchool/features/auth/presentation/widgets/custom_button.dart';
-import 'package:MySchool/features/school/presentation/widgets/custom_text_field.dart';
+import 'package:MySchool/core/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatelessWidget {

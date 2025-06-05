@@ -1,12 +1,12 @@
-import 'package:MySchool/features/grades/data/models/subject_model.dart';
-import 'package:MySchool/features/grades/data/repositories/grades_repository.dart';
+import 'package:MySchool/features/grades/domain/entities/student_result_entity.dart';
+import 'package:MySchool/features/grades/domain/repositories/grades_repository.dart';
 
 class GetGradesUseCase {
-  final IGradesRepository repository;
+  final GradesRepository repository;
 
   GetGradesUseCase(this.repository);
 
-  Future<Subject> call(String studentId) {
-    return repository.getGrades(studentId);
+  Future<StudentResultEntity?> call(String term) {
+    return repository.getGrades(term);
   }
 }

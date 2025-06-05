@@ -5,7 +5,7 @@ import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/login/login_cubit.dart';
 import 'package:MySchool/features/dashbord/presentation/cubits/dashboard_cubit.dart';
-import 'package:MySchool/features/grades/presentation/cubits/grade_cubit.dart';
+import 'package:MySchool/features/grades/presentation/cubits/student/grade_cubit.dart';
 import 'package:MySchool/features/homework/data/home_work/home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/teacher/cubit/teacher_home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/teacher/cubit/teacher_view_homework_cubit.dart';
