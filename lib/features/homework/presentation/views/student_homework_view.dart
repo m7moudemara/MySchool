@@ -129,34 +129,41 @@ class _StudentHomeworkViewState extends State<StudentHomeworkView> {
         children: [
           Image.asset("assets/book.png"),
           const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  subject,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.access_time, size: 16),
-                    const SizedBox(width: 4),
-                    Text(
-                      daysLeft,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+         Expanded(
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        subject,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      const SizedBox(height: 4),
+      Row(
+        children: [
+          const Icon(Icons.access_time, size: 16),
+          const SizedBox(width: 4),
+          Flexible(
+            child: Text(
+              daysLeft,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
+        ],
+      ),
+    ],
+  ),
+),
+
           const SizedBox(width: 8),
           SizedBox(
             width: 100,
