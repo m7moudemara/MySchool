@@ -30,4 +30,8 @@ class TeacherHomeWorkRepository {
         result.map((element) => HomeworkModel.fromJson(element)).toList();
     return resultx;
   }
+
+  deleteHomeWork(int id) async {
+    await teacherHomeWorkWebServices.deleteHomeWork(id);
+  }
 }

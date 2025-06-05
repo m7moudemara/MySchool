@@ -174,6 +174,7 @@ class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as Map<String, dynamic>;
       } else {
+        // Unable to show SnackBar here due to missing BuildContext.
         throw Exception('Failed to fetch dashboard data');
       }
     } catch (e) {

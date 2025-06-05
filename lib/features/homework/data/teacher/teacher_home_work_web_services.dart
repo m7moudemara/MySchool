@@ -6,10 +6,8 @@ import '../../../../constants/strings.dart';
 import '../../../../main.dart';
 
 class TeacherHomeWorkWebServices {
-    Future<List<Map<String, dynamic>>> fetchTeacherClasses() async {
-    final url = Uri.parse(
-      '$baseUrl/api/classes',
-    ); 
+  Future<List<Map<String, dynamic>>> fetchTeacherClasses() async {
+    final url = Uri.parse('$baseUrl/api/classes');
     final response = await http.get(
       url,
       headers: {
@@ -34,10 +32,8 @@ class TeacherHomeWorkWebServices {
     }
   }
 
-      Future<List<Map<String, dynamic>>> fetchTeacherSubjects() async {
-    final url = Uri.parse(
-      '$baseUrl/api/subjects',
-    ); 
+  Future<List<Map<String, dynamic>>> fetchTeacherSubjects() async {
+    final url = Uri.parse('$baseUrl/api/subjects');
     final response = await http.get(
       url,
       headers: {
@@ -62,16 +58,15 @@ class TeacherHomeWorkWebServices {
     }
   }
 
-        Future<List<Map<String, dynamic>>> fetchTeacherHomeWorks() async {
-    final url = Uri.parse(
-      '$baseUrl/api/assignments',
-    ); 
+  Future<List<Map<String, dynamic>>> fetchTeacherHomeWorks() async {
+    String? token = await sharedPrefController.getToken();
+    final url = Uri.parse('$baseUrl/api/assignments?PageSize=500');
     final response = await http.get(
       url,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        'Authorization': 'Bearer $token',
       },
     );
 
@@ -90,5 +85,22 @@ class TeacherHomeWorkWebServices {
     }
   }
 
-
+  deleteHomeWork(int id) async {
+    final url = Uri.parse('$baseUrl/api/assignments/$id');
+    final response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print('success');
+      print(response.statusCode);
+    } else {
+      print('faild');
+      print(response.statusCode);
+    }
+  }
 }

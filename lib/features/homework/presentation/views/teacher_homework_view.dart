@@ -1,3 +1,4 @@
+import 'package:MySchool/features/homework/data/home_work/home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/homework_model.dart';
 import 'package:MySchool/features/homework/data/teacher/cubit/teacher_home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/teacher/cubit/teacher_view_homework_cubit.dart';
@@ -25,10 +26,10 @@ class _TeacherHomeworkViewState extends State<TeacherHomeworkView> {
     setState(() {});
   }
 
-  void _removeExpiredHomework() {
-    final now = DateTime.now();
-    homeWorks.removeWhere((hw) => hw.deadline.isBefore(now));
-  }
+  // void _removeExpiredHomework() {
+  //   final now = DateTime.now();
+  //   homeWorks.removeWhere((hw) => hw.deadline.isBefore(now));
+  // }
 
   // Local list of homework items
   // This is a mock data list. In a real application, this data would come from a database or API.
@@ -56,9 +57,10 @@ class _TeacherHomeworkViewState extends State<TeacherHomeworkView> {
           },
           builder: (context, state) {
             if (state is HomeWorksLoaded) {
-              homeWorks = state.homeWorks;
-
-              // List<HomeworkModel> homeWorks = state.homeWorks;
+              homeWorks =
+                  state.homeWorks
+                      .where((element) => element.is_deadline_passed == false)
+                      .toList();
               return Container(
                 padding: EdgeInsets.all(16),
                 child: Column(
@@ -102,7 +104,6 @@ class _TeacherHomeworkViewState extends State<TeacherHomeworkView> {
                       ),
                     ),
                     SizedBox(height: 16),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -289,6 +290,9 @@ class _TeacherHomeworkViewState extends State<TeacherHomeworkView> {
                       //! Delete Button
                       InkWell(
                         onTap: () {
+                          BlocProvider.of<TeacherViewHomeworkCubit>(
+                            context,
+                          ).deleteHomeWork(item.id);
                           setState(() {
                             homeWorks.remove(item);
                           });
