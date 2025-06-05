@@ -16,17 +16,7 @@ class HomeWorkRepository {
         assignments
             .map((assignment) => HomeworkModel.fromJson(assignment))
             .toList();
-    // print(homeworkList);
-    // print('ffffffffffffffffffffffffffffffffffffffffffffffffffff');
     return homeworkList;
-    // print(
-    //   assignments
-    //       .map((assignment) => HomeworkModel.fromJson(assignment))
-    //       .toList(),
-    // );
-    // return assignments
-    //     .map((assignment) => HomeworkModel.fromJson(assignment))
-    //     .toList();
   }
 
   // Example method to submit homework
@@ -35,4 +25,5 @@ class HomeWorkRepository {
     await Future.delayed(Duration(seconds: 1));
     return true; // Assume submission is successful
   }
+
 }

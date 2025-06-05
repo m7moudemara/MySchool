@@ -127,6 +127,33 @@ class _TeacherTimeTableViewState extends State<TeacherTimeTableView> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is TimeTableLoaded) {
                   final lessons = state.lessons;
+                  if (lessons.isEmpty) {
+                    return Center(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/holiday.png',
+                              width: 300,
+                              fit: BoxFit.contain,
+                            ),
+                            Text(
+                              'It`s a Holiday',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: const Color(0xFF0C46C4),
+                                fontSize: 30,
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
+                                height: 1.30,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                   return ListView.builder(
                     itemCount: lessons.length,
                     itemBuilder: (context, index) {

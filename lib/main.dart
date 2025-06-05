@@ -1,3 +1,4 @@
+import 'package:MySchool/controllers/file_controller.dart';
 import 'package:MySchool/controllers/shared_pref_controller.dart';
 import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit.dart';
@@ -6,6 +7,8 @@ import 'package:MySchool/features/auth/presentation/cubit/login/login_cubit.dart
 import 'package:MySchool/features/dashbord/presentation/cubits/dashboard_cubit.dart';
 import 'package:MySchool/features/grades/presentation/cubits/grade_cubit.dart';
 import 'package:MySchool/features/homework/data/home_work/home_work_cubit.dart';
+import 'package:MySchool/features/homework/data/teacher/cubit/teacher_home_work_cubit.dart';
+import 'package:MySchool/features/homework/data/teacher/cubit/teacher_view_homework_cubit.dart';
 import 'package:MySchool/features/notifications/presentation/cubit/notification_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/children_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/parent_cubit.dart';
@@ -22,8 +25,8 @@ import 'package:MySchool/features/profile/presentation/cubits/profile_cubit/prof
 
 import 'features/school/presentation/views/student/data/attendence_cubit.dart';
 
-
 SharedPrefController sharedPrefController = SharedPrefController();
+FileController fileController = FileController();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +47,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<AttendenceCubit>(create: (context) => AttendenceCubit()),
         BlocProvider<HomeWorkCubit>(create: (context) => HomeWorkCubit()),
         BlocProvider<ClassesCubit>(create: (context) => ClassesCubit()),
+        BlocProvider<TeacherHomeWorkCubit>(
+          create: (context) => TeacherHomeWorkCubit(),
+        ),
+        BlocProvider<TeacherViewHomeworkCubit>(
+          create: (context) => TeacherViewHomeworkCubit(),
+        ),
 
         BlocProvider(create: (_) => getIt<UserCubit>()),
         BlocProvider(create: (_) => getIt<DashboardUserCubit>()),

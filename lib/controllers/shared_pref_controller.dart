@@ -15,4 +15,14 @@ class SharedPrefController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
   }
+
+    saveClassName(String name) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('className', name);
+  }
+
+    Future<String?> getClassName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('className');
+  }
 }

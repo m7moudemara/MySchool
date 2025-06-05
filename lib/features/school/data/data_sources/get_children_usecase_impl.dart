@@ -1,6 +1,5 @@
 import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:MySchool/features/school/domain/usecases/get_children.dart';
-import '../models/parent_model.dart';
 import 'dio_service.dart';
 
 class GetChildrenUseCaseImpl implements GetChildrenUseCase {

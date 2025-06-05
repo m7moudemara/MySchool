@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:MySchool/constants/strings.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../main.dart';
 
 class HomeWorkWebservices {
@@ -12,7 +13,7 @@ class HomeWorkWebservices {
   // Example method to fetch homework assignments
   Future<List<Map<String, dynamic>>> fetchHomeworkAssignments() async {
     final url = Uri.parse(
-      '$baseUrl/api/assignments',
+      '$baseUrl/api/assignments?pageSize=500&Where[class.name]=B',
     ); // Replace with your API endpoint
     final response = await http.get(
       url,
@@ -28,6 +29,8 @@ class HomeWorkWebservices {
         jsonDecode(response.body)['data'],
       );
       // Parse the response body and return the homework assignments
+      print(data.length);
+      print('66666666666666666');
       return data;
       // Adjust based on your API response structure
     } else {
@@ -45,6 +48,44 @@ class HomeWorkWebservices {
     // Here you would typically make an HTTP POST request to your backend API
     // with the assignment data.
   }
+
+  // submitAssignment({
+  //   required int id,
+  //   required PlatformFile plateFormFile,
+  // }) async {
+  //   Dio dio = Dio();
+  //   String? token = await sharedPrefController.getToken();
+  //   FormData formData = FormData.fromMap({
+  //     'assignment ': await MultipartFile.fromFile(
+  //       plateFormFile.path!,
+  //       filename: plateFormFile.name,
+  //     ),
+  //   });
+
+  //   try {
+  //     Response response = await dio.post(
+  //       '$baseUrl/api/assignments/$id/submissions',
+  //       data: formData,
+  //       options: Options(
+  //         headers: {
+  //           'Authorization': 'Bearer $token',
+  //           'Content-Type': 'multipart/form-data',
+  //         },
+  //       ),
+  //     );
+
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       print('Upload successful');
+  //       return true;
+  //     } else {
+  //       print('Upload failed: ${response.statusCode}');
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     print('Error during upload: $e');
+  //     return false;
+  //   }
+  // }
 
   // Additional methods for updating and deleting assignments can be added here.
 }

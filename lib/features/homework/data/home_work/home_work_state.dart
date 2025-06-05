@@ -8,7 +8,9 @@ abstract class HomeWorkState extends Equatable {
 }
 
 class HomeWorkInitial extends HomeWorkState {}
+
 class HomeWorkLoading extends HomeWorkState {}
+
 class HomeWorkLoaded extends HomeWorkState {
   final List<HomeworkModel> homeWorks;
 
@@ -17,6 +19,7 @@ class HomeWorkLoaded extends HomeWorkState {
   @override
   List<Object> get props => [homeWorks];
 }
+
 class HomeWorkError extends HomeWorkState {
   final String message;
 
@@ -24,6 +27,21 @@ class HomeWorkError extends HomeWorkState {
 
   @override
   List<Object> get props => [message];
+}
+class HomeWorkSubmittedLoading extends HomeWorkState {
+}
+
+class HomeWorkSubmittedSuccess extends HomeWorkState {
+
+
+}
+
+class HomeWorkSubmittedError extends HomeWorkState {
+  final String message;
+
+  const HomeWorkSubmittedError(this.message);
+
+
 }
 
 

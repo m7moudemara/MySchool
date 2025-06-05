@@ -92,8 +92,6 @@ import 'dart:ui';
 import 'package:MySchool/features/time_table/data/datasources/timetable_local_data_source.dart';
 import 'package:MySchool/features/time_table/domain/entities/lesson_entity.dart';
 
-import 'lessons_repository.dart';
-import 'lessons_web_services.dart';
 
 class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
   final Map<String, List<LessonEntity>> localLessons = {

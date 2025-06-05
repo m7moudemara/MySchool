@@ -10,9 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../constants/strings.dart';
-import '../../../../../core/di/get_it.dart';
 import '../../../../../main.dart';
-import '../../../../auth/presentation/cubit/user_cubit.dart';
 import '../../../data/models/student_model.dart';
 import 'data/attendence_cubit.dart';
 

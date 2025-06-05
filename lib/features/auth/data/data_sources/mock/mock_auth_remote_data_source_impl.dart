@@ -136,7 +136,9 @@ class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           jsonDecode(response.body)['token'],
           user['role'],
         );
-
+        if (user['role'] == 'Student') {
+          sharedPrefController.saveClassName(userData['class_name']);
+        }
         return {
           'success': true,
           'user': user,
