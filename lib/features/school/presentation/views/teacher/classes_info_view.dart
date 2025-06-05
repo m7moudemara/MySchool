@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:MySchool/features/grades/presentation/views/student_grades_view.dart';
 import 'package:MySchool/features/school/presentation/views/student/attendance_view.dart';
 import 'package:MySchool/features/homework/presentation/views/student_submitted_homework_view.dart';
 import 'package:flutter/material.dart';
@@ -190,7 +191,7 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
                         icon: Icons.assignment,
                         title: 'Results',
                         onTap: () {
-                          Navigator.pushNamed(context, GradesView.id);
+                          // Navigator.pushNamed(context, GradesView.id);
                         },
                       ),
 
