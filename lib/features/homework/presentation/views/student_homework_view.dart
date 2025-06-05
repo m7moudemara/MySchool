@@ -84,60 +84,62 @@ class _StudentHomeworkViewState extends State<StudentHomeworkView> {
       color: Colors.white,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 21.0, vertical: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset("assets/book.png"),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            subject,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Icon(Icons.access_time, size: 16),
-                              const SizedBox(width: 4),
-                              Text(
-                                daysLeft,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+
+  padding: const EdgeInsets.symmetric(horizontal: 21.0, vertical: 12),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset("assets/book.png"),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  subject,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    const Icon(Icons.access_time, size: 16),
+                    const SizedBox(width: 4),
+                    Text(
+                      daysLeft,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    task,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
-            button,
-          ],
+          ),
+          const SizedBox(width: 8),
+          SizedBox(
+            width: 100,
+            child: button,
+          ),
+        ],
+      ),
+      const SizedBox(height: 12),
+      Text(
+        task,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
         ),
       ),
+    ],
+  ),
+),
     );
   }
 

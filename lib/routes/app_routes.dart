@@ -68,7 +68,7 @@ class AppRoutes {
     StudentTimeTableView.id: (context) => StudentTimeTableView(),
     TeacherTimeTableView.id: (context) => TeacherTimeTableView(),
     ParentTimeTableView.id: (context) => ParentTimeTableView(),
-
+    
     StudentSubmittedHomeworkView.id : (context) => StudentSubmittedHomeworkView(),
   };
 }

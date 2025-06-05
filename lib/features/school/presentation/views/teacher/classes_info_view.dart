@@ -190,7 +190,7 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
                         icon: Icons.assignment,
                         title: 'Results',
                         onTap: () {
-                          // Navigator.pushNamed(context, GradesView.id);
+                          Navigator.pushNamed(context, GradesView.id);
                         },
                       ),
 
