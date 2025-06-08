@@ -6,6 +6,7 @@ import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/login/login_cubit.dart';
 import 'package:MySchool/features/dashbord/presentation/cubits/dashboard_cubit.dart';
 import 'package:MySchool/features/grades/presentation/cubits/student/grade_cubit.dart';
+import 'package:MySchool/features/grades/presentation/cubits/teacher/cubit/teacher_grade_cubit.dart';
 import 'package:MySchool/features/homework/data/home_work/home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/teacher/cubit/teacher_home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/teacher/cubit/teacher_view_homework_cubit.dart';
@@ -53,7 +54,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<TeacherViewHomeworkCubit>(
           create: (context) => TeacherViewHomeworkCubit(),
         ),
-
+        BlocProvider<TeacherGradeCubit>(
+          create: (context) => TeacherGradeCubit(),
+        ),
         BlocProvider(create: (_) => getIt<UserCubit>()),
         BlocProvider(create: (_) => getIt<DashboardUserCubit>()),
         BlocProvider(create: (_) => getIt<DashboardCubit>()),

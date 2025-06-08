@@ -1,4 +1,9 @@
+import 'package:MySchool/features/grades/presentation/cubits/student/grade_cubit.dart';
+import 'package:MySchool/features/grades/presentation/cubits/teacher/cubit/teacher_grade_cubit.dart';
+import 'package:MySchool/features/grades/presentation/cubits/teacher/cubit/teacher_grade_state.dart';
+import 'package:MySchool/features/school/presentation/views/student/data/attendance_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TeacherResultView extends StatefulWidget {
   const TeacherResultView({super.key});
@@ -10,28 +15,20 @@ class TeacherResultView extends StatefulWidget {
 
 class _TeacherResultViewState extends State<TeacherResultView> {
   String selectedTerm = 'First';
-  String selectedSubject = 'Math';
+  late String selectedSubject;
 
   // Dropdown options
   final List<String> terms = ['First', 'Second'];
-  final List<String> subjects = [
-    'English',
-    'Arabic',
-    'Science',
-    'Math',
-    'History',
-  ];
+  final List<String> subjects = [];
 
   // Students list and their results
-  List<StudentResult> students = [
-    StudentResult(name: 'Mohamed Ashraf', grade: 0, total: 100),
-    StudentResult(name: 'Ahmed Ali', grade: 0, total: 100),
-    StudentResult(name: 'Sara Mohamed', grade: 0, total: 100),
-    StudentResult(name: 'Youssef Hassan', grade: 0, total: 100),
-    StudentResult(name: 'Fatima Mahmoud', grade: 0, total: 100),
-    StudentResult(name: 'Omar Khaled', grade: 0, total: 100),
-    StudentResult(name: 'Lina Samir', grade: 0, total: 100),
-  ];
+  List<StudentResult> students = [];
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<TeacherGradeCubit>(context).loadGrades();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,164 +57,205 @@ class _TeacherResultViewState extends State<TeacherResultView> {
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            width: screenWidth,
-            constraints: BoxConstraints(minHeight: screenHeight),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              children: [
-                // Back button
-
-                // Class, term and subject selection row
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: BlocConsumer<TeacherGradeCubit, TeacherGradeState>(
+          listener: (context, state) {
+            if (state is TeacherGradeLoaded) {
+              List<StudentResult> sx =
+                  state.studentResults.whereType<StudentResult>().toList();
+              setState(() {
+                students =
+                    state.studentResults.whereType<StudentResult>().toList();
+                for (var item in sx) {
+                  if (!subjects.contains(item.subjectName)) {
+                    subjects.add(item.subjectName);
+                  }
+                }
+                selectedSubject = subjects[0];
+              });
+            }
+          },
+          builder: (context, state) {
+            if (state is TeacherGradeLoading) {
+              return Center(child: Image.asset('assets/loading.gif'));
+            } else if (state is TeacherGradeLoaded) {
+              return SingleChildScrollView(
+                child: Container(
+                  width: screenWidth,
+                  constraints: BoxConstraints(minHeight: screenHeight),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
                     children: [
-                      //! Term dropdown
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      // Back button
+
+                      // Class, term and subject selection row
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Term',
-                              style: TextStyle(
-                                color: Color(0xFFB6C8E2),
-                                fontSize: 10,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.04,
+                            //! Term dropdown
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Term',
+                                    style: TextStyle(
+                                      color: Color(0xFFB6C8E2),
+                                      fontSize: 10,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.04,
+                                    ),
+                                  ),
+                                  DropdownButton<String>(
+                                    isExpanded: true,
+                                    value: selectedTerm,
+                                    items:
+                                        terms.map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                color: Color(0xFF2F394B),
+                                                fontSize: 14,
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w600,
+                                                letterSpacing: 0.04,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        selectedTerm = newValue!;
+                                        BlocProvider.of<TeacherGradeCubit>(
+                                          context,
+                                        ).selectTerm(
+                                          selectedTerm,
+                                          selectedSubject,
+                                        );
+                                      });
+                                    },
+                                    underline: Container(),
+                                  ),
+                                ],
                               ),
                             ),
-                            DropdownButton<String>(
-                              isExpanded: true,
-                              value: selectedTerm,
-                              items:
-                                  terms.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                          color: Color(0xFF2F394B),
-                                          fontSize: 14,
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.04,
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedTerm = newValue!;
-                                });
-                              },
-                              underline: Container(),
+
+                            //! Subject dropdown
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Subject',
+                                    style: TextStyle(
+                                      color: Color(0xFFB6C8E2),
+                                      fontSize: 10,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.04,
+                                    ),
+                                  ),
+                                  DropdownButton<String>(
+                                    isExpanded: true,
+                                    value: selectedSubject,
+                                    items:
+                                        subjects.map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                color: Color(0xFF2F394B),
+                                                fontSize: 14,
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w600,
+                                                letterSpacing: 0.04,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        selectedSubject = newValue!;
+                                        BlocProvider.of<TeacherGradeCubit>(
+                                          context,
+                                        ).selectTerm(
+                                          selectedTerm,
+                                          selectedSubject,
+                                        );
+                                      });
+                                    },
+                                    underline: Container(),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
 
-                      //! Subject dropdown
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Subject',
-                              style: TextStyle(
-                                color: Color(0xFFB6C8E2),
-                                fontSize: 10,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.04,
+                      // Students table header
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Container(
+                          width: double.infinity,
+                          height: 56,
+                          decoration: BoxDecoration(color: Colors.white),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Students',
+                                style: TextStyle(
+                                  color: Color(0xFF2F394B),
+                                  fontSize: 16,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.02,
+                                ),
                               ),
-                            ),
-                            DropdownButton<String>(
-                              isExpanded: true,
-                              value: selectedSubject,
-                              items:
-                                  subjects.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                          color: Color(0xFF2F394B),
-                                          fontSize: 14,
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.04,
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedSubject = newValue!;
-                                });
-                              },
-                              underline: Container(),
-                            ),
-                          ],
+                              Text(
+                                'Grades',
+                                style: TextStyle(
+                                  color: Color(0xFF2F394B),
+                                  fontSize: 16,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.02,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      // Students list
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: students.length,
+                          itemBuilder: (context, index) {
+                            var item = students[index];
+                            return _buildStudentItem(item, index);
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
-
-                // Students table header
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Container(
-                    width: double.infinity,
-                    height: 56,
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Students',
-                          style: TextStyle(
-                            color: Color(0xFF2F394B),
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.02,
-                          ),
-                        ),
-                        Text(
-                          'Grades',
-                          style: TextStyle(
-                            color: Color(0xFF2F394B),
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.02,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Students list
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: students.length,
-                    itemBuilder: (context, index) {
-                      return _buildStudentItem(students[index], index);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
+              );
+            } else {
+              return Center(child: Text('error'));
+            }
+          },
         ),
       ),
 
@@ -342,12 +380,10 @@ class _TeacherResultViewState extends State<TeacherResultView> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      final newGrade =
-                          int.tryParse(gradeController.text) ?? student.grade;
+                      final newGrade = int.parse(gradeController.text);
                       setState(() {
                         student.grade = newGrade;
                       });
-
                       Navigator.pop(context);
                     },
                     child: Container(
@@ -397,6 +433,9 @@ class _TeacherResultViewState extends State<TeacherResultView> {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
+                  BlocProvider.of<TeacherGradeCubit>(
+                    context,
+                  ).saveGrade(students);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Changes saved successfully')),
                   );
@@ -411,9 +450,36 @@ class _TeacherResultViewState extends State<TeacherResultView> {
 }
 
 class StudentResult {
+  int id;
   String name;
+  String subjectName;
   int grade;
   int total;
+  int term;
+  int studentId;
+  int subjectId;
 
-  StudentResult({required this.name, required this.grade, required this.total});
+  StudentResult({
+    required this.id,
+    required this.name,
+    required this.subjectName,
+    required this.grade,
+    required this.total,
+    required this.term,
+    required this.studentId,
+    required this.subjectId,
+  });
+
+  factory StudentResult.fromJson(Map<String, dynamic> json) {
+    return StudentResult(
+      id: json['id'],
+      name: json['student']['name'] as String,
+      subjectName: json['subject']['name'] as String,
+      grade: json['mark'] as int,
+      total: json['total'] ?? 100,
+      term: json['term_number'] ?? 1,
+      studentId: json['student']['id'],
+      subjectId: json['subject']['id'],
+    );
+  }
 }

@@ -4,7 +4,7 @@ import 'package:MySchool/features/grades/presentation/cubits/student/grade_state
 import 'package:MySchool/features/grades/presentation/widgets/result_item.dart';
 import 'package:MySchool/features/grades/presentation/widgets/term_list_widget.dart';
 import 'package:MySchool/features/grades/presentation/widgets/term_widget.dart';
-import 'package:MySchool/features/school/data/models/student_model.dart';
+// import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -18,4 +18,18 @@ class StudentResultEntity {
     required this.overallPercentage,
     required this.overallGrade,
   });
+
+  factory StudentResultEntity.fromJson(Map<String, dynamic> json) {
+    return StudentResultEntity(
+      studentName: json['studentName'] as String,
+      className: json['className'] as String,
+      imageUrl: json['imageUrl'] as String,
+      subjects: (json['subjects'] as List<dynamic>)
+          .map((e) => SubjectGrade.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      totalMarks: json['totalMarks'] as String,
+      overallPercentage: json['overallPercentage'] as String,
+      overallGrade: json['overallGrade'] as String,
+    );
+  }
 }

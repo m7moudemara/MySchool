@@ -192,6 +192,7 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
                         title: 'Results',
                         onTap: () {
                           // Navigator.pushNamed(context, GradesView.id);
+                          Navigator.pushNamed(context, StudentGradesView.id);
                         },
                       ),
 
