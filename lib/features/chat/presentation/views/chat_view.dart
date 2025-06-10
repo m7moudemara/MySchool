@@ -127,7 +127,7 @@ class _ChatViewState extends State<ChatView> {
       appBar: AppBar(
         title: Column(
           children: [
-            const Text('name', style: TextStyle(color: Colors.black)),
+            Text('user', style: TextStyle(color: Colors.black)),
             const Text(
               'state',
               style: TextStyle(color: Colors.black45, fontSize: 12),

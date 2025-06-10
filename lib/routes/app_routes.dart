@@ -45,7 +45,7 @@ class AppRoutes {
     IntroView.id: (context) => IntroView(),
     LoginView.id: (context) => LoginView(),
     StudentDashBoard.id: (context) => StudentDashBoard(),
-    StudentGradesView.id : (context) => StudentGradesView(),
+    StudentGradesView.id: (context) => StudentGradesView(),
     CreateNewPasswordView.id: (context) => CreateNewPasswordView(),
     NotificationsView.id: (context) => NotificationsView(),
     StudentHomeworkView.id: (context) => StudentHomeworkView(),
@@ -58,18 +58,20 @@ class AppRoutes {
     MyChildrenView.id: (context) => MyChildrenView(),
     TeacherHomeworkView.id: (context) => const TeacherHomeworkView(),
     TeacherHomeworkView.id: (context) => const TeacherHomeworkView(),
-    TeacherCreateHomeworkview.id: (context) => const TeacherCreateHomeworkview(),
+    TeacherCreateHomeworkview.id:
+        (context) => const TeacherCreateHomeworkview(),
     TeacherResultView.id: (context) => const TeacherResultView(),
     TeacherAttendanceView.id: (context) => const TeacherAttendanceView(),
-    PersonalDataView.id : (context) => const PersonalDataView(),
-    SettingsView.id : (context) => const SettingsView(),
-    HelpCenterView.id : (context) => const HelpCenterView(),
-    //! Time Table 
+    PersonalDataView.id: (context) => const PersonalDataView(),
+    SettingsView.id: (context) => const SettingsView(),
+    HelpCenterView.id: (context) => const HelpCenterView(),
+    //! Time Table
     StudentTimeTableView.id: (context) => StudentTimeTableView(),
     TeacherTimeTableView.id: (context) => TeacherTimeTableView(),
     ParentTimeTableView.id: (context) => ParentTimeTableView(),
-    
-    StudentSubmittedHomeworkView.id : (context) => StudentSubmittedHomeworkView(),
+
+    StudentSubmittedHomeworkView.id:
+        (context) => StudentSubmittedHomeworkView(),
   };
 }
 

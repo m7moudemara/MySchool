@@ -3,7 +3,9 @@ import 'package:MySchool/features/school/presentation/views/teacher/data/classes
 import 'package:MySchool/features/school/presentation/views/teacher/data/classes_web_services.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
+import '../../student/data/attendance_model.dart';
 part 'classes_state.dart';
 
 class ClassesCubit extends Cubit<ClassesState> {
@@ -17,9 +19,94 @@ class ClassesCubit extends Cubit<ClassesState> {
       );
       Future.delayed(Duration(seconds: 2));
       List<ClassStudentModel> classes = await classesRepository.getClasses();
-      emit(ClassesLoaded(classes));
+      List<TeacherAttendanceForStudent> attendances = await classesRepository
+          .getAttendance(classes[0].classId);
+      emit(ClassesLoaded(classes, attendances));
     } catch (e) {
       emit(ClassesLoadedError(message: 'there is an error'));
     }
+  }
+
+  void getClassesx(int classId) async {
+    emit(ClassesLoading());
+    try {
+      ClassesRepository classesRepository = ClassesRepository(
+        classesWebServices: ClassesWebServices(),
+      );
+      Future.delayed(Duration(seconds: 2));
+      List<ClassStudentModel> classes = await classesRepository.getClasses();
+      List<TeacherAttendanceForStudent> attendances = await classesRepository
+          .getAttendance(classId);
+      emit(ClassesLoaded2(classes, attendances));
+    } catch (e) {
+      emit(ClassesLoadedError(message: 'there is an error'));
+    }
+  }
+
+  saveAttendance(
+    List<TeacherAttendanceForStudent> updated,
+    List<TeacherAttendanceForStudent> savedAbsent,
+    List<TeacherAttendanceForStudent> savedPresent,
+    int selectedClassId,
+  ) {
+    ClassesRepository classesRepository = ClassesRepository(
+      classesWebServices: ClassesWebServices(),
+    );
+    // print(updated.length);
+    // print(savedAbsent.length);
+    // print(savedPresent.length);
+    if (updated.isNotEmpty) {
+      updated.forEach((element) {
+        if (element.attendanceModel!.status == 'Present') {
+          classesRepository.updateAttendance(
+            element.student.id,
+            selectedClassId,
+            'Absent',
+            element.attendanceModel!.id,
+          );
+        } else {
+          classesRepository.updateAttendance(
+            element.student.id,
+            selectedClassId,
+            'Present',
+            element.attendanceModel!.id,
+          );
+        }
+      });
+    }
+    if (savedAbsent.isNotEmpty) {
+      savedAbsent.forEach((element) {
+        classesRepository.saveAttendance(
+          element.student.id,
+          selectedClassId,
+          'Absent',
+        );
+      });
+    }
+    if (savedPresent.isNotEmpty) {
+      savedPresent.forEach((element) {
+        classesRepository.saveAttendance(
+          element.student.id,
+          selectedClassId,
+          'Present',
+        );
+      });
+    }
+
+    // for (var i.student.id,
+    //       seltem in attendances) {
+    //   if (item.attendanceModel == null) {
+    //     classesRepository.saveAttendance(
+    //       item.student.id,
+    //       selectedClassId,
+    //       'Absent',
+    //     );
+    //   } else {
+    //     classesRepository.saveAttendance(
+    //       itemectedClassId,
+    //       'Absent',
+    //     );
+    //   }
+    // }
   }
 }

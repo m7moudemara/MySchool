@@ -96,11 +96,7 @@ class TeacherHomeWorkWebServices {
       },
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print('success');
-      print(response.statusCode);
     } else {
-      print('faild');
-      print(response.statusCode);
     }
   }
 }

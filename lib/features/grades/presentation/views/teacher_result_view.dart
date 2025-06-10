@@ -1,9 +1,10 @@
-import 'package:MySchool/features/grades/presentation/cubits/student/grade_cubit.dart';
-import 'package:MySchool/features/grades/presentation/cubits/teacher/cubit/teacher_grade_cubit.dart';
-import 'package:MySchool/features/grades/presentation/cubits/teacher/cubit/teacher_grade_state.dart';
-import 'package:MySchool/features/school/presentation/views/student/data/attendance_model.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:MySchool/features/grades/presentation/cubits/teacher/cubit/teacher_grade_cubit.dart';
+import 'package:MySchool/features/grades/presentation/cubits/teacher/cubit/teacher_grade_state.dart';
+import 'package:MySchool/features/school/data/models/student_model.dart';
+import '../../../homework/data/teacher/teacher_subject_model.dart';
 
 class TeacherResultView extends StatefulWidget {
   const TeacherResultView({super.key});
@@ -15,14 +16,15 @@ class TeacherResultView extends StatefulWidget {
 
 class _TeacherResultViewState extends State<TeacherResultView> {
   String selectedTerm = 'First';
-  late String selectedSubject;
+  String selectedSubject = '';
 
   // Dropdown options
   final List<String> terms = ['First', 'Second'];
-  final List<String> subjects = [];
+  List<String> subjects = [];
 
   // Students list and their results
-  List<StudentResult> students = [];
+  List<TeacherResultModel> students = [];
+  List<TeacherSubjectModel> subjectsModels = [];
 
   @override
   void initState() {
@@ -60,16 +62,16 @@ class _TeacherResultViewState extends State<TeacherResultView> {
         child: BlocConsumer<TeacherGradeCubit, TeacherGradeState>(
           listener: (context, state) {
             if (state is TeacherGradeLoaded) {
-              List<StudentResult> sx =
-                  state.studentResults.whereType<StudentResult>().toList();
               setState(() {
                 students =
-                    state.studentResults.whereType<StudentResult>().toList();
-                for (var item in sx) {
-                  if (!subjects.contains(item.subjectName)) {
-                    subjects.add(item.subjectName);
-                  }
-                }
+                    state.studentResults
+                        .whereType<TeacherResultModel>()
+                        .toList();
+                subjectsModels =
+                    state.subjects.whereType<TeacherSubjectModel>().toList();
+                state.subjects.whereType<TeacherSubjectModel>().forEach(
+                  (element) => subjects.add(element.name),
+                );
                 selectedSubject = subjects[0];
               });
             }
@@ -132,11 +134,22 @@ class _TeacherResultViewState extends State<TeacherResultView> {
                                     onChanged: (newValue) {
                                       setState(() {
                                         selectedTerm = newValue!;
+
+                                        int subjectId =
+                                            subjectsModels
+                                                .firstWhere(
+                                                  (item) =>
+                                                      item.name ==
+                                                      selectedSubject,
+                                                )
+                                                .id;
+                                        subjects.clear();
+                                        subjectsModels.clear();
                                         BlocProvider.of<TeacherGradeCubit>(
                                           context,
-                                        ).selectTerm(
-                                          selectedTerm,
-                                          selectedSubject,
+                                        ).loadGrades2(
+                                          subjectId,
+                                          selectedTerm == 'First' ? 1 : 2,
                                         );
                                       });
                                     },
@@ -183,11 +196,22 @@ class _TeacherResultViewState extends State<TeacherResultView> {
                                     onChanged: (newValue) {
                                       setState(() {
                                         selectedSubject = newValue!;
+
+                                        int subjectId =
+                                            subjectsModels
+                                                .firstWhere(
+                                                  (item) =>
+                                                      item.name ==
+                                                      selectedSubject,
+                                                )
+                                                .id;
+                                        subjects.clear();
+                                        subjectsModels.clear();
                                         BlocProvider.of<TeacherGradeCubit>(
                                           context,
-                                        ).selectTerm(
-                                          selectedTerm,
-                                          selectedSubject,
+                                        ).loadGrades2(
+                                          subjectId,
+                                          selectedTerm == 'First' ? 1 : 2,
                                         );
                                       });
                                     },
@@ -253,7 +277,7 @@ class _TeacherResultViewState extends State<TeacherResultView> {
                 ),
               );
             } else {
-              return Center(child: Text('error'));
+              return Center(child: Image.asset('assets/loading.gif'));
             }
           },
         ),
@@ -285,10 +309,10 @@ class _TeacherResultViewState extends State<TeacherResultView> {
     );
   }
 
-  Widget _buildStudentItem(StudentResult student, int index) {
+  Widget _buildStudentItem(TeacherResultModel student, int index) {
     final isEven = index % 2 == 0;
-    final textColor =
-        student.grade >= 50 ? Color(0xFF0C46C4) : Color(0xFFF76565);
+    final textColor = getColor(student.studentResult);
+    // student.grade >= 50 ? Color(0xFF0C46C4) : Color(0xFFF76565);
 
     return Container(
       padding: EdgeInsets.all(16),
@@ -300,7 +324,7 @@ class _TeacherResultViewState extends State<TeacherResultView> {
         children: [
           Expanded(
             child: Text(
-              student.name,
+              student.student.name,
               style: TextStyle(
                 color: Color(0xFF495D80),
                 fontSize: 14,
@@ -316,7 +340,9 @@ class _TeacherResultViewState extends State<TeacherResultView> {
             child: Container(
               width: 80,
               child: Text(
-                '${student.grade}/${student.total}',
+                student.studentResult == null
+                    ? '0'
+                    : '${student.studentResult!.grade}/${student.studentResult!.total}',
                 textAlign: TextAlign.end,
                 style: TextStyle(
                   color: textColor,
@@ -333,9 +359,20 @@ class _TeacherResultViewState extends State<TeacherResultView> {
     );
   }
 
-  void _editStudentGrade(StudentResult student) {
+  Color getColor(StudentResult? studentResult) {
+    if (studentResult == null || studentResult.grade! < 50) {
+      return Color(0xFFF76565);
+    } else {
+      return Color(0xFF0C46C4);
+    }
+  }
+
+  void _editStudentGrade(TeacherResultModel student) {
     final gradeController = TextEditingController(
-      text: student.grade.toString(),
+      text:
+          student.studentResult == null
+              ? '0'
+              : student.studentResult!.grade.toString(),
     );
 
     showDialog(
@@ -381,9 +418,30 @@ class _TeacherResultViewState extends State<TeacherResultView> {
                   GestureDetector(
                     onTap: () {
                       final newGrade = int.parse(gradeController.text);
-                      setState(() {
-                        student.grade = newGrade;
-                      });
+                      if (student.studentResult == null) {
+                        int subjectId =
+                            subjectsModels
+                                .firstWhere(
+                                  (item) => item.name == selectedSubject,
+                                )
+                                .id;
+                        setState(() {
+                          student.studentResult = StudentResult(
+                            id: 0,
+                            name: student.student.name,
+                            subjectName: selectedSubject,
+                            grade: int.parse(gradeController.text),
+                            total: 100,
+                            term: selectedTerm == 'First' ? 1 : 2,
+                            studentId: student.student.id,
+                            subjectId: subjectId,
+                          );
+                        });
+                      } else {
+                        setState(() {
+                          student.studentResult!.grade = newGrade;
+                        });
+                      }
                       Navigator.pop(context);
                     },
                     child: Container(
@@ -453,7 +511,7 @@ class StudentResult {
   int id;
   String name;
   String subjectName;
-  int grade;
+  int? grade;
   int total;
   int term;
   int studentId;
@@ -475,11 +533,25 @@ class StudentResult {
       id: json['id'],
       name: json['student']['name'] as String,
       subjectName: json['subject']['name'] as String,
-      grade: json['mark'] as int,
+      grade: json['mark'] ?? 0,
       total: json['total'] ?? 100,
       term: json['term_number'] ?? 1,
       studentId: json['student']['id'],
       subjectId: json['subject']['id'],
+    );
+  }
+}
+
+class TeacherResultModel {
+  Student student;
+  StudentResult? studentResult;
+  TeacherResultModel({required this.student, required this.studentResult});
+
+  factory TeacherResultModel.fromJson(Map<String, dynamic> json) {
+    return TeacherResultModel(
+      student: Student.fromJson(json['student']),
+      studentResult:
+          json['grade'] == null ? null : StudentResult.fromJson(json['grade']),
     );
   }
 }

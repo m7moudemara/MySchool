@@ -113,33 +113,33 @@ class _StudentMessagesViewState extends State<StudentMessagesView> {
     return ChatLayout(
       title: 'Chat',
       tabs: ['Messages', 'People'],
-      getMessages:() => messages, // Fetch messages from the API
-          // () => [
-          //   ChatMessage(
-          //     senderName: 'Mr. Ahmed',
-          //     text: 'Don\'t forget to submit your assignment by tomorrow',
-          //     image: '',
-          //     timestamp: '10:30 AM',
-          //   ),
-          //   ChatMessage(
-          //     senderName: 'Miss Salma',
-          //     text: 'Good job on the last science project!',
-          //     image: '',
-          //     timestamp: 'Yesterday',
-          //   ),
-          //   ChatMessage(
-          //     senderName: 'Mr. Khalid',
-          //     text: 'Reminder: Parent-teacher meeting next week',
-          //     image: '',
-          //     timestamp: 'Monday',
-          //   ),
-          //   ChatMessage(
-          //     senderName: 'School Admin',
-          //     text: 'School will be closed next Friday for maintenance',
-          //     image: '',
-          //     timestamp: 'Last week',
-          //   ),
-          // ],
+      getMessages: () => messages, // Fetch messages from the API
+      // () => [
+      //   ChatMessage(
+      //     senderName: 'Mr. Ahmed',
+      //     text: 'Don\'t forget to submit your assignment by tomorrow',
+      //     image: '',
+      //     timestamp: '10:30 AM',
+      //   ),
+      //   ChatMessage(
+      //     senderName: 'Miss Salma',
+      //     text: 'Good job on the last science project!',
+      //     image: '',
+      //     timestamp: 'Yesterday',
+      //   ),
+      //   ChatMessage(
+      //     senderName: 'Mr. Khalid',
+      //     text: 'Reminder: Parent-teacher meeting next week',
+      //     image: '',
+      //     timestamp: 'Monday',
+      //   ),
+      //   ChatMessage(
+      //     senderName: 'School Admin',
+      //     text: 'School will be closed next Friday for maintenance',
+      //     image: '',
+      //     timestamp: 'Last week',
+      //   ),
+      // ],
       getContacts: () => contacts, // Fetch contacts from the API
       // () => [
       //   ChatContact(
@@ -174,7 +174,11 @@ class _StudentMessagesViewState extends State<StudentMessagesView> {
       //   ),
       // ],
       onChatTap: (context, contact) {
-        Navigator.pushNamed(context, ChatView.id);
+        // Navigator.pushNamed(context, ChatView.id);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ChatView()),
+        );
       },
     );
   }

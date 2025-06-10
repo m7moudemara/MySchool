@@ -19,16 +19,8 @@ class AttendenceStudentWebservices {
         'Accept': 'application/json',
       },
     );
-    print('qqqqqqqqqqqqqqqqqqqqq');
     if (response.statusCode == 200) {
-      print('ppppppppppppppppppppp');
-      // Parse the response body and return the attendance data
       List<Map<String, dynamic>> data = jsonDecode(response.body)['data'];
-      print(data);
-      print(data[0]);
-      print(data[0]['id']);
-      print('nnnnnnnnnnnnnnnnnnnn');
-      // Handle the data as needed
       // print('Attendance data fetched successfully: $data');
       return data; // Return the parsed data
     } else {
