@@ -11,10 +11,15 @@ class Teacher extends IUser {
   @override
   final bool isFirstLogin;
   final String department;
+  @override
   final String className;
+  @override
   final String user_name;
+  @override
   final String date_of_birth;
+  @override
   final String gender;
+  @override
   final String address;
   @override
   final String phone;
@@ -82,6 +87,7 @@ class TeacherDashboardUser implements DashboardUser {
   final int totalDays = 0; // Placeholder for total days
   @override
   final int absentDays = 0; // Placeholder for absent days
+  @override
   final int total_students;
   @override
   final double total;

@@ -40,7 +40,6 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
       ),
       body: BlocConsumer<ClassesCubit, ClassesState>(
         listener: (context, state) {
-          // TODO: implement listener
         },
         builder: (context, state) {
           if (state is ClassesLoading) {
@@ -109,13 +108,12 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
   }
 
   Widget _buildClassFilterTabs(List<ClassStudentModel> classes) {
-    // final tabs = ['All Students', 'Class 1', 'Class 2', 'Class 3', 'Class 4'];
     final tabs = ['All Students'];
-    classes.forEach((element) {
+    for (var element in classes) {
       if (tabs.contains(element.className) == false) {
         tabs.add(element.className);
       }
-    });
+    }
     return SizedBox(
       height: 40,
       child: ListView(

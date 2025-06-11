@@ -337,7 +337,7 @@ class _TeacherResultViewState extends State<TeacherResultView> {
           SizedBox(width: 16),
           GestureDetector(
             onTap: () => _editStudentGrade(student),
-            child: Container(
+            child: SizedBox(
               width: 80,
               child: Text(
                 student.studentResult == null

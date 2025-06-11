@@ -15,8 +15,11 @@ class Student extends IUser {
   final String parentId;
   @override
   final String user_name;
+  @override
   final String date_of_birth;
+  @override
   final String gender;
+  @override
   final String address;
   @override
   final String phone;
@@ -90,8 +93,11 @@ class StudentDashboardUser implements DashboardUser {
   final int absentDays; // Placeholder for absent days
     @override
   final int total_students;
+  @override
   final double total;
+  @override
   final double paid;
+  @override
   final double remaining;
 
 

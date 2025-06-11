@@ -61,9 +61,6 @@ class _ParentMessagesViewState extends State<ParentMessagesView> {
               // status: person['user']['status'] ?? 'Offline',
             );
           }).toList();
-      // Handle successful response
-      print(people);
-      // print('People fetched successfully: ${people.length}');
       return people;
     } else {
       // Handle error response
@@ -156,14 +153,14 @@ class _ParentMessagesViewState extends State<ParentMessagesView> {
       throw Exception('error');
     }
   }
-  late Timer _timer;
+  late Timer timer;
 
   @override
   void initState() {
     super.initState();
     fetchContacts();
     fetchMessages();
-        _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+        timer = Timer.periodic(Duration(seconds: 2), (timer) {
       fetchContacts();
       fetchMessages();
       setState(() {});

@@ -124,7 +124,6 @@ class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
       if (response.statusCode == 200) {
         final user = jsonDecode(response.body)['user'];
-        print(user);
         if (user == null || user.isEmpty) {
           return {
             'success': false,
@@ -143,8 +142,6 @@ class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                   jsonDecode(response.body)['token'],
                   user['role'],
                 );
-        print('xxxxxxx');
-        print(userData);
         if (user['role'] == 'Student') {
           sharedPrefController.saveClassName(userData['class_name']);
         }
@@ -230,7 +227,7 @@ class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return data['is_first_login'] == 1;
       }
       return true;
-    } on DioException catch (e) {
+    }  catch (e) {
       return true;
     }
   }

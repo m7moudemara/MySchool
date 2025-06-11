@@ -1,7 +1,6 @@
 import 'package:MySchool/core/utils/size_config.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class CustomInfoCardWidget extends StatelessWidget {
   final DashboardUser userx;
@@ -45,7 +44,6 @@ class CustomInfoCardWidget extends StatelessWidget {
                           user.type == UserType.guardian
                               ? Text(
                                 'total students : ${userx.total_students}',
-                                // user.displayInfo,
                                 style: TextStyle(
                                   color: Colors.white.withValues(alpha: 204),
                                   fontSize: 12,
@@ -57,7 +55,6 @@ class CustomInfoCardWidget extends StatelessWidget {
                       trailing: CircleAvatar(
                         radius: 30,
                         backgroundImage: AssetImage('assets/profile.png'),
-                        // backgroundImage: NetworkImage(user.imageUrl),
                         backgroundColor: Colors.grey[300],
                       ),
                     ),
@@ -108,10 +105,7 @@ class CustomInfoCardWidget extends StatelessWidget {
             ),
           )
         else if (user.type == UserType.guardian)
-          // else if (user.type == UserType.parent)
           _buildPaymentProgressSection(userx)
-        // else if (user.type == UserType.admin)
-        // _buildAttendanceSection()
         else
           const SizedBox(),
       ],
@@ -180,13 +174,6 @@ class CustomInfoCardWidget extends StatelessWidget {
 }
 
 Widget _buildPaymentProgressSection(DashboardUser userx) {
-  // double paidAmount = 42000;
-  // double remainingAmount = 72000;
-  // double schooleFees = paidAmount + remainingAmount;
-  // final formatCurrency = NumberFormat.decimalPattern();
-  // String paidFormatted = formatCurrency.format(paidAmount);
-  // String remainingFormatted = formatCurrency.format(remainingAmount);
-  // String schoolFeesFormatted = formatCurrency.format(schooleFees);
 
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
@@ -217,8 +204,7 @@ Widget _buildPaymentProgressSection(DashboardUser userx) {
           SizedBox(height: 4),
           Center(
             child: Text(
-              '${userx.total} EP',
-              // '$schoolFeesFormatted EP',
+              '${userx.total} EGP',
               style: TextStyle(
                 color: const Color(0xFFF0BC70),
                 fontSize: 26,
@@ -257,11 +243,11 @@ Widget _buildPaymentProgressSection(DashboardUser userx) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${userx.paid} EP',
+                '${userx.paid} EGP',
                 style: TextStyle(fontSize: 14, color: Colors.white),
               ),
               Text(
-                '${userx.remaining} EP',
+                '${userx.remaining} EGP',
                 style: TextStyle(fontSize: 14, color: Colors.white),
               ),
             ],

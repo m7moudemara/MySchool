@@ -1,8 +1,5 @@
-import 'package:MySchool/features/homework/data/home_work/home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/homework_model.dart';
-import 'package:MySchool/features/homework/data/teacher/cubit/teacher_home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/teacher/cubit/teacher_view_homework_cubit.dart';
-import 'package:MySchool/features/homework/domain/entities/homework_entity.dart';
 import 'package:MySchool/features/homework/presentation/views/submitted_homeworks.dart';
 import 'package:MySchool/features/homework/presentation/views/teacher_create_homework_view.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +50,6 @@ class _TeacherHomeworkViewState extends State<TeacherHomeworkView> {
       body: SafeArea(
         child: BlocConsumer<TeacherViewHomeworkCubit, TeacherViewHomeworkState>(
           listener: (context, state) {
-            // TODO: implement listener
           },
           builder: (context, state) {
             if (state is HomeWorksLoaded) {

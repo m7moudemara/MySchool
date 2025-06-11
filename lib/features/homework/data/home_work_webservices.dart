@@ -1,8 +1,5 @@
 import 'dart:convert';
-
 import 'package:MySchool/constants/strings.dart';
-import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import '../../../main.dart';
 
@@ -28,9 +25,6 @@ class HomeWorkWebservices {
       List<Map<String, dynamic>> data = List<Map<String, dynamic>>.from(
         jsonDecode(response.body)['data'],
       );
-      // Parse the response body and return the homework assignments
-      print(data.length);
-      print('66666666666666666');
       return data;
       // Adjust based on your API response structure
     } else {
