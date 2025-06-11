@@ -4,6 +4,7 @@ import 'package:MySchool/features/chat/data/models/chat_contact.dart';
 import 'package:MySchool/features/chat/data/models/chat_message.dart';
 import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatLayout extends StatefulWidget {
   final String title;
@@ -171,7 +172,8 @@ class _ChatLayoutState extends State<ChatLayout> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                message.timestamp,
+                _formatTime(message.timestamp),
+                // message.timestamp,
                 style: TextStyle(color: Colors.grey[600], fontSize: 12),
               ),
               if (message.unread)
@@ -187,11 +189,41 @@ class _ChatLayoutState extends State<ChatLayout> {
             ],
           ),
           onTap: () {
-            Navigator.pushNamed(context, ChatView.id);
+            // print(message);
+            Navigator.pushNamed(
+              context,
+              ChatView.id,
+              arguments: {
+                'name': message.senderName,
+                'conversationId': message.id,
+                'userId': message.senderId,
+                'userRole' : message.userRole
+              },
+            );
+
+            // Navigator.pushNamed(context, ChatView.id, arguments: 'mohammed');
           },
         );
       },
     );
+  }
+
+  String _formatTime(String isoTime) {
+    try {
+      String truncatedUtcString =
+          '${isoTime.substring(0, isoTime.length - 1)}Z';
+      // Convert the string to DateTime
+      DateTime utcTime = DateTime.parse(truncatedUtcString);
+
+      // Convert to local time
+      DateTime dateTime = utcTime.toLocal();
+      print(dateTime);
+      // final dateTime = DateTime.parse(isoTime);
+      // final dateTime = DateTime.parse(isoTime);
+      return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+    } catch (e) {
+      return isoTime;
+    }
   }
 
   Widget _buildContactsContent(List<ChatContact> contacts) {

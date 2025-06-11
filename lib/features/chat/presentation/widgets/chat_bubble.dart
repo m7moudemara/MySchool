@@ -23,7 +23,7 @@ class ChatBubble extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(
-          color: isMe ? Color(0xff0C46C4) :Color(0xffF2F7FB),
+          color: isMe ? Color(0xff0C46C4) : Color(0xffF2F7FB),
           borderRadius:
               isMe
                   ? const BorderRadius.only(
@@ -44,7 +44,7 @@ class ChatBubble extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                color: Colors.white,
+                color: isMe ? Colors.white : Colors.black,
                 fontSize: 12,
                 fontFamily: 'Maison Neue',
                 fontWeight: FontWeight.w700,
@@ -56,7 +56,7 @@ class ChatBubble extends StatelessWidget {
                 child: Text(
                   _formatTime(time!),
                   style: TextStyle(
-                    color: Colors.white,
+                    color: isMe ? Colors.white : Colors.black,
                     fontSize: 9,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w800,

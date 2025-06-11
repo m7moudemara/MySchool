@@ -1,79 +1,184 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:MySchool/features/chat/data/models/chat_contact.dart';
 import 'package:MySchool/features/chat/data/models/chat_message.dart';
 import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
 import 'package:MySchool/features/chat/presentation/widgets/chat_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import '../../../../constants/strings.dart';
+import '../../../../main.dart';
 
-class ParentMessagesView extends StatelessWidget {
+class ParentMessagesView extends StatefulWidget {
   static const String id = '/ParentMessagesView';
 
   const ParentMessagesView({super.key});
 
   @override
+  State<ParentMessagesView> createState() => _ParentMessagesViewState();
+}
+
+class _ParentMessagesViewState extends State<ParentMessagesView> {
+  String compareTimeWithNow(String givenTime) {
+    // Parse the given time string to DateTime
+    DateTime parsedGivenTime = DateTime.parse(givenTime);
+
+    // Get the current time
+    DateTime now = DateTime.now();
+
+    // Calculate the difference between now and the given time
+    Duration difference = now.difference(parsedGivenTime).abs();
+
+    // Check if the difference is within 20 minutes (1200 seconds)
+    if (difference.inMinutes <= 20) {
+      return 'Online'; // If the time is within 20 minutes, it's considered online
+    } else {
+      return 'Offline'; // If the time difference is more than 20 minutes, it's considered offline
+    }
+  }
+
+  Future<List<ChatContact>> getPeople() async {
+    String? token = await sharedPrefController.getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/conversations/people'),
+      headers: {
+        'Authorization': ' Bearer $token',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body)['data'] as List;
+      List<ChatContact> people =
+          data.map((person) {
+            return ChatContact(
+              id: person['user']['id'] ?? 0,
+              name: person['user']['name'],
+              image: person['user']['image'] ?? '',
+              subtitle: person['user']['role'] ?? 'Unknown',
+              status: compareTimeWithNow(person['user']['last_active_time']),
+              // status: person['user']['status'] ?? 'Offline',
+            );
+          }).toList();
+      // Handle successful response
+      print(people);
+      // print('People fetched successfully: ${people.length}');
+      return people;
+    } else {
+      // Handle error response
+      throw Exception('Failed to load people');
+    }
+  }
+
+  List<ChatContact> contacts = [];
+
+  Future<void> fetchContacts() async {
+    try {
+      contacts = await getPeople();
+      setState(() {});
+    } catch (e) {
+      print('Error fetching contacts: $e');
+    }
+  }
+
+  Future<List<ChatMessage>> getMessages() async {
+    String? token = await sharedPrefController.getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/conversations'),
+      headers: {
+        'Authorization': ' Bearer $token',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body)['data'] as List;
+      List<ChatMessage> messages =
+          data.map((message) {
+            return ChatMessage(
+              id: message['id'],
+              senderId: message['user']['id'],
+              senderName: message['user']['name'] ?? 'Unknown',
+              text:
+                  message['last_message'] == null
+                      ? ''
+                      : message['last_message']['content'],
+              image: message['image'] ?? '',
+              timestamp:
+                  message['last_message'] == null
+                      ? ''
+                      : message['last_message']['created_at'],
+              userRole: message['user']['role'],
+            );
+          }).toList();
+      // Handle successful response
+      return messages;
+    } else {
+      // Handle error response
+      throw Exception('Failed to load messages');
+    }
+  }
+
+  List<ChatMessage> messages = [];
+  Future<void> fetchMessages() async {
+    try {
+      messages = await getMessages();
+      setState(() {});
+    } catch (e) {
+      print('Error fetching messages: $e');
+    }
+  }
+
+  createNewConversation(int contactId) async {
+    String? token = await sharedPrefController.getToken();
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/conversations?UserId=$contactId'),
+      headers: {
+        'Authorization': ' Bearer $token',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    );
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      Navigator.pushNamed(
+        context,
+        ChatView.id,
+        arguments: {
+          'name': data['user']['name'],
+          'conversationId': data['id'],
+          'userId': data['user']['id'],
+          'userRole': data['user']['role'],
+        },
+      );
+    } else {
+      throw Exception('error');
+    }
+  }
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchContacts();
+    fetchMessages();
+        _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+      fetchContacts();
+      fetchMessages();
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChatLayout(
-      title: 'School Chat',
+      title: 'Chat',
       tabs: ['Messages', 'People'],
-      getMessages: () => [
-        ChatMessage(
-          senderName: 'Mr. Ahmed (Math Teacher)',
-          text: 'Your son Ali has improved significantly in algebra this term',
-          image: '',
-          timestamp: 'Today, 9:30 AM',
-        ),
-        ChatMessage(
-          senderName: 'School Administration',
-          text: 'Reminder: Parent-teacher meetings next Wednesday',
-          image: '',
-          timestamp: 'Yesterday, 2:15 PM',
-        ),
-        ChatMessage(
-          senderName: 'Miss Salma (Science Teacher)',
-          text: 'Please sign the science project permission form',
-          image: '',
-          timestamp: 'Monday, 11:45 AM',
-        ),
-        ChatMessage(
-          senderName: 'Bus Coordinator',
-          text: 'Bus route #5 will be delayed by 15 minutes tomorrow',
-          image: '',
-          timestamp: 'Last Friday, 4:20 PM',
-        ),
-      ],
-      getContacts: () => [
-        ChatContact(
-          name: 'Mr. Ahmed',
-          image: 'https://randomuser.me/api/portraits/men/11.jpg',
-          subtitle: 'Math Teacher - Grade 5',
-          status: 'Online',
-        ),
-        ChatContact(
-          name: 'Miss Salma',
-          image: 'https://randomuser.me/api/portraits/women/21.jpg',
-          subtitle: 'Science Teacher - Grade 5',
-          status: 'Last seen 1h ago',
-        ),
-        ChatContact(
-          name: 'Principal Smith',
-          image: 'https://randomuser.me/api/portraits/men/50.jpg',
-          subtitle: 'School Principal',
-          status: 'Available',
-        ),
-        ChatContact(
-          name: 'Nurse Sarah',
-          image: 'https://randomuser.me/api/portraits/women/30.jpg',
-          subtitle: 'School Clinic',
-          status: 'Last seen today at 1 PM',
-        ),
-        ChatContact(
-          name: 'Transport Department',
-          image: 'https://randomuser.me/api/portraits/men/60.jpg',
-          subtitle: 'Bus Services',
-          status: 'Office hours: 7AM-3PM',
-        ),
-      ],
+      getMessages: () => messages,
+      getContacts: () => contacts,
       onChatTap: (context, contact) {
-        Navigator.pushNamed(context, ChatView.id);
+        createNewConversation(contact.id);
       },
     );
   }

@@ -1,11 +1,16 @@
-import 'package:MySchool/core/widgets/custom_snack_bar.dart';
-import 'package:MySchool/features/chat/presentation/widgets/chat_bubble.dart';
+import 'dart:convert';
+import 'package:MySchool/constants/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
+import '../../../../main.dart';
+import '../../../auth/presentation/cubit/user_cubit.dart';
+import '../widgets/chat_bubble.dart';
 
 class ChatView extends StatefulWidget {
-  const ChatView({super.key});
+  final Map messagess;
   static String id = "/ChatView";
+  const ChatView({super.key, required this.messagess});
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -13,56 +18,53 @@ class ChatView extends StatefulWidget {
 
 class _ChatViewState extends State<ChatView> {
   final TextEditingController _messageController = TextEditingController();
-  final Dio _dio = Dio();
-  bool _isLoading = false;
+  bool isLoading = false;
   bool _isSending = false;
 
-  List<Map<String, dynamic>> _messages = [];
+  // List<Map<String, dynamic>> _messages = [];
+
+  late Stream<List<Map<String, dynamic>>> _messagesStream;
+  // Fetch messages from the API and update the stream every second
+  Stream<List<Map<String, dynamic>>> _messageStream() async* {
+    while (true) {
+      final url = Uri.parse(
+        '$baseUrl/api/messages?conversation_id=${widget.messagess['conversationId']}&PageSize=500',
+      );
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List data = jsonDecode(response.body)['data'];
+        List<Map<String, dynamic>> messages =
+            data
+                .map(
+                  (message) => {
+                    'content': message['content'],
+                    'userId': message['user']['id'],
+                    'userName': message['user']['name'],
+                    'created_at': message['created_at'],
+                  },
+                )
+                .toList();
+        yield messages;
+      } else {
+        yield [];
+      }
+
+      await Future.delayed(Duration(milliseconds: 1000)); // Fetch every 1000ms
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _setupDio();
-    _fetchMessages();
-  }
-
-  //! Dio Request
-  void _setupDio() {
-    _dio.options.baseUrl =
-        'https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool';
-    _dio.options.connectTimeout = const Duration(seconds: 5);
-    _dio.options.receiveTimeout = const Duration(seconds: 3);
-  }
-
-  //! Get All Messages
-  Future<void> _fetchMessages() async {
-    setState(() => _isLoading = true);
-    try {
-      final response = await _dio.get('/messages');
-      if (response.statusCode == 200) {
-        setState(() {
-          _messages = List<Map<String, dynamic>>.from(
-            response.data.map(
-              (msg) => {
-                'id': msg['id'],
-                'text': msg['text'],
-                'sender': msg['sender'] ?? {'id': 'unknown', 'name': 'Unknown'},
-                'timestamp':
-                    msg['timestamp'] ?? DateTime.now().toIso8601String(),
-              },
-            ),
-          );
-        });
-      }
-    } on DioException catch (e) {
-      CustomSnackBar.show(
-        context,
-        e.message.toString(),
-        type: SnackBarType.error,
-      );
-    } finally {
-      setState(() => _isLoading = false);
-    }
+    _messagesStream = _messageStream();
   }
 
   //! Send Messages
@@ -73,48 +75,38 @@ class _ChatViewState extends State<ChatView> {
     setState(() {
       _isSending = true;
       // Add message locally immediately
-      _messages.add({
-        'id': 'temp_${DateTime.now().millisecondsSinceEpoch}',
-        'text': text,
-        'sender': {'id': 'current_user', 'name': 'You'},
-        'timestamp': DateTime.now().toIso8601String(),
-      });
+      // _messages.add({
+      //   'id': 'temp_${DateTime.now().millisecondsSinceEpoch}',
+      //   'text': text,
+      //   'sender': {'id': 'current_user', 'name': 'You'},
+      //   'timestamp': DateTime.now().toIso8601String(),
+      // });
       _messageController.clear();
     });
 
     try {
-      final response = await _dio.post(
-        '/messages',
-        data: {
-          'text': text,
-          'sender': {'id': 'current_user', 'name': 'You'},
-          'timestamp': DateTime.now().toIso8601String(),
+      final url = Uri.parse('$baseUrl/api/messages');
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
         },
+        body: jsonEncode({
+          "conversation_id": widget.messagess['conversationId'],
+          "content": text,
+        }),
       );
-
       if (response.statusCode == 201) {
-        setState(() {
-          final index = _messages.indexWhere(
-            (m) => m['id'].toString().startsWith('temp_'),
-          );
-          if (index != -1) {
-            _messages[index] = {
-              'id': response.data['id'],
-              'text': response.data['text'],
-              'sender': response.data['sender'],
-              'timestamp': response.data['timestamp'],
-            };
-          }
-        });
+        var data = jsonDecode(response.body);
+      } else {
+        throw Exception('error');
       }
-    } on DioException catch (e) {
-      CustomSnackBar.show(
-        context,
-        e.message.toString(),
-        type: SnackBarType.error,
-      );
+    } catch (e) {
+      print(e);
       setState(() {
-        _messages.removeWhere((m) => m['id'].toString().startsWith('temp_'));
+        // _messages.removeWhere((m) => m['id'].toString().startsWith('temp_'));
       });
     } finally {
       setState(() => _isSending = false);
@@ -123,13 +115,18 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
+    final ana = context.read<UserCubit>().state;
+
     return Scaffold(
       appBar: AppBar(
         title: Column(
           children: [
-            Text('user', style: TextStyle(color: Colors.black)),
-            const Text(
-              'state',
+            Text(
+              widget.messagess['name'],
+              style: TextStyle(color: Colors.black),
+            ),
+            Text(
+              widget.messagess['userRole'],
               style: TextStyle(color: Colors.black45, fontSize: 12),
             ),
           ],
@@ -141,24 +138,36 @@ class _ChatViewState extends State<ChatView> {
         child: Column(
           children: [
             Expanded(
-              child: RefreshIndicator(
-                onRefresh: _fetchMessages,
-                child:
-                    _isLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          itemCount: _messages.length,
-                          itemBuilder: (context, index) {
-                            final message = _messages[index];
-                            return ChatBubble(
-                              text: message['text'],
-                              isMe: message['sender']['id'] == 'current_user',
-                              time: message['timestamp'],
+              child:
+                  isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : StreamBuilder<List<Map<String, dynamic>>>(
+                        stream: _messagesStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List<Map<String, dynamic>> messagesx =
+                                snapshot.data!;
+                            return ListView.builder(
+                              reverse: true,
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              itemCount: messagesx.length,
+                              itemBuilder: (context, index) {
+                                return ChatBubble(
+                                  text: messagesx[index]['content'],
+                                  isMe: messagesx[index]['userId'] == ana!.id,
+                                  time: messagesx[index]['created_at'],
+                                );
+                              },
                             );
-                          },
-                        ),
-              ),
+                          } else if (snapshot.hasError) {
+                            return Center(child: Text('${snapshot.error}'));
+                          } else {
+                            return Center(
+                              child: Image.asset('assets/loading.gif'),
+                            );
+                          }
+                        },
+                      ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 32),

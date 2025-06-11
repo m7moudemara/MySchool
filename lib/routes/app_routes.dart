@@ -36,6 +36,10 @@ class AppRoutes {
         builder: (context) => MainWrapperView(userRole: args.role),
       );
     }
+    if (settings.name == ChatView.id) {
+      final args = settings.arguments as Map;
+      return MaterialPageRoute(builder: (context) => ChatView(messagess: args));
+    }
 
     return null;
   }
@@ -50,7 +54,10 @@ class AppRoutes {
     NotificationsView.id: (context) => NotificationsView(),
     StudentHomeworkView.id: (context) => StudentHomeworkView(),
     AttendanceView.id: (context) => AttendanceView(),
-    ChatView.id: (context) => ChatView(),
+    // ChatView.id: (context) {
+    //   final argumentss = ModalRoute.of(context)!.settings.arguments as String;
+    //   return ChatView(messagess: argumentss);
+    // },
     StudentMessagesView.id: (context) => StudentMessagesView(),
     TeacherClassesView.id: (context) => TeacherClassesView(),
     ParentDashboardView.id: (context) => ParentDashboardView(),
