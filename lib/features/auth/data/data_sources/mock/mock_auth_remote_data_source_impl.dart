@@ -124,6 +124,7 @@ class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
       if (response.statusCode == 200) {
         final user = jsonDecode(response.body)['user'];
+        print(user);
         if (user == null || user.isEmpty) {
           return {
             'success': false,
@@ -131,11 +132,19 @@ class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           };
         }
         sharedPrefController.saveToken(jsonDecode(response.body)['token']);
-        Map<String, dynamic> userData = await getDashboardData(
-          user['id'].toString(),
-          jsonDecode(response.body)['token'],
-          user['role'],
-        );
+        Map<String, dynamic> userData =
+            user['role'] == 'Admin'
+                ? await getAdminDashboardData(
+                  user['id'].toString(),
+                  jsonDecode(response.body)['token'],
+                )
+                : await getDashboardData(
+                  user['id'].toString(),
+                  jsonDecode(response.body)['token'],
+                  user['role'],
+                );
+        print('xxxxxxx');
+        print(userData);
         if (user['role'] == 'Student') {
           sharedPrefController.saveClassName(userData['class_name']);
         }
@@ -163,6 +172,31 @@ class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final url = Uri.parse(
         '$baseUrl/api/dashboard/${role.toLowerCase()}/$userId',
       );
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        // Unable to show SnackBar here due to missing BuildContext.
+        throw Exception('Failed to fetch dashboard data');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error occurred: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> getAdminDashboardData(
+    String userId,
+    String token,
+  ) async {
+    try {
+      final url = Uri.parse('$baseUrl/api/dashboard/admin');
       final response = await http.get(
         url,
         headers: {

@@ -4,7 +4,6 @@ import 'package:MySchool/features/chat/data/models/chat_contact.dart';
 import 'package:MySchool/features/chat/data/models/chat_message.dart';
 import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatLayout extends StatefulWidget {
   final String title;

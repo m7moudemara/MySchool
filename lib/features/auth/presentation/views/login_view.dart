@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:MySchool/routes/app_routes.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/main_wrapper_view.dart';
+import '../../../school/data/models/admin_model.dart';
 import '../cubit/login/login_cubit.dart';
 import '../cubit/login/login_state.dart';
 
@@ -81,9 +82,12 @@ class _LoginViewState extends State<LoginView> {
               } else if (role == UserRole.teacher) {
                 user = Teacher.fromJson(userJson);
                 dashboardUser = TeacherDashboardUser.fromJson(dashboardJson);
-              } else {
+              } else if (role == UserRole.guardian) {
                 user = Parent.fromJson(userJson);
                 dashboardUser = ParentDashboardUser.fromJson(dashboardJson);
+              } else {
+                user = Admin.fromJson(userJson);
+                dashboardUser = AdminDashboardUser.fromJson(dashboardJson);
               }
 
               getIt<UserCubit>().setUser(user);

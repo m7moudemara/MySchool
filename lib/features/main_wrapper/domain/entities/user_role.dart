@@ -1,14 +1,18 @@
-
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 
-enum UserRole { student, teacher, guardian }
+enum UserRole { admin, student, teacher, guardian }
 // enum UserRole { student, teacher, parent }
 
 UserType parseUserType(UserRole role) {
-  switch(role) {
-    case UserRole.student: return UserType.student;
-    case UserRole.teacher: return UserType.teacher;
-    case UserRole.guardian: return UserType.guardian;
+  switch (role) {
+    case UserRole.student:
+      return UserType.student;
+    case UserRole.teacher:
+      return UserType.teacher;
+    case UserRole.guardian:
+      return UserType.guardian;
+    case UserRole.admin:
+      return UserType.admin;
     // case UserRole.parent: return UserType.parent;
   }
 }
@@ -20,12 +24,12 @@ UserRole parseUserRole(String role) {
     case 'teacher':
       return UserRole.teacher;
     case 'guardian':
-    // case 'parent':
+      // case 'parent':
       return UserRole.guardian;
-      // return UserRole.parent;
+    // return UserRole.parent;
+    case 'admin':
+      return UserRole.admin;
     default:
       throw Exception("Unknown user role: $role");
   }
 }
-
-

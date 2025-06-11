@@ -1,5 +1,5 @@
 // This file defines an enum for user types in a school management system.
-enum UserType { student, teacher, guardian }
+enum UserType { admin, student, teacher, guardian }
 // enum UserType { student, teacher, parent }
 
 // This file defines an interface for user entities in a school management system.
