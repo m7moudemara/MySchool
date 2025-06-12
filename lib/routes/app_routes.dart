@@ -1,5 +1,14 @@
 import 'package:MySchool/core/presentation/intro/presentation/views/intro_view.dart';
 import 'package:MySchool/core/presentation/view/decider_view.dart';
+import '../features/admin/presentation/views/admin_view.dart';
+import '../features/admin/presentation/views/classes/add_class_view.dart';
+import '../features/admin/presentation/views/fees/fees_view.dart';
+import '../features/admin/presentation/views/parent/parents_view.dart';
+import '../features/admin/presentation/views/result/results_view.dart';
+import '../features/admin/presentation/views/students/add_students_view.dart';
+import '../features/admin/presentation/views/subjects/add_subjects_view.dart';
+import '../features/admin/presentation/views/teacher/add_teachers_view.dart';
+import '../features/admin/presentation/views/timetable/timetables_view.dart';
 import 'package:MySchool/features/profile/presentation/views/help_center_view.dart';
 import 'package:MySchool/features/profile/presentation/views/personal_data_view.dart';
 import 'package:MySchool/features/profile/presentation/views/setting_view.dart';
@@ -77,8 +86,17 @@ class AppRoutes {
     TeacherTimeTableView.id: (context) => TeacherTimeTableView(),
     ParentTimeTableView.id: (context) => ParentTimeTableView(),
 
-    StudentSubmittedHomeworkView.id:
-        (context) => StudentSubmittedHomeworkView(),
+    StudentSubmittedHomeworkView.id: (context) => StudentSubmittedHomeworkView(),
+    //! Admin 
+    AdminView.id: (context) => AdminView(),
+    AddClassView.id: (context) => AddClassView(),
+        AddSubjectView.id : (context) => AddSubjectView(),
+        AddTeachersView.id : (context)  => AddTeachersView(),
+        ParentsView.id : (context) => ParentsView(),
+        StudentsView.id : (context) => StudentsView(),
+        TimetablesView.id : (context) => TimetablesView(),
+        FeesView.id : (context) => FeesView(),
+        ResultsView.id : (context) => ResultsView()
   };
 }
 

@@ -3,6 +3,30 @@ import 'package:MySchool/core/presentation/intro/data/data_sources/intro_local_d
 import 'package:MySchool/core/presentation/intro/data/repositories/intro_repository_impl.dart';
 import 'package:MySchool/core/presentation/intro/domain/usecases/mark_intro_seen_usecase.dart';
 import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit.dart';
+import 'package:MySchool/features/admin/data/data_sources/class_data_sources/class_local_datasource.dart';
+import 'package:MySchool/features/admin/data/data_sources/class_data_sources/class_local_datasource_impl.dart';
+import 'package:MySchool/features/admin/data/data_sources/fees_data_sources/fees_local_datasources.dart';
+import 'package:MySchool/features/admin/data/data_sources/fees_data_sources/fees_local_datasources_impl.dart';
+import 'package:MySchool/features/admin/data/data_sources/subjects_data_sources/subjects_data_sources.dart';
+import 'package:MySchool/features/admin/data/data_sources/subjects_data_sources/subjects_data_sources_impl.dart';
+import 'package:MySchool/features/admin/data/data_sources/teacher_data_sources/teacher_local_datasource.dart';
+import 'package:MySchool/features/admin/data/data_sources/teacher_data_sources/teacher_local_datasource_impl.dart';
+import 'package:MySchool/features/admin/data/repositories/class_repository_impl.dart';
+import 'package:MySchool/features/admin/data/repositories/fees_repository_impl.dart';
+import 'package:MySchool/features/admin/data/repositories/subjects_repository_impl.dart';
+import 'package:MySchool/features/admin/data/repositories/teacher_repository_impl.dart';
+import 'package:MySchool/features/admin/domain/repositories/class_repository.dart';
+import 'package:MySchool/features/admin/domain/repositories/fees_repository.dart';
+import 'package:MySchool/features/admin/domain/repositories/subject_repository.dart';
+import 'package:MySchool/features/admin/domain/repositories/teacher_repository.dart';
+import 'package:MySchool/features/admin/domain/usecases/add_class_usecases.dart';
+import 'package:MySchool/features/admin/domain/usecases/add_fess_usecases.dart';
+import 'package:MySchool/features/admin/domain/usecases/add_subject_usecases.dart';
+import 'package:MySchool/features/admin/domain/usecases/add_teacher_usecases.dart';
+import 'package:MySchool/features/admin/presentation/cubits/class_cubits/add_class_cubit.dart';
+import 'package:MySchool/features/admin/presentation/cubits/fees_cubits/fees_cubit.dart';
+import 'package:MySchool/features/admin/presentation/cubits/subject_cubits/add_subject_cubit.dart';
+import 'package:MySchool/features/admin/presentation/cubits/teacher_cubits/add_teacher_cubit.dart';
 import 'package:MySchool/features/auth/data/data_sources/mock/mock_auth_remote_data_source_impl.dart';
 import 'package:MySchool/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MySchool/features/auth/domain/repositories/check_first_time_repository.dart';
@@ -154,6 +178,7 @@ Future<void> _setupNotificationDependencies() async {
     () => NotificationCubit(getIt<GetNotificationsUseCase>()),
   );
 }
+
 //! TimeTable
 Future<void> _setupTimetableDependencies() async {
   getIt.registerFactory(() => TimeTableLocalDataSourceImpl());
@@ -185,4 +210,98 @@ Future<void> _setupGradesDependencies() async {
 
   // Cubit
   getIt.registerFactory(() => GradeCubit(getIt()));
+
+  //! admin
+
+  // class data source
+  getIt.registerLazySingleton<ClassLocalDataSource>(
+    () => ClassLocalDataSourceImpl(),
+  );
+  // subjects data source
+  getIt.registerLazySingleton<SubjectsLocalDataSource>(
+    () => SubjectsLocalDataSourceImpl(),
+  );
+  // teachers data source 
+  getIt.registerLazySingleton<TeacherLocalDataSource>(
+    () => TeacherLocalDataSourceImpl(),
+  );
+  // fees data source
+  getIt.registerLazySingleton<FeesLocalDataSource>(
+    () => FeesLocalDataSourceImpl(),
+  );
+
+  // class repository
+  getIt.registerLazySingleton<ClassRepository>(
+    () => ClassRepositoryImpl(getIt()),
+  );
+  // subjects repository
+  getIt.registerLazySingleton<SubjectRepository>(
+    () => SubjectsRepositoryImpl(getIt()),
+  );
+  // teachers repository
+  getIt.registerLazySingleton<TeacherRepository>(
+    () => TeachersRepositoryImpl(getIt()),
+  );
+  // fees repository
+  getIt.registerLazySingleton<FeesRepository>(
+    () => FeesRepositoryImpl(getIt()),
+  );
+
+  // class use cases
+  getIt.registerLazySingleton(() => GetClassesUseCase(getIt()));
+  getIt.registerLazySingleton(() => AddClassUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateClassUseCase(getIt()));
+  getIt.registerLazySingleton(() => DeleteClassUseCase(getIt()));
+  // subject use cases
+  getIt.registerLazySingleton(() => GetSubjectUseCase(getIt()));
+  getIt.registerLazySingleton(() => AddSubjectUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateSubjectUseCase(getIt()));
+  getIt.registerLazySingleton(() => DeleteSubjectUseCase(getIt()));
+  // teacher use cases
+  getIt.registerLazySingleton(() => GetTeachersUseCase(getIt()));
+  getIt.registerLazySingleton(() => AddTeacherUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateTeacherUseCase(getIt()));
+  getIt.registerLazySingleton(() => DeleteTeacherUseCase(getIt()));
+  // fees use cases
+  getIt.registerLazySingleton(() => GetFeesUseCase(getIt()));
+  getIt.registerLazySingleton(() => AddFeesUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateFeesUseCase(getIt()));
+  getIt.registerLazySingleton(() => DeleteFeesUseCase(getIt()));
+
+  // class cubit
+  getIt.registerFactory(
+    () => AddClassCubit(
+      getAll: getIt(),
+      add: getIt(),
+      update: getIt(),
+      delete: getIt(),
+    ),
+  );
+  // subject cubit
+  getIt.registerLazySingleton(
+    () => AddSubjectCubit(
+      getAll: getIt(),
+      add: getIt(),
+      update: getIt(),
+      delete: getIt(),
+    ),
+  );
+  // teacher cubit
+  getIt.registerLazySingleton(
+    () => AddTeacherCubit(
+      getAll: getIt(),
+      add: getIt(),
+      update: getIt(),
+      delete: getIt(),
+    ),
+  );
+  // fees cubit
+  getIt.registerLazySingleton(
+    () => AddFeesCubit(
+      getAll: getIt(),
+      add: getIt(),
+      update: getIt(),
+      delete: getIt(),
+    ),
+  );
 }
