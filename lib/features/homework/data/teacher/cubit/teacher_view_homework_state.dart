@@ -8,6 +8,7 @@ abstract class TeacherViewHomeworkState extends Equatable {
 }
 
 class TeacherViewHomeworkInitial extends TeacherViewHomeworkState {}
+
 class HomeWorksLoading extends TeacherViewHomeworkState {}
 
 class HomeWorksLoaded extends TeacherViewHomeworkState {
@@ -22,4 +23,9 @@ class HomeWorksError extends TeacherViewHomeworkState {
   const HomeWorksError({required this.message});
 }
 
+class HomeWorksSubmissionsLoaded extends TeacherViewHomeworkState {
+  final List<StudentHomeWorkResult> homeWorks;
+  final List<ClassStudentModel> students;
 
+  const HomeWorksSubmissionsLoaded({required this.homeWorks, required this.students});
+}

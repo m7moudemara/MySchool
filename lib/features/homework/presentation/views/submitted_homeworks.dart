@@ -1,53 +1,50 @@
 import 'package:MySchool/features/homework/presentation/widgets/student_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ViewAttachmentPage extends StatelessWidget {
-  const ViewAttachmentPage({super.key});
+import '../../../school/presentation/views/teacher/data/class_model.dart';
+import '../../data/home_work_repository.dart';
+import '../../data/teacher/cubit/teacher_view_homework_cubit.dart';
 
-  final List<Map<String, dynamic>> students = const [
-    {
-      'name': 'Mohamed Ashraf',
-      'number': 'Number 1',
-      'image': 'assets/profile.png',
-      'submitted': true,
-    },
-    {
-      'name': 'Hager Ashraf',
-      'number': 'Number 2',
-      'image': 'assets/profile.png',
-      'submitted': true,
-    },
-    {
-      'name': 'abdelRahman Ali',
-      'number': 'Number 3',
-      'image': 'assets/profile.png',
-      'submitted': false,
-    },
-    {
-      'name': 'hoor Moman',
-      'number': 'Number 4',
-      'image': 'assets/profile.png',
-      'submitted': false,
-    },
-    {
-      'name': 'Hazem Younes',
-      'number': 'Number 5',
-      'image': 'assets/profile.png',
-      'submitted': true,
-    },
-    {
-      'name': 'Aicha Mohamed',
-      'number': 'Number 6',
-      'image': 'assets/profile.png',
-      'submitted': false,
-    },
-    {
-      'name': 'Arwa Ahmed',
-      'number': 'Number 7',
-      'image': 'assets/profile.png',
-      'submitted': true,
-    },
-  ];
+class ViewAttachmentPage extends StatefulWidget {
+  final int homeWorkId;
+  final int classId;
+  const ViewAttachmentPage({
+    super.key,
+    required this.homeWorkId,
+    required this.classId,
+  });
+
+  @override
+  State<ViewAttachmentPage> createState() => _ViewAttachmentPageState();
+}
+
+class _ViewAttachmentPageState extends State<ViewAttachmentPage> {
+  List<StudentHomeWorkResult> students = const [];
+  List<ClassStudentModel> studentsclass = const [];
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<TeacherViewHomeworkCubit>(
+      context,
+    ).getSubmissions(widget.homeWorkId, widget.classId);
+  }
+
+  getIsSubmitted(int id) {
+    // print(id);
+    // print(studentsclass[0].id);
+    // print(studentsclass[1].id);
+    // print('sssssssssss');
+    List<StudentHomeWorkResult> xx =
+        students.where((element) => element.studentId == id).toList();
+    if (xx.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+    // print(xx);
+    // print('bbbbbbbbbbbbb');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +105,7 @@ class ViewAttachmentPage extends StatelessWidget {
                   Text(
                     'Total Students:${students.length}',
                     style: TextStyle(fontSize: 16),
-                  ), 
+                  ),
                   //! Search
                   Container(
                     width: 150,
@@ -143,15 +140,31 @@ class ViewAttachmentPage extends StatelessWidget {
               _buildButtons(),
               const SizedBox(height: 10),
               Expanded(
-                child: ListView.builder(
-                  itemCount: students.length,
-                  itemBuilder: (context, index) {
-                    final student = students[index];
-                    return StudentCard(
-                      name: student['name'],
-                      number: student['number'],
-                      imageUrl: student['image'],
-                      submitted: student['submitted'],
+                child: BlocConsumer<
+                  TeacherViewHomeworkCubit,
+                  TeacherViewHomeworkState
+                >(
+                  listener: (context, state) {
+                    if (state is HomeWorksSubmissionsLoaded) {
+                      setState(() {
+                        students = state.homeWorks;
+                        studentsclass = state.students;
+                      });
+                    }
+                  },
+                  builder: (context, state) {
+                    return ListView.builder(
+                      itemCount: studentsclass.length,
+                      itemBuilder: (context, index) {
+                        final student = studentsclass[index];
+                        bool xy = getIsSubmitted(student.id);
+                        return StudentCard(
+                          name: student.name,
+                          number: 'Number ${index + 1}',
+                          imageUrl: student.className,
+                          submitted: xy,
+                        );
+                      },
                     );
                   },
                 ),

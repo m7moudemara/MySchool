@@ -21,7 +21,7 @@ class HomeWorkCubit extends Cubit<HomeWorkState> {
     emit(HomeWorkLoading());
     try {
       HomeWorkRepository homeWorkRepository = HomeWorkRepository(
-        homeWorkWebservices: HomeWorkWebservices(),
+         HomeWorkWebservices(),
       );
       // Simulate a delay for loading
       Future.delayed(Duration(seconds: 1), () async {
