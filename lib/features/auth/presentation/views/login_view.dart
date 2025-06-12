@@ -1,5 +1,6 @@
 import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/core/widgets/custom_snack_bar.dart';
+import 'package:MySchool/features/admin/presentation/views/admin_view.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/widgets/hello_text.dart';
 import 'package:MySchool/features/auth/presentation/widgets/login_form.dart';
@@ -92,11 +93,19 @@ class _LoginViewState extends State<LoginView> {
 
               getIt<UserCubit>().setUser(user);
               getIt<DashboardUserCubit>().setDashboardUser(dashboardUser);
-              Navigator.pushReplacementNamed(
-                context,
-                MainWrapperView.id,
-                arguments: RouteArguments(role: parseUserType(role)),
-              );
+                if (role == UserRole.admin) {
+                Navigator.pushReplacementNamed(
+                  context,
+                  AdminView.id,
+                  arguments: RouteArguments(role: parseUserType(role)),
+                );
+                } else {
+                Navigator.pushReplacementNamed(
+                  context,
+                  MainWrapperView.id,
+                  arguments: RouteArguments(role: parseUserType(role)),
+                );
+                }
             }
             if (state is FirstLoginRequired) {
               CustomSnackBar.show(

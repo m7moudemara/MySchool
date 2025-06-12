@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
-class AdminDashboard extends StatelessWidget {
-    static String id = '/AdminDashBoard';
+// class AdminDashboard extends StatelessWidget {
+//     static String id = '/AdminDashBoard';
 
-  const AdminDashboard({super.key});
+//   const AdminDashboard({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text('Admin')));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(appBar: AppBar(title: Text('Admin')));
+//   }
+// }
