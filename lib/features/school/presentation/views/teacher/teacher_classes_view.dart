@@ -1,3 +1,4 @@
+import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/classes_info_view.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/data/class_model.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/data/classes_cubit.dart';
@@ -220,6 +221,7 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
           displayedStudents[index].name,
           displayedStudents[index].className,
           displayedStudents[index].id,
+          displayedStudents[index].student,
         );
       },
     );
@@ -230,6 +232,7 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
     String name,
     String className,
     int studentId,
+    Student student,
   ) {
     return InkWell(
       onTap: () {
@@ -241,6 +244,7 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
                   studentName: name,
                   studentClass: className,
                   studentId: studentId,
+                  student: student,
                 ),
           ),
         );

@@ -4,7 +4,7 @@ class ClassModel extends ClassEntity {
   ClassModel({
     required super.id,
     required super.name,
-    required super.subject,
+    required super.grade,
     required super.studentsCount,
   });
 
@@ -12,15 +12,15 @@ class ClassModel extends ClassEntity {
     return ClassModel(
       id: json['id'],
       name: json['name'],
-      subject: json['subject'],
-      studentsCount: json['studentsCount'],
+      grade: json['grade'].toString(),
+      studentsCount: json['student_count'],
     );
   }
 
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
-    'subject': subject,
+    'grade': grade,
     'studentsCount': studentsCount,
   };
 }

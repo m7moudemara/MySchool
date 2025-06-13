@@ -8,10 +8,16 @@ class ClassesRepository {
   ClassesRepository({required this.classesWebServices});
 
   Future<List<ClassStudentModel>> getClasses() async {
-    List result = await classesWebServices.getClasses();
-    List<ClassStudentModel> resultClasses =
-        result.map((element) => ClassStudentModel.fromJson(element)).toList();
-    return resultClasses;
+    List<ClassStudentModel> resultClasses = [];
+    try {
+      List result = await classesWebServices.getClasses();
+      resultClasses =
+          result.map((element) => ClassStudentModel.fromJson(element)).toList();
+      return resultClasses;
+    } catch (e) {
+      print(e);
+      return resultClasses;
+    }
   }
 
   Future<List<TeacherAttendanceForStudent>> getAttendance(int classId) async {
@@ -36,9 +42,14 @@ class ClassesRepository {
     }
   }
 
-  updateAttendance(int studentId, int classId, String status,int attId) async{
-        try {
-      await classesWebServices.updateAttendance(studentId, classId, status, attId);
+  updateAttendance(int studentId, int classId, String status, int attId) async {
+    try {
+      await classesWebServices.updateAttendance(
+        studentId,
+        classId,
+        status,
+        attId,
+      );
     } catch (e) {
       print(e);
     }

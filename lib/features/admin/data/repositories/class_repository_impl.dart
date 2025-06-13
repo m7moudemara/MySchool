@@ -12,7 +12,7 @@ class ClassRepositoryImpl implements ClassRepository {
     return localDataSource.add(ClassModel(
       id: newClass.id,
       name: newClass.name,
-      subject: newClass.subject,
+      grade: newClass.grade,
       studentsCount: newClass.studentsCount,
     ));
   }
@@ -32,7 +32,7 @@ class ClassRepositoryImpl implements ClassRepository {
     return localDataSource.update(ClassModel(
       id: updatedClass.id,
       name: updatedClass.name,
-      subject: updatedClass.subject,
+      grade: updatedClass.grade,
       studentsCount: updatedClass.studentsCount,
     ));
   }

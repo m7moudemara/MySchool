@@ -3,7 +3,7 @@ import 'package:MySchool/features/homework/data/homework_model.dart';
 
 class HomeWorkRepository {
   final HomeWorkWebservices homeWorkWebservices;
-  HomeWorkRepository( this.homeWorkWebservices);
+  HomeWorkRepository(this.homeWorkWebservices);
   // This class will handle the data operations related to homework.
   // It can interact with a database, API, or any other data source.
 

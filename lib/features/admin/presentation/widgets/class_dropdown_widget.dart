@@ -9,7 +9,7 @@ class ClassDropdownWidget extends StatelessWidget {
   const ClassDropdownWidget({
     super.key,
     required this.selectedValue,
-    required this.items,  
+    required this.items,
     required this.onChanged,
     required this.title,
   });
@@ -29,10 +29,7 @@ class ClassDropdownWidget extends StatelessWidget {
               color: const Color(0xFF361FC2),
               borderRadius: BorderRadius.circular(20),
             ),
-            child:  Text(
-              title,
-              style: TextStyle(color: Colors.white),
-            ),
+            child: Text(title, style: TextStyle(color: Colors.white)),
           ),
         ),
         items: items,

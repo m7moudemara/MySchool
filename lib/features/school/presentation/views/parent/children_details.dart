@@ -204,6 +204,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                                         studentClass: child['class']!,
                                         studentName: child['name']!,
                                         studentId: child['id'],
+                                        student: child['student']??'',
                                       ),
                                 ),
                               );

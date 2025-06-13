@@ -6,7 +6,7 @@ class GetGradesUseCase {
 
   GetGradesUseCase(this.repository);
 
-  Future<StudentResultEntity?> call(String term) {
-    return repository.getGrades(term);
+  Future<StudentResultEntity?> call(String term, int studentId) {
+    return repository.getGrades(term, studentId);
   }
 }

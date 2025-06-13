@@ -18,8 +18,11 @@ class ClassesCubit extends Cubit<ClassesState> {
       );
       Future.delayed(Duration(seconds: 2));
       List<ClassStudentModel> classes = await classesRepository.getClasses();
+      print(classes);
+
       List<TeacherAttendanceForStudent> attendances = await classesRepository
           .getAttendance(classes[0].classId);
+      print(attendances);
       emit(ClassesLoaded(classes, attendances));
     } catch (e) {
       emit(ClassesLoadedError(message: 'there is an error'));

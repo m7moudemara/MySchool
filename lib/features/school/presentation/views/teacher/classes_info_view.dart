@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:MySchool/features/grades/presentation/views/student_grades_view.dart';
+import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:MySchool/features/school/presentation/views/student/attendance_view.dart';
 import 'package:MySchool/features/homework/presentation/views/student_submitted_homework_view.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,12 @@ class ClassesinfoView extends StatefulWidget {
     required this.studentName,
     required this.studentClass,
     required this.studentId,
+    required this.student,
   });
   final String studentName;
   final String studentClass;
   final int studentId;
+  final Student student;
 
   @override
   State<ClassesinfoView> createState() => _ClassesinfoViewState();
@@ -54,6 +57,7 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
   void initState() {
     super.initState();
     studentDetails = getDashboardData();
+    // print(widget.student.name);
   }
 
   @override
@@ -192,7 +196,11 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
                         title: 'Results',
                         onTap: () {
                           // Navigator.pushNamed(context, GradesView.id);
-                          Navigator.pushNamed(context, StudentGradesView.id);
+                          Navigator.pushNamed(
+                            context,
+                            StudentGradesView.id,
+                            arguments: widget.student,
+                          );
                         },
                       ),
 

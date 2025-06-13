@@ -25,6 +25,10 @@ class AddClassCubit extends Cubit<AddClassState> {
   void loadClasses() async {
     emit(AddClassState(classes: [], isLoading: true));
     final result = await getAll();
+    print(result);
+    print(result[0].name);
+    print(result[0].grade);
+    print('999999999');
     emit(AddClassState(classes: result));
   }
 

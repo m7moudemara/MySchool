@@ -7,10 +7,10 @@ class GradeCubit extends Cubit<ResultState> {
 
   GradeCubit(this.getGradesUseCase) : super(ResultInitial());
 
-  Future<void> loadGrades(String term) async {
+  Future<void> loadGrades(String term, int studentId) async {
     emit(ResultLoading());
     try {
-      final result = await getGradesUseCase(term);
+      final result = await getGradesUseCase(term, studentId);
       emit(ResultLoaded(result));
     } catch (e) {
       emit(ResultError("Failed to load result"));

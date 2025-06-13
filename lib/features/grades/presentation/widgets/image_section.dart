@@ -18,7 +18,8 @@ class ImageSection extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 50,
-          backgroundImage: NetworkImage(imageUrl),
+          backgroundImage: AssetImage('assets/profile.png'),
+          // backgroundImage: NetworkImage(imageUrl),
         ),
         const SizedBox(height: 10),
         Text(

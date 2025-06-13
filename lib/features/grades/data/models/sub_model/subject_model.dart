@@ -6,6 +6,7 @@ class SubjectGradeModel extends SubjectGrade {
     required super.name,
     required super.mark,
     required super.grade,
+    required super.termNumber,
   });
 
   factory SubjectGradeModel.fromJson(Map<String, dynamic> json) {
@@ -13,6 +14,7 @@ class SubjectGradeModel extends SubjectGrade {
       name: json['name'],
       mark: json['mark'],
       grade: json['grade'],
+      termNumber: json['termNumber'],
     );
   }
 
