@@ -50,6 +50,20 @@ class _AddClassViewState extends State<AddClassView> {
       editingId = entity?.id;
       classNameController.text = entity?.name ?? '';
       selectedGrade = entity?.grade.replaceAll("Grade ", "");
+      print(selectedGrade);
+      print('*************');
+    });
+  }
+
+  void openForm2({ClassEntity? entity}) {
+    setState(() {
+      showForm = true;
+      isEdit = entity != null;
+      editingId = entity?.id;
+      classNameController.text = entity?.name ?? '';
+      selectedGrade = "Grade ${entity?.grade}";
+      print(selectedGrade);
+      print('*******88888******');
     });
   }
 
@@ -103,7 +117,10 @@ class _AddClassViewState extends State<AddClassView> {
                     title: "select grade",
                     items: gradeItems,
                     selectedValue: selectedGrade,
-                    onChanged: (value) => setState(() => selectedGrade = value),
+                    onChanged: (value) {
+                      print(value);
+                      setState(() => selectedGrade = value);
+                    },
                   ),
                   CreateButton(
                     label: isEdit ? "Update " : "Create ",
@@ -115,13 +132,14 @@ class _AddClassViewState extends State<AddClassView> {
                       final entity = ClassEntity(
                         id: isEdit ? editingId! : const Uuid().v4(),
                         name: classNameController.text,
-                        grade: "Grade $selectedGrade",
+                        grade: "Grade $selectedGrade".replaceAll("Grade ", ""),
                         studentsCount: 20,
                       );
 
                       if (isEdit) {
                         context.read<AddClassCubit>().updateClass(entity);
                       } else {
+                        openForm();
                         context.read<AddClassCubit>().addClass(entity);
                       }
                       resetForm();
@@ -157,7 +175,7 @@ class _AddClassViewState extends State<AddClassView> {
                             return NewWidget(
                               title: item.name,
                               subtitle: item.grade,
-                              onEdit: () => openForm(entity: item),
+                              onEdit: () => openForm2(entity: item),
                               onDelete:
                                   () => confirmDelete(
                                     context,

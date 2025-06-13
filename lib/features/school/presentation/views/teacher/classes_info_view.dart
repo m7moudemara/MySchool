@@ -57,7 +57,6 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
   void initState() {
     super.initState();
     studentDetails = getDashboardData();
-    // print(widget.student.name);
   }
 
   @override

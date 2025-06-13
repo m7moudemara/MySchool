@@ -35,6 +35,7 @@ abstract class DashboardUser {
   int get totalDays;
   int get absentDays;
   int get total_students;
+  int get total_classes;
   double get total;
   double get paid;
   double get remaining;

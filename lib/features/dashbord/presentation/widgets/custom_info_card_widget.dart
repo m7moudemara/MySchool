@@ -86,6 +86,15 @@ class CustomInfoCardWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
+                    child: Center(
+                      child: Text(
+                        'All Students : ${userx.total_students}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(width: 5),
@@ -97,6 +106,15 @@ class CustomInfoCardWidget extends StatelessWidget {
                       color: const Color(0x990C46C4),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'All Classes : ${userx.total_classes}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -174,7 +192,6 @@ class CustomInfoCardWidget extends StatelessWidget {
 }
 
 Widget _buildPaymentProgressSection(DashboardUser userx) {
-
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
     child: Container(

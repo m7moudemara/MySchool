@@ -93,6 +93,8 @@ class StudentDashboardUser implements DashboardUser {
   final int absentDays; // Placeholder for absent days
     @override
   final int total_students;
+      @override
+  final int total_classes;
   @override
   final double total;
   @override
@@ -118,7 +120,7 @@ class StudentDashboardUser implements DashboardUser {
     required this.total_students,    required this.total,
     required this.paid,
     required this.remaining,
-
+required this.total_classes
   });
 
   factory StudentDashboardUser.fromJson(Map<String, dynamic> json) {
@@ -135,7 +137,7 @@ class StudentDashboardUser implements DashboardUser {
       totalDays: json['total_attendance'] ?? 0,
       absentDays: json['absent_days'] ?? 0,total_students: json['total_students']??0,      total: json['fee_info']['total'] ?? 0,
       paid: json['fee_info']['paid'] ?? 0,
-      remaining: json['fee_info']['remaining'] ?? 0,
+      remaining: json['fee_info']['remaining'] ?? 0, total_classes: json['total_classes']??0,
 
     );
   }

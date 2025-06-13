@@ -25,19 +25,24 @@ class AddClassCubit extends Cubit<AddClassState> {
   void loadClasses() async {
     emit(AddClassState(classes: [], isLoading: true));
     final result = await getAll();
-    print(result);
-    print(result[0].name);
-    print(result[0].grade);
-    print('999999999');
     emit(AddClassState(classes: result));
   }
 
   void addClass(ClassEntity entity) async {
+    print(entity.grade);
+    print(entity.name);
+
+    print('@@@@@@@@@@@');
     await add(entity);
     loadClasses();
   }
 
   void updateClass(ClassEntity entity) async {
+    print(entity.grade);
+    print(entity.name);
+    print(entity.id);
+
+    print('@@@@@88888@@@@@@');
     await update(entity);
     loadClasses();
   }

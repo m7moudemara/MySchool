@@ -10,7 +10,7 @@ class ClassModel extends ClassEntity {
 
   factory ClassModel.fromJson(Map<String, dynamic> json) {
     return ClassModel(
-      id: json['id'],
+      id: json['id'].toString(),
       name: json['name'],
       grade: json['grade'].toString(),
       studentsCount: json['student_count'],

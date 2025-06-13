@@ -107,6 +107,8 @@ class ParentDashboardUser implements DashboardUser {
   @override
   final int total_students;
   @override
+  final int total_classes;
+  @override
   final double total;
   @override
   final double paid;
@@ -126,6 +128,7 @@ class ParentDashboardUser implements DashboardUser {
     required this.total,
     required this.paid,
     required this.remaining,
+    required this.total_classes,
   });
 
   factory ParentDashboardUser.fromJson(Map<String, dynamic> json) {
@@ -142,6 +145,7 @@ class ParentDashboardUser implements DashboardUser {
       total: json['fee_info']['total'] ?? 0,
       paid: json['fee_info']['paid'] ?? 0,
       remaining: json['fee_info']['remaining'] ?? 0,
+      total_classes: json['total_classes'] ?? 0,
     );
   }
 }
