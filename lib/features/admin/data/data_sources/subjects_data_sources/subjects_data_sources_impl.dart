@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:MySchool/constants/strings.dart';
 import 'package:MySchool/features/admin/data/data_sources/subjects_data_sources/subjects_data_sources.dart';
-import 'package:MySchool/features/admin/data/models/subjects.dart';
 
 import '../../../../../main.dart';
 import '../../models/add_subjects_model.dart';
