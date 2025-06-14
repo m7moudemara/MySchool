@@ -1,8 +1,8 @@
-import 'package:MySchool/features/admin/data/models/class_model.dart';
+import 'package:MySchool/features/admin/data/models/add_class_model.dart';
 
 abstract class ClassLocalDataSource {
-  Future<List<ClassModel>> getAll();
-  Future<void> add(ClassModel model);
-  Future<void> update(ClassModel model);
+  Future<List<AddClassModel>> getAll();
+  Future<void> add(AddClassModel model);
+  Future<void> update(AddClassModel model);
   Future<void> delete(String id);
 }

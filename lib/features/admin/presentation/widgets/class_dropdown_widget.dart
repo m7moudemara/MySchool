@@ -19,7 +19,9 @@ class ClassDropdownWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: DropdownButtonFormField<String>(
-        value: selectedValue,
+        value: items.any((item) => item.value == selectedValue)
+    ? selectedValue
+    : null,
         decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
           floatingLabelBehavior: FloatingLabelBehavior.always,

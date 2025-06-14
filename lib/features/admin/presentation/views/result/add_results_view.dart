@@ -1,15 +1,15 @@
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
-class ResultsView extends StatefulWidget {
-  const ResultsView({super.key});
+class AddResultsView extends StatefulWidget {
+  const AddResultsView({super.key});
   static const String id = "/ResultsView";
 
   @override
-  State<ResultsView> createState() => _ResultsViewState();
+  State<AddResultsView> createState() => _AddResultsViewState();
 }
 
-class _ResultsViewState extends State<ResultsView> {
+class _AddResultsViewState extends State<AddResultsView> {
   void _publishAll() {
     // TODO 
   }

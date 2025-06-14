@@ -1,7 +1,7 @@
 import 'package:MySchool/core/utils/search_utlis.dart';
-import 'package:MySchool/core/utils/time.dart';
-import 'package:MySchool/features/admin/domain/entities/student_entity.dart';
-import 'package:MySchool/features/admin/presentation/cubits/student_cubits/student_cubit.dart';
+import 'package:MySchool/core/utils/time.dart' as Utils;
+import 'package:MySchool/features/admin/domain/entities/parent_entity.dart';
+import 'package:MySchool/features/admin/presentation/cubits/parent_cubits/add_parent_cubit.dart';
 import 'package:MySchool/features/admin/presentation/widgets/class_dropdown_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,16 +16,15 @@ import 'package:MySchool/features/admin/presentation/widgets/create_new_widget.d
 import 'package:MySchool/features/admin/presentation/widgets/custom_text_feild.dart';
 import 'package:MySchool/features/admin/presentation/widgets/new_widget.dart';
 
-class AddStudentsView extends StatefulWidget {
-  const AddStudentsView({super.key});
-  static const String id = "/AddStudentsView";
+class AddParentsView extends StatefulWidget {
+  const AddParentsView({super.key});
+  static const String id = "/AddParentsView";
 
   @override
-  State<AddStudentsView> createState() => _AddStudentsViewState();
+  State<AddParentsView> createState() => _AddParentsViewState();
 }
 
-class _AddStudentsViewState extends State<AddStudentsView> {
-  // Controllers
+class _AddParentsViewState extends State<AddParentsView> {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController accountIdController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -35,31 +34,20 @@ class _AddStudentsViewState extends State<AddStudentsView> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
 
-  // Fields
   String? gender;
-  String? selectedClass;
-  String? myParent;
   bool isActive = false;
   bool mustChangePassword = false;
   bool showForm = false;
   bool isEdit = false;
   String? editingId;
-  List<StudentEntity> filteredStudents = [];
+  List<ParentEntity> filteredParents = [];
 
   final List<DropdownMenuItem<String>> genderItems = [
     DropdownMenuItem(value: "male", child: Text("male")),
     DropdownMenuItem(value: "female", child: Text("female")),
   ];
-  final List<DropdownMenuItem<String>> classes = [
-    DropdownMenuItem(value: "class1", child: Text("Class 1")),
-    DropdownMenuItem(value: "class2", child: Text("Class 2")),
-  ];
-  final List<DropdownMenuItem<String>> parents = [
-    DropdownMenuItem(value: "parent1", child: Text("Parent 1")),
-    DropdownMenuItem(value: "parent2", child: Text("Parent 2")),
-  ];
 
-  void openForm({StudentEntity? entity}) {
+  void openForm({ParentEntity? entity}) {
     setState(() {
       showForm = true;
       isEdit = entity != null;
@@ -71,8 +59,6 @@ class _AddStudentsViewState extends State<AddStudentsView> {
       nationalIdController.text = entity?.nationalId ?? '';
       phoneController.text = entity?.phoneNumber ?? '';
       addressController.text = entity?.address ?? '';
-      selectedClass = entity?.selectedClass;
-      myParent = entity?.myParent;
       gender = entity?.gender;
       isActive = entity?.isActive ?? false;
       mustChangePassword = entity?.mustChangePassword ?? false;
@@ -84,6 +70,7 @@ class _AddStudentsViewState extends State<AddStudentsView> {
       showForm = false;
       isEdit = false;
       editingId = null;
+
       fullNameController.clear();
       accountIdController.clear();
       passwordController.clear();
@@ -91,10 +78,8 @@ class _AddStudentsViewState extends State<AddStudentsView> {
       nationalIdController.clear();
       phoneController.clear();
       addressController.clear();
-      searchController.clear();
-      selectedClass = null;
-      myParent = null;
       gender = null;
+      searchController.clear();
       isActive = false;
       mustChangePassword = false;
     });
@@ -103,17 +88,17 @@ class _AddStudentsViewState extends State<AddStudentsView> {
   @override
   void initState() {
     super.initState();
-    context.read<AddStudentCubit>().loadStudents();
+    context.read<AddParentCubit>().loadParents();
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
       setState(() {
-        filteredStudents =
+        filteredParents =
             context
-                .read<AddStudentCubit>()
+                .read<AddParentCubit>()
                 .state
-                .students
+                .parents
                 .where(
-                  (student) => student.fullName.toLowerCase().contains(query),
+                  (parent) => parent.fullName.toLowerCase().contains(query),
                 )
                 .toList();
       });
@@ -137,12 +122,12 @@ class _AddStudentsViewState extends State<AddStudentsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: "Students"),
+      appBar: CustomAppBar(title: "Parents"),
       body:
           showForm
               ? SingleChildScrollView(
                 child: CreateNewWidget(
-                  title: isEdit ? "Edit Student" : "Add Student",
+                  title: isEdit ? "Edit Parent" : "Add Parent",
                   items: [
                     CustomField(
                       controller: fullNameController,
@@ -155,32 +140,31 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                     CustomField(
                       controller: passwordController,
                       label: "Password",
-                      obscureText: true,
+
+                      // isPassword: true,
                     ),
                     ClassDropdownWidget(
                       title: "Gender",
                       items: genderItems,
                       selectedValue: gender,
                       onChanged:
-                          (value) => setState(() => gender = value ?? ''),
+                          (value) => setState(() => gender = value ?? 'male'),
                     ),
                     CustomField(
                       controller: dobController,
                       label: "Date of Birth",
-                      readOnly:   true,
-                       onTap: () async {
-    final selectedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime(2000),
-      firstDate: DateTime(1950),
-      lastDate: DateTime.now(),
-    );
-
-    if (selectedDate != null) {
-      dobController.text = formatDate(selectedDate);
-      setState(() {});
-    }
-  },
+                      readOnly: true,
+                      onTap: () async {
+                        final date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+                        if (date != null) {
+                          dobController.text = Utils.formatDate(date);
+                        }
+                      },
                     ),
                     CustomField(
                       controller: nationalIdController,
@@ -195,21 +179,6 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                     CustomField(
                       controller: addressController,
                       label: "Home Address",
-                    ),
-                    ClassDropdownWidget(
-                      title: "Select Class",
-                      items: classes,
-                      selectedValue: selectedClass,
-                      onChanged:
-                          (value) =>
-                              setState(() => selectedClass = value ?? ''),
-                    ),
-                    ClassDropdownWidget(
-                      title: "Select Parent",
-                      items: parents,
-                      selectedValue: myParent,
-                      onChanged:
-                          (value) => setState(() => myParent = value ?? ''),
                     ),
                     CheckboxListTile(
                       value: isActive,
@@ -236,7 +205,7 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                           addressController.text.isNotEmpty &&
                           (isActive || mustChangePassword),
                       onPressed: () {
-                        final entity = StudentEntity(
+                        final entity = ParentEntity(
                           id: isEdit ? editingId! : const Uuid().v4(),
                           fullName: fullNameController.text,
                           accountId: accountIdController.text,
@@ -246,31 +215,29 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                           nationalId: nationalIdController.text,
                           phoneNumber: phoneController.text,
                           address: addressController.text,
-                          selectedClass: selectedClass ?? '',
-                          myParent: myParent ?? '',
                           isActive: isActive,
                           mustChangePassword: mustChangePassword,
                         );
 
                         if (isEdit) {
-                          context.read<AddStudentCubit>().updateStudent(entity);
+                          context.read<AddParentCubit>().updateParent(entity);
                         } else {
-                          context.read<AddStudentCubit>().addStudent(entity);
+                          context.read<AddParentCubit>().addParent(entity);
                         }
 
                         resetForm();
+                        setState(() {});
                       },
                     ),
                   ],
                 ),
               )
-              : BlocBuilder<AddStudentCubit, AddStudentState>(
+              : BlocBuilder<AddParentCubit, AddParentState>(
                 builder: (context, state) {
-                  final studentsList =
+                  final parentsList =
                       searchController.text.isEmpty
-                          ? state.students
-                          : filteredStudents;
-
+                          ? state.parents
+                          : filteredParents;
                   return CustomScrollView(
                     slivers: [
                         SliverToBoxAdapter(
@@ -294,21 +261,23 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                       SliverToBoxAdapter(
                         child: AddWidget(
                           onTap: () => openForm(),
-                          title: "Add Student",
+                          title: "Add Parent",
                           width: ResponsiveUtils.getResponsiveWidth(
                             context,
                             0.5,
                           ),
                         ),
                       ),
+
                       SliverPadding(
                         padding: const EdgeInsets.all(8),
+
                         sliver: SliverGrid(
                           delegate: SliverChildBuilderDelegate((
                             context,
                             index,
                           ) {
-                            final item = studentsList[index];
+                            final item = parentsList[index];
                             return NewWidget(
                               title: SearchUtils.getHighlightedText(
                                 item.fullName,
@@ -321,21 +290,21 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                                     context,
                                     title: "Delete",
                                     message:
-                                        "Are you sure you want to delete this student?",
+                                        "Are you sure you want to delete this parent?",
                                     onConfirm: () {
                                       context
-                                          .read<AddStudentCubit>()
-                                          .deleteStudent(item.id);
+                                          .read<AddParentCubit>()
+                                          .deleteParent(item.id);
                                       final query =
                                           searchController.text.toLowerCase();
                                       setState(() {
-                                        filteredStudents =
+                                        filteredParents =
                                             context
-                                                .read<AddStudentCubit>()
+                                                .read<AddParentCubit>()
                                                 .state
-                                                .students
+                                                .parents
                                                 .where(
-                                                  (student) => student.fullName
+                                                  (parent) => parent.fullName
                                                       .toLowerCase()
                                                       .contains(query),
                                                 )
@@ -344,7 +313,7 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                                     },
                                   ),
                             );
-                          }, childCount: studentsList.length),
+                          }, childCount: parentsList.length),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount:
