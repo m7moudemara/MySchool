@@ -11,9 +11,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'latest'
+          flutter-version: '3.29.3'  # ← النسخة اللي عندك
+
       - run: flutter pub get
       - run: flutter build apk --release
 
