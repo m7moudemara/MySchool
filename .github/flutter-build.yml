@@ -1,0 +1,24 @@
+name: build android release
+
+on:
+  push:
+    branches:
+      - '**'   # يشمل كل الفروع
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'latest'
+      - run: flutter pub get
+      - run: flutter build apk --release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: MySchool-apk-${{ github.ref_name }}
+          path: build/app/outputs/flutter-apk/app-release.apk
