@@ -29,9 +29,9 @@ class TeacherEntity {
     return TeacherEntity(
       id: json['id'].toString(),
       fullName: json['name'] ?? '',
-      accountId: json['1359'] ?? '',
+      accountId: json['user_name'] ?? '',
       password: json['password'] ?? '',
-      gender: json['gender'] ?? '',
+      gender: json['gender'] ?? 'xxx',
       dateOfBirth: json['date_of_birth'] ?? '',
       nationalId: json['national_id'] ?? '',
       phoneNumber: json['phone_number'] ?? '',

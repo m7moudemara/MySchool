@@ -50,32 +50,49 @@ class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   @override
   // Future<void> add(AddTeachersModel teacher) async => _teachers.add(teacher);
   Future<void> add(AddTeachersModel teacher) async {
-    final url = Uri.parse('$baseUrl/api/accounts');
-    final response = await http.post(
-      url,
-      headers: {
-        'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
-        'Accept': 'application/json',
-        'Content-type': 'application/json',
-      },
-      body: jsonEncode({
-        "role": "Teacher",
-        "user_name": teacher.accountId,
-        "password": teacher.password,
-        "national_id": teacher.nationalId,
-        "name": teacher.fullName,
-        "gender": teacher.gender,
-        "date_of_birth": teacher.dateOfBirth,
-        "address": teacher.address,
-        "phone_number": teacher.phoneNumber,
-        "is_active": teacher.isActive,
-        "must_change_password": teacher.mustChangePassword,
-      }),
-    );
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('error');
+    print('00000000000');
+    print(teacher.fullName);
+    print(teacher.accountId);
+    print(teacher.address);
+    print(teacher.dateOfBirth);
+    print(teacher.gender);
+    print(teacher.isActive);
+    print(teacher.mustChangePassword);
+    print(teacher.password);
+    print(teacher.phoneNumber);
+    // print(teacher.id);
+    print('oooooooo');
+
+    try {
+      final url = Uri.parse('$baseUrl/api/accounts');
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+          'Accept': 'application/json',
+          'Content-type': 'application/json',
+        },
+        body: jsonEncode({
+          "role": "Teacher",
+          "user_name": teacher.accountId,
+          "password": teacher.password,
+          "national_id": teacher.nationalId,
+          "name": teacher.fullName,
+          "gender": teacher.gender,
+          "date_of_birth": teacher.dateOfBirth,
+          "address": teacher.address,
+          "phone_number": teacher.phoneNumber,
+          "is_active": teacher.isActive,
+          "must_change_password": teacher.mustChangePassword,
+        }),
+      );
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('error');
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

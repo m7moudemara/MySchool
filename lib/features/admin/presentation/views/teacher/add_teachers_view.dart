@@ -39,8 +39,8 @@ class _AddTeachersViewState extends State<AddTeachersView> {
   bool isEdit = false;
   String? editingId;
   final List<DropdownMenuItem<String>> genderItems = [
-    DropdownMenuItem(value: "male", child: Text("male")),
-    DropdownMenuItem(value: "female", child: Text("female")),
+    DropdownMenuItem(value: "Male", child: Text("Male")),
+    DropdownMenuItem(value: "Female", child: Text("Female")),
   ];
 
   void openForm({TeacherEntity? entity}) {
@@ -55,7 +55,7 @@ class _AddTeachersViewState extends State<AddTeachersView> {
       nationalIdController.text = entity?.nationalId ?? '';
       phoneController.text = entity?.phoneNumber ?? '';
       addressController.text = entity?.address ?? '';
-      gender = entity?.gender ?? 'male';
+      gender = entity?.gender ?? 'Male';
       isActive = entity?.isActive ?? false;
       mustChangePassword = entity?.mustChangePassword ?? false;
     });
@@ -106,7 +106,8 @@ class _AddTeachersViewState extends State<AddTeachersView> {
       setState(() {});
     });
   }
-    @override
+
+  @override
   void dispose() {
     fullNameController.dispose();
     accountIdController.dispose();
@@ -246,7 +247,6 @@ class _AddTeachersViewState extends State<AddTeachersView> {
 
                         resetForm();
                         setState(() {});
-
                       },
                     ),
                   ],
@@ -274,6 +274,18 @@ class _AddTeachersViewState extends State<AddTeachersView> {
                             index,
                           ) {
                             final item = state.teachers[index];
+                            // print('00000000000');
+                            // print(item.fullName);
+                            // print(item.accountId);
+                            // print(item.address);
+                            // print(item.dateOfBirth);
+                            // print(item.gender);
+                            // print(item.isActive);
+                            // print(item.mustChangePassword);
+                            // print(item.password);
+                            // print(item.phoneNumber);
+                            // print(item.id);
+                            // print('oooooooo');
                             return NewWidget(
                               title: item.fullName,
                               subtitle: "",
