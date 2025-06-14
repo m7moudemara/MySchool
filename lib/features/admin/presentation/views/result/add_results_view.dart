@@ -1,5 +1,8 @@
+import 'package:MySchool/constants/strings.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
+import 'package:MySchool/main.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class AddResultsView extends StatefulWidget {
   const AddResultsView({super.key});
@@ -10,16 +13,64 @@ class AddResultsView extends StatefulWidget {
 }
 
 class _AddResultsViewState extends State<AddResultsView> {
-  void _publishAll() {
-    // TODO 
+  void _publishAll() async {
+    final url = Uri.parse('$baseUrl/api/grades/publish');
+    try {
+      await http.put(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        },
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('All Grades have been published!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
-  void _unpublishAll() {
-  // TODO 
+  void _unpublishAll() async {
+    final url = Uri.parse('$baseUrl/api/grades/unpublish');
+    try {
+      await http.put(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        },
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('All Grades have been unpublished!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
-  void _deleteAll() {
-    // TODO 
+  void _deleteAll() async {
+    final url = Uri.parse('$baseUrl/api/grades/delete-all');
+    try {
+      await http.delete(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        },
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('All Grades have been deleted!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override

@@ -11,7 +11,7 @@ class AddTimeTableModel extends TimeTableEntity {
   });
 
   factory AddTimeTableModel.fromEntity(TimeTableEntity entity) => AddTimeTableModel(
-    id: entity.id,
+    id: entity.id.toString(),
     selectedClass: entity.selectedClass,
     selectedSubject: entity.selectedSubject,
     selectedTeacher: entity.selectedTeacher,

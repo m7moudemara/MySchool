@@ -3,9 +3,7 @@ import 'package:MySchool/features/time_table/presentation/widgets/days_list_widg
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
-
 import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/core/utils/search_utlis.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/domain/entities/timetable_entity.dart';
@@ -275,6 +273,7 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
                                   text: item.selectedClass,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),

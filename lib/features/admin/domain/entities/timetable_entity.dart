@@ -14,4 +14,15 @@ class TimeTableEntity {
     required this.startTime,
     required this.endTime,
   });
+
+  factory TimeTableEntity.fromJson(Map<String, dynamic> json) {
+    return TimeTableEntity(
+      id: json['id'].toString(),
+      selectedClass: json['class']['name'],
+      selectedSubject: json['subject']['name'],
+      selectedTeacher: json['teacher']['name'],
+      startTime: json['start_time'],
+      endTime: json['end_time'],
+    );
+  }
 }

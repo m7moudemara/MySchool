@@ -13,9 +13,9 @@ class FeesRepositoryImpl implements FeesRepository {
       AddFeesModel(
         id: newFee.id,
         dueDate: newFee.dueDate,
-        selectSudent: newFee.selectSudent,
+        selectSudentId: newFee.selectSudentId,
         totalAmount: newFee.totalAmount,
-        paidAmount: newFee.paidAmount,
+        paidAmount: newFee.paidAmount, selectSudentName: newFee.selectSudentName,
       ),
     );
   }
@@ -36,9 +36,9 @@ class FeesRepositoryImpl implements FeesRepository {
       AddFeesModel(
         id: updatedFee.id,
         dueDate: updatedFee.dueDate,
-        selectSudent: updatedFee.selectSudent,
+        selectSudentId: updatedFee.selectSudentId,
         totalAmount: updatedFee.totalAmount,
-        paidAmount: updatedFee.paidAmount,
+        paidAmount: updatedFee.paidAmount,selectSudentName: updatedFee.selectSudentName,
       ),
     );
   }

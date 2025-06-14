@@ -7,7 +7,7 @@ import '../../../../../main.dart';
 import '../../models/add_subjects_model.dart';
 
 class SubjectsLocalDataSourceImpl implements SubjectsLocalDataSource {
-  final List<AddSubjectsModel> _subjects = [];
+  final List<AddSubjectsModel> ubjects = [];
 
   @override
   // Future<List<AddSubjectsModel>> getAll() async => _subjects;
