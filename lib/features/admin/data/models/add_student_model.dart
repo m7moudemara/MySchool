@@ -1,7 +1,7 @@
-import 'package:MySchool/features/admin/domain/entities/teacher_entity.dart';
+import 'package:MySchool/features/admin/domain/entities/student_entity.dart';
 
-class AddTeachersModel extends TeacherEntity {
-  const AddTeachersModel({
+class AddStudentModel extends StudentEntity {
+  const AddStudentModel({
     required super.id,
     required super.fullName,
     required super.accountId,
@@ -13,9 +13,11 @@ class AddTeachersModel extends TeacherEntity {
     required super.address,
     required super.isActive,
     required super.mustChangePassword,
+    required super.selectedClass,
+    required super.myParent,
   });
 
-  factory AddTeachersModel.fromEntity(TeacherEntity entity) => AddTeachersModel(
+  factory AddStudentModel.fromEntity(StudentEntity entity) => AddStudentModel(
     id: entity.id,
     fullName: entity.fullName,
     accountId: entity.accountId,
@@ -25,6 +27,8 @@ class AddTeachersModel extends TeacherEntity {
     nationalId: entity.nationalId,
     phoneNumber: entity.phoneNumber,
     address: entity.address,
+    selectedClass: entity.selectedClass,
+    myParent: entity.myParent,
     isActive: entity.isActive,
     mustChangePassword: entity.mustChangePassword,
   );

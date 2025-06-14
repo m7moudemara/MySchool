@@ -1,28 +1,25 @@
-// import 'package:MySchool/features/admin/data/models/add_teachers_model.dart';
-// import 'teacher_local_datasource.dart';
-
-// class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
-//   final List<AddTeachersModel> _teachers = [];
-
-// @override
-// Future<List<AddTeachersModel>> getAll() async => List.from(_teachers);
 
 
-//   @override
-//   Future<void> add(AddTeachersModel newTeacher) async {
-//     _teachers.add(newTeacher);
-//   }
+import 'package:MySchool/features/admin/data/data_sources/teacher_data_sources/teacher_local_datasource.dart';
+import 'package:MySchool/features/admin/data/models/add_teachers_model.dart';
 
-//   @override
-//   Future<void> update(AddTeachersModel updatedTeacher) async {
-//     final index = _teachers.indexWhere((c) => c.id == updatedTeacher.id);
-//     if (index != -1) {
-//       _teachers[index] = updatedTeacher;
-//     }
-//   }
+class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
+  final List<AddTeachersModel> _teachers = [];
 
-//   @override
-//   Future<void> delete(String id) async {
-//     _teachers.removeWhere((c) => c.id == id);
-//   }
-// }
+  @override
+  Future<List<AddTeachersModel>> getAll() async => _teachers;
+
+  @override
+  Future<void> add(AddTeachersModel teacher) async => _teachers.add(teacher);
+
+  @override
+  Future<void> update(AddTeachersModel updated) async {
+    final index = _teachers.indexWhere((t) => t.id == updated.id);
+    if (index != -1) _teachers[index] = updated;
+  }
+
+  @override
+  Future<void> delete(String id) async {
+    _teachers.removeWhere((t) => t.id == id);
+  }
+}

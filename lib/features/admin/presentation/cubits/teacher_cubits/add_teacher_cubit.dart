@@ -1,4 +1,3 @@
-// presentation/cubits/add_teacher_cubit.dart
 import 'package:MySchool/features/admin/domain/usecases/add_teacher_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:MySchool/features/admin/domain/entities/teacher_entity.dart';

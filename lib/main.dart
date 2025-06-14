@@ -4,8 +4,11 @@ import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit.dart';
 import 'package:MySchool/features/admin/presentation/cubits/class_cubits/add_class_cubit.dart';
 import 'package:MySchool/features/admin/presentation/cubits/fees_cubits/fees_cubit.dart';
+import 'package:MySchool/features/admin/presentation/cubits/parent_cubits/add_parent_cubit.dart';
+import 'package:MySchool/features/admin/presentation/cubits/student_cubits/student_cubit.dart';
 import 'package:MySchool/features/admin/presentation/cubits/subject_cubits/add_subject_cubit.dart';
 import 'package:MySchool/features/admin/presentation/cubits/teacher_cubits/add_teacher_cubit.dart';
+import 'package:MySchool/features/admin/presentation/cubits/timetable_cubits/timetable_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/auth/presentation/cubit/login/login_cubit.dart';
 import 'package:MySchool/features/dashbord/presentation/cubits/dashboard_cubit.dart';
@@ -76,12 +79,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<TimeTableCubit>(create: (_) => getIt<TimeTableCubit>()),
         BlocProvider(create: (_) => getIt<GradeCubit>()),
-            BlocProvider<AddClassCubit>(
-      create: (_) => getIt<AddClassCubit>(), 
-    ),
-    BlocProvider(create:  (_) => getIt<AddSubjectCubit>(), ),
-    BlocProvider(create: (_) => getIt<AddTeacherCubit>()),
-    BlocProvider(create: (_) => getIt<AddFeesCubit>())
+        BlocProvider<AddClassCubit>(create: (_) => getIt<AddClassCubit>()),
+        BlocProvider(create: (_) => getIt<AddSubjectCubit>()),
+        BlocProvider(create: (_) => getIt<AddTeacherCubit>()),
+        BlocProvider(create: (_) => getIt<AddFeesCubit>()),
+        BlocProvider(create: (_) => getIt<AddParentCubit>()),
+        BlocProvider(create: (_) => getIt<AddStudentCubit>()),
+        BlocProvider(
+          create: (_) => getIt<AddTimeTableCubit>(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,4 +1,3 @@
-// domain/repositories/teacher_repository.dart
 import '../entities/teacher_entity.dart';
 
 abstract class TeacherRepository {

@@ -1,18 +1,19 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:MySchool/constants/strings.dart';
 import 'package:MySchool/features/admin/data/data_sources/subjects_data_sources/subjects_data_sources.dart';
 import 'package:MySchool/features/admin/data/models/subjects.dart';
-import 'package:http/http.dart' as http;
+
 import '../../../../../main.dart';
+import '../../models/add_subjects_model.dart';
 
 class SubjectsLocalDataSourceImpl implements SubjectsLocalDataSource {
-  final List<Subjects> _subjects = [];
+  final List<AddSubjectsModel> _subjects = [];
 
   @override
-  // Future<List<Subjects>> getAll() async => _subjects;
-  Future<List<Subjects>> getAll() async {
-    final url = Uri.parse('$baseUrl/api/subjects');
+  // Future<List<AddSubjectsModel>> getAll() async => _subjects;
+  Future<List<AddSubjectsModel>> getAll() async{
+        final url = Uri.parse('$baseUrl/api/subjects');
     final response = await http.get(
       url,
       headers: {
@@ -23,17 +24,19 @@ class SubjectsLocalDataSourceImpl implements SubjectsLocalDataSource {
     );
     if (response.statusCode == 200) {
       List result = jsonDecode(response.body)['data'];
-      List<Subjects> resultx =
-          result.map((element) => Subjects.fromJson(element)).toList();
+      List<AddSubjectsModel> resultx =
+          result.map((element) => AddSubjectsModel.fromJson(element)).toList();
       return resultx;
     } else {
       throw Exception('error');
     }
+
   }
 
   @override
-  Future<void> add(Subjects newSubject) async {
-    final url = Uri.parse('$baseUrl/api/subjects');
+  Future<void> add(AddSubjectsModel newSubject) async {
+    // _subjects.add(newSubject);
+        final url = Uri.parse('$baseUrl/api/subjects');
     final response = await http.post(
       url,
       headers: {
@@ -48,16 +51,16 @@ class SubjectsLocalDataSourceImpl implements SubjectsLocalDataSource {
     } else {
       throw Exception('error');
     }
-    // _subjects.add(newSubject);
+
   }
 
   @override
-  Future<void> update(Subjects updatedSubject) async {
+  Future<void> update(AddSubjectsModel updatedSubject) async {
     // final index = _subjects.indexWhere((c) => c.id == updatedSubject.id);
     // if (index != -1) {
     //   _subjects[index] = updatedSubject;
     // }
-    try {
+        try {
       final url = Uri.parse('$baseUrl/api/subjects/${updatedSubject.id}');
       final response = await http.patch(
         url,

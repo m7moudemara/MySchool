@@ -1,3 +1,5 @@
+import 'package:MySchool/core/utils/search_utlis.dart';
+import 'package:MySchool/core/utils/time.dart' as Utils;
 import 'package:MySchool/features/admin/presentation/cubits/teacher_cubits/add_teacher_cubit.dart';
 import 'package:MySchool/features/admin/presentation/widgets/class_dropdown_widget.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ import 'package:MySchool/features/admin/presentation/widgets/new_widget.dart';
 
 class AddTeachersView extends StatefulWidget {
   const AddTeachersView({super.key});
-  static const String id = "/TeacherView";
+  static const String id = "/AddTeachersView";
 
   @override
   State<AddTeachersView> createState() => _AddTeachersViewState();
@@ -30,14 +32,16 @@ class _AddTeachersViewState extends State<AddTeachersView> {
   final TextEditingController nationalIdController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
 
-  String? gender = "male";
+  String? gender;
   bool isActive = false;
   bool mustChangePassword = false;
 
   bool showForm = false;
   bool isEdit = false;
   String? editingId;
+  List<TeacherEntity> filteredTeachers = [];
   final List<DropdownMenuItem<String>> genderItems = [
     DropdownMenuItem(value: "Male", child: Text("Male")),
     DropdownMenuItem(value: "Female", child: Text("Female")),
@@ -55,7 +59,7 @@ class _AddTeachersViewState extends State<AddTeachersView> {
       nationalIdController.text = entity?.nationalId ?? '';
       phoneController.text = entity?.phoneNumber ?? '';
       addressController.text = entity?.address ?? '';
-      gender = entity?.gender ?? 'Male';
+      gender = entity?.gender;
       isActive = entity?.isActive ?? false;
       mustChangePassword = entity?.mustChangePassword ?? false;
     });
@@ -74,7 +78,7 @@ class _AddTeachersViewState extends State<AddTeachersView> {
       nationalIdController.clear();
       phoneController.clear();
       addressController.clear();
-      gender = 'Male';
+      gender = null;
       isActive = false;
       mustChangePassword = false;
     });
@@ -84,26 +88,20 @@ class _AddTeachersViewState extends State<AddTeachersView> {
   void initState() {
     super.initState();
     context.read<AddTeacherCubit>().loadTeachers();
-    fullNameController.addListener(() {
-      setState(() {});
-    });
-    accountIdController.addListener(() {
-      setState(() {});
-    });
-    passwordController.addListener(() {
-      setState(() {});
-    });
-    dobController.addListener(() {
-      setState(() {});
-    });
-    nationalIdController.addListener(() {
-      setState(() {});
-    });
-    phoneController.addListener(() {
-      setState(() {});
-    });
-    addressController.addListener(() {
-      setState(() {});
+    
+    searchController.addListener(() {
+      final query = searchController.text.toLowerCase();
+      setState(() {
+        filteredTeachers =
+            context
+                .read<AddTeacherCubit>()
+                .state
+                .teachers
+                .where(
+                  (teacher) => teacher.fullName.toLowerCase().contains(query),
+                )
+                .toList();
+      });
     });
   }
 
@@ -116,6 +114,7 @@ class _AddTeachersViewState extends State<AddTeachersView> {
     nationalIdController.dispose();
     phoneController.dispose();
     addressController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
@@ -133,30 +132,17 @@ class _AddTeachersViewState extends State<AddTeachersView> {
                     CustomField(
                       controller: fullNameController,
                       label: "Full Name",
-                      validator:
-                          (value) =>
-                              value == null || value.isEmpty
-                                  ? "Required"
-                                  : null,
                     ),
                     CustomField(
                       controller: accountIdController,
                       label: "Account ID",
-                      validator:
-                          (value) =>
-                              value == null || value.isEmpty
-                                  ? "Required"
-                                  : null,
                     ),
                     CustomField(
                       controller: passwordController,
                       label: "Password",
+                      obscureText: true,
+
                       // isPassword: true,
-                      validator:
-                          (value) =>
-                              value == null || value.isEmpty
-                                  ? "Required"
-                                  : null,
                     ),
                     ClassDropdownWidget(
                       title: "Gender",
@@ -168,38 +154,32 @@ class _AddTeachersViewState extends State<AddTeachersView> {
                     CustomField(
                       controller: dobController,
                       label: "Date of Birth",
-                      validator:
-                          (value) =>
-                              value == null || value.isEmpty
-                                  ? "Required"
-                                  : null,
+                      readOnly: true,
+                      onTap: () async {
+                        final date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+                        if (date != null) {
+                          dobController.text = Utils.formatDate(date);
+                        }
+                      },
                     ),
                     CustomField(
                       controller: nationalIdController,
                       label: "National ID",
-                      validator:
-                          (value) =>
-                              value == null || value.isEmpty
-                                  ? "Required"
-                                  : null,
+                      keyboardType: TextInputType.number,
                     ),
                     CustomField(
                       controller: phoneController,
                       label: "Phone Number",
-                      validator:
-                          (value) =>
-                              value == null || value.isEmpty
-                                  ? "Required"
-                                  : null,
+                      keyboardType: TextInputType.phone,
                     ),
                     CustomField(
                       controller: addressController,
                       label: "Home Address",
-                      validator:
-                          (value) =>
-                              value == null || value.isEmpty
-                                  ? "Required"
-                                  : null,
                     ),
                     CheckboxListTile(
                       value: isActive,
@@ -223,14 +203,15 @@ class _AddTeachersViewState extends State<AddTeachersView> {
                           dobController.text.isNotEmpty &&
                           nationalIdController.text.isNotEmpty &&
                           phoneController.text.isNotEmpty &&
-                          addressController.text.isNotEmpty,
+                          addressController.text.isNotEmpty &&
+                          (isActive || mustChangePassword),
                       onPressed: () {
                         final entity = TeacherEntity(
                           id: isEdit ? editingId! : const Uuid().v4(),
                           fullName: fullNameController.text,
                           accountId: accountIdController.text,
                           password: passwordController.text,
-                          gender: gender ?? 'Male',
+                          gender: gender ?? '',
                           dateOfBirth: dobController.text,
                           nationalId: nationalIdController.text,
                           phoneNumber: phoneController.text,
@@ -254,8 +235,31 @@ class _AddTeachersViewState extends State<AddTeachersView> {
               )
               : BlocBuilder<AddTeacherCubit, AddTeacherState>(
                 builder: (context, state) {
+                  final teachersList =
+                      searchController.text.isEmpty
+                          ? state.teachers
+                          : filteredTeachers;
                   return CustomScrollView(
                     slivers: [
+                      if (state.teachers.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 8,
+                            ),
+                            child: TextField(
+                              controller: searchController,
+                              decoration: InputDecoration(
+                                hintText: 'Search',
+                                prefixIcon: Icon(Icons.search),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       SliverToBoxAdapter(
                         child: AddWidget(
                           onTap: () => openForm(),
@@ -273,21 +277,12 @@ class _AddTeachersViewState extends State<AddTeachersView> {
                             context,
                             index,
                           ) {
-                            final item = state.teachers[index];
-                            // print('00000000000');
-                            // print(item.fullName);
-                            // print(item.accountId);
-                            // print(item.address);
-                            // print(item.dateOfBirth);
-                            // print(item.gender);
-                            // print(item.isActive);
-                            // print(item.mustChangePassword);
-                            // print(item.password);
-                            // print(item.phoneNumber);
-                            // print(item.id);
-                            // print('oooooooo');
+                            final item = teachersList[index];
                             return NewWidget(
-                              title: item.fullName,
+                              title: SearchUtils.getHighlightedText(
+                                item.fullName,
+                                searchController.text,
+                              ),
                               subtitle: "",
                               onEdit: () => openForm(entity: item),
                               onDelete:
@@ -300,10 +295,25 @@ class _AddTeachersViewState extends State<AddTeachersView> {
                                       context
                                           .read<AddTeacherCubit>()
                                           .deleteTeacher(item.id);
+                                      final query =
+                                          searchController.text.toLowerCase();
+                                      setState(() {
+                                        filteredTeachers =
+                                            context
+                                                .read<AddTeacherCubit>()
+                                                .state
+                                                .teachers
+                                                .where(
+                                                  (teacher) => teacher.fullName
+                                                      .toLowerCase()
+                                                      .contains(query),
+                                                )
+                                                .toList();
+                                      });
                                     },
                                   ),
                             );
-                          }, childCount: state.teachers.length),
+                          }, childCount: teachersList.length),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount:

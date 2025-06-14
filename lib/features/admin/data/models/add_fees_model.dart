@@ -1,10 +1,12 @@
 import 'package:MySchool/features/admin/domain/entities/fees_entity.dart';
 
-
 class AddFeesModel extends FeesEntity {
   AddFeesModel({
     required super.id,
-    required super.dueDate, required super.selectSudent, required super.totalAmount, required super.paidAmount,
+    required super.dueDate,
+    required super.selectSudent,
+    required super.totalAmount,
+    required super.paidAmount,
   });
 
   factory AddFeesModel.fromJson(Map<String, dynamic> json) {

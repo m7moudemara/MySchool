@@ -1,7 +1,7 @@
-import 'package:MySchool/features/admin/domain/entities/teacher_entity.dart';
+import 'package:MySchool/features/admin/domain/entities/parent_entity.dart';
 
-class AddTeachersModel extends TeacherEntity {
-  const AddTeachersModel({
+class AddParentsModel extends ParentEntity {
+  const AddParentsModel({
     required super.id,
     required super.fullName,
     required super.accountId,
@@ -15,7 +15,7 @@ class AddTeachersModel extends TeacherEntity {
     required super.mustChangePassword,
   });
 
-  factory AddTeachersModel.fromEntity(TeacherEntity entity) => AddTeachersModel(
+  factory AddParentsModel.fromEntity(ParentEntity entity) => AddParentsModel(
     id: entity.id,
     fullName: entity.fullName,
     accountId: entity.accountId,

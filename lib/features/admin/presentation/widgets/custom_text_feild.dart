@@ -3,19 +3,25 @@ import 'package:flutter/material.dart';
 class CustomField extends StatelessWidget {
   final String label; 
   final TextEditingController controller;
-  final String? Function(String?)? validator ;
-  const CustomField({
-    super.key, required this.label, required this.controller,
-    required this.validator,
+  final TextInputType? keyboardType ;
+  final VoidCallback? onTap;
+  final bool? readOnly;
+   bool obscureText ;
+
+   CustomField({
+    super.key, required this.label, required this.controller,  this.keyboardType, this.onTap, this.readOnly,  this.obscureText = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
-      child: TextFormField(
+      child: TextFormField( 
+        obscureText: obscureText,
+        keyboardType: keyboardType,
         controller: controller,
-        validator: validator,
+        readOnly: readOnly ?? false,
+        onTap: onTap,
         decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
           floatingLabelBehavior: FloatingLabelBehavior.always,

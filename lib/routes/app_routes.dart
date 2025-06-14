@@ -3,13 +3,13 @@ import 'package:MySchool/core/presentation/view/decider_view.dart';
 import 'package:MySchool/features/school/data/models/student_model.dart';
 import '../features/admin/presentation/views/admin_view.dart';
 import '../features/admin/presentation/views/classes/add_class_view.dart';
-import '../features/admin/presentation/views/fees/fees_view.dart';
-import '../features/admin/presentation/views/parent/parents_view.dart';
-import '../features/admin/presentation/views/result/results_view.dart';
+import '../features/admin/presentation/views/fees/add_fees_view.dart';
+import '../features/admin/presentation/views/parent/add_parents_view.dart';
+import '../features/admin/presentation/views/result/add_results_view.dart';
 import '../features/admin/presentation/views/students/add_students_view.dart';
 import '../features/admin/presentation/views/subjects/add_subjects_view.dart';
 import '../features/admin/presentation/views/teacher/add_teachers_view.dart';
-import '../features/admin/presentation/views/timetable/timetables_view.dart';
+import '../features/admin/presentation/views/timetable/add_timetables_view.dart';
 import 'package:MySchool/features/profile/presentation/views/help_center_view.dart';
 import 'package:MySchool/features/profile/presentation/views/personal_data_view.dart';
 import 'package:MySchool/features/profile/presentation/views/setting_view.dart';
@@ -100,11 +100,11 @@ class AppRoutes {
     AddClassView.id: (context) => AddClassView(),
     AddSubjectView.id: (context) => AddSubjectView(),
     AddTeachersView.id: (context) => AddTeachersView(),
-    ParentsView.id: (context) => ParentsView(),
-    StudentsView.id: (context) => StudentsView(),
-    TimetablesView.id: (context) => TimetablesView(),
-    FeesView.id: (context) => FeesView(),
-    ResultsView.id: (context) => ResultsView(),
+    AddParentsView.id: (context) => AddParentsView(),
+    AddStudentsView.id: (context) => AddStudentsView(),
+    AddTimeTableView.id: (context) => AddTimeTableView(),
+    AddFeesView.id: (context) => AddFeesView(),
+    AddResultsView.id: (context) => AddResultsView(),
   };
 }
 

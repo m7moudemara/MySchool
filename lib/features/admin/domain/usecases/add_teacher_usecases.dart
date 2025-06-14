@@ -1,4 +1,3 @@
-// domain/usecases/teacher_usecases.dart
 import '../entities/teacher_entity.dart';
 import '../repositories/teacher_repository.dart';
 

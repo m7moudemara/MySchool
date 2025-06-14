@@ -49,21 +49,7 @@ class _AddClassViewState extends State<AddClassView> {
       isEdit = entity != null;
       editingId = entity?.id;
       classNameController.text = entity?.name ?? '';
-      selectedGrade = entity?.grade.replaceAll("Grade ", "");
-      print(selectedGrade);
-      print('*************');
-    });
-  }
-
-  void openForm2({ClassEntity? entity}) {
-    setState(() {
-      showForm = true;
-      isEdit = entity != null;
-      editingId = entity?.id;
-      classNameController.text = entity?.name ?? '';
-      selectedGrade = "Grade ${entity?.grade}";
-      print(selectedGrade);
-      print('*******88888******');
+      selectedGrade = entity?.grade;
     });
   }
 
@@ -86,11 +72,13 @@ class _AddClassViewState extends State<AddClassView> {
     classNameController.addListener(() {
       setState(() {});
     });
+    selectedGrade = null; 
   }
 
   @override
   void dispose() {
     classNameController.dispose();
+    selectedGrade = null;
     super.dispose();
   }
 
@@ -105,11 +93,6 @@ class _AddClassViewState extends State<AddClassView> {
                 title: isEdit ? "Edit Class" : "Add Class",
                 items: [
                   CustomField(
-                    validator:
-                        (value) =>
-                            value == null || value.isEmpty
-                                ? "Class name is required"
-                                : null,
                     controller: classNameController,
                     label: "Class Name",
                   ),
@@ -117,10 +100,7 @@ class _AddClassViewState extends State<AddClassView> {
                     title: "select grade",
                     items: gradeItems,
                     selectedValue: selectedGrade,
-                    onChanged: (value) {
-                      print(value);
-                      setState(() => selectedGrade = value);
-                    },
+                    onChanged: (value) => setState(() => selectedGrade = value),
                   ),
                   CreateButton(
                     label: isEdit ? "Update " : "Create ",
@@ -132,14 +112,14 @@ class _AddClassViewState extends State<AddClassView> {
                       final entity = ClassEntity(
                         id: isEdit ? editingId! : const Uuid().v4(),
                         name: classNameController.text,
-                        grade: "Grade $selectedGrade".replaceAll("Grade ", ""),
+                       grade: selectedGrade!,
+  
                         studentsCount: 20,
                       );
 
                       if (isEdit) {
                         context.read<AddClassCubit>().updateClass(entity);
                       } else {
-                        openForm();
                         context.read<AddClassCubit>().addClass(entity);
                       }
                       resetForm();
@@ -147,10 +127,7 @@ class _AddClassViewState extends State<AddClassView> {
                   ),
                 ],
               )
-              : BlocConsumer<AddClassCubit, AddClassState>(
-                listener: (context, state) {
-                  // if( state id )
-                },
+              : BlocBuilder<AddClassCubit, AddClassState>(
                 builder: (context, state) {
                   return CustomScrollView(
                     slivers: [
@@ -173,15 +150,20 @@ class _AddClassViewState extends State<AddClassView> {
                           ) {
                             final item = state.classes[index];
                             return NewWidget(
-                              title: item.name,
+                              title: RichText(
+                                text: TextSpan(
+                                  text: item.name,
+                                  style: DefaultTextStyle.of(context).style,
+                                ),
+                              ),
                               subtitle: item.grade,
-                              onEdit: () => openForm2(entity: item),
+                              onEdit: () => openForm(entity: item),
                               onDelete:
                                   () => confirmDelete(
                                     context,
                                     title: "Delete",
                                     message:
-                                        "Are you sure you want to delete this Class?",
+                                        "Are you sure you want to delete this Teacher?",
                                     onConfirm: () {
                                       context.read<AddClassCubit>().deleteClass(
                                         item.id,

@@ -1,3 +1,4 @@
+import 'package:MySchool/core/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
@@ -5,13 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/compo.dart';
 import '../widgets/custom_card.dart';
 import 'classes/add_class_view.dart';
-import 'fees/fees_view.dart';
-import 'parent/parents_view.dart';
-import 'result/results_view.dart';
+import 'fees/add_fees_view.dart';
+import 'parent/add_parents_view.dart';
+import 'result/add_results_view.dart';
 import 'students/add_students_view.dart';
 import 'subjects/add_subjects_view.dart';
 import 'teacher/add_teachers_view.dart';
-import 'timetable/timetables_view.dart';
+import 'timetable/add_timetables_view.dart';
 
 class AdminView extends StatefulWidget {
   static String id = '/AdminView';
@@ -46,31 +47,31 @@ class _AdminViewState extends State<AdminView> {
       count: 50,
       image: "assets/parentsadmin.png",
       title: "Parents",
-      route: ParentsView.id,
+      route: AddParentsView.id,
     ),
     Compo(
       count: 50,
       image: "assets/studentsadmin.png",
       title: "Students",
-      route: StudentsView.id,
+      route: AddStudentsView.id,
     ),
     Compo(
       count: 50,
       image: "assets/timetablesadmin.png",
       title: "TimeTables",
-      route: TimetablesView.id,
+      route: AddTimeTableView.id,
     ),
     Compo(
       count: 0,
       image: "assets/feesadmin.png",
       title: "Fees",
-      route: FeesView.id,
+      route: AddFeesView.id,
     ),
     Compo(
       count: 0,
       image: "assets/resultsadmin.png",
       title: "Results",
-      route: ResultsView.id,
+      route: AddResultsView.id,
     ),
   ];
   @override
@@ -87,13 +88,11 @@ class _AdminViewState extends State<AdminView> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("My School"),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/schoolIconadmin.png', height: 30),
-          ),
-        ],
+        title: Text("MY SCHOOL",style : TextStyle(
+          color: Color(0xff114066),
+        )),
+        centerTitle: true,
+    
       ),
       body: CustomScrollView(
         slivers: [
@@ -129,6 +128,87 @@ class _AdminViewState extends State<AdminView> {
             ),
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const UserAccountsDrawerHeader(
+              accountName: Text('Admin User'),
+              accountEmail: Text('admin@school.com'),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Image(image: AssetImage('assets/schoolIconadmin.png')),
+              ),
+              decoration: BoxDecoration(color: Color(0xff292562)),
+            ),
+            ListTile(
+              leading: Icon(Icons.class_),
+              title: Text('Classes'),
+              onTap: () {
+                
+                Navigator.popAndPushNamed(context, AddClassView.id);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.book),
+              title: Text('Subjects'),
+              onTap: () {
+                Navigator.popAndPushNamed(context, AddSubjectView.id);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Teachers'),
+              onTap: () {
+                Navigator.popAndPushNamed(context, AddTeachersView.id);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Parents'),
+              onTap: () {
+                Navigator.popAndPushNamed(context, AddParentsView.id);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Students'),
+              onTap: () {
+                Navigator.popAndPushNamed(context, AddStudentsView.id);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.table_chart),
+              title: Text('Time Tables'),
+              onTap: () {
+                Navigator.popAndPushNamed(context, AddTimeTableView.id);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.money),
+              title: Text('Fees'),
+              onTap: () {
+                Navigator.popAndPushNamed(context, AddFeesView.id);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.book),
+              title: Text('Results'),
+              onTap: () {
+                Navigator.popAndPushNamed(context, AddResultsView.id);
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.blue),
+              title: Text('Logout'),
+              onTap: () {
+                logout(context);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

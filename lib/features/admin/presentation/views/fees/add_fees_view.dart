@@ -1,4 +1,5 @@
 import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/utils/search_utlis.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/domain/entities/fees_entity.dart';
@@ -15,23 +16,25 @@ import '../../widgets/add_widget.dart';
 import '../../widgets/create_new_widget.dart';
 import '../../widgets/new_widget.dart';
 
-class FeesView extends StatefulWidget {
-  const FeesView({super.key});
-  static const String id = "/FeesView";
+class AddFeesView extends StatefulWidget {
+  const AddFeesView({super.key});
+  static const String id = "/AddFeesView";
 
   @override
-  State<FeesView> createState() => _FeesViewState();
+  State<AddFeesView> createState() => _AddFeesViewState();
 }
 
-class _FeesViewState extends State<FeesView> {
+class _AddFeesViewState extends State<AddFeesView> {
   final TextEditingController totalAmountController = TextEditingController();
   final TextEditingController paidAmountController = TextEditingController();
   final TextEditingController dueTimeController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
 
   String? selectedStudent;
   bool showForm = false;
   bool isEdit = false;
   String? editingId;
+  List<FeesEntity> filteredFees = [];
 
   final List<DropdownMenuItem<String>> studentItems = [
     DropdownMenuItem(value: "Student 1", child: Text("Student 1")),
@@ -52,6 +55,9 @@ class _FeesViewState extends State<FeesView> {
       showForm = false;
       isEdit = false;
       editingId = null;
+      totalAmountController.clear();
+      paidAmountController.clear();
+      searchController.clear();
       dueTimeController.clear();
       selectedStudent = null;
     });
@@ -60,8 +66,7 @@ class _FeesViewState extends State<FeesView> {
   @override
   void initState() {
     super.initState();
-
-
+    context.read<AddFeesCubit>().loadFees();
     totalAmountController.addListener(() {
       setState(() {});
     });
@@ -71,7 +76,18 @@ class _FeesViewState extends State<FeesView> {
     dueTimeController.addListener(() {
       setState(() {});
     });
-    context.read<AddFeesCubit>().loadFees();
+    searchController.addListener(() {
+      final query = searchController.text.toLowerCase();
+      setState(() {
+        filteredFees =
+            context
+                .read<AddFeesCubit>()
+                .state
+                .fees
+                .where((fee) => fee.selectSudent.toLowerCase().contains(query))
+                .toList();
+      });
+    });
   }
 
   @override
@@ -79,6 +95,7 @@ class _FeesViewState extends State<FeesView> {
     totalAmountController.dispose();
     paidAmountController.dispose();
     dueTimeController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
@@ -86,13 +103,12 @@ class _FeesViewState extends State<FeesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: "Classes"),
+      appBar: CustomAppBar(title: "Fees"),
       body:
           showForm
               ? CreateNewWidget(
-                title: isEdit ? "Edit Class" : "Add Class",
+                title: isEdit ? "Edit Fees" : "Add Fees",
                 items: [
-                 
                   ClassDropdownWidget(
                     title: "select student",
                     items: studentItems,
@@ -100,49 +116,47 @@ class _FeesViewState extends State<FeesView> {
                     onChanged:
                         (value) => setState(() => selectedStudent = value),
                   ),
-                   CustomField(
-                    validator:
-                        (value) =>
-                            value == null || value.isEmpty
-                                ? "Total amount is required"
-                                : null,
+                  CustomField(
                     controller: totalAmountController,
                     label: "Total Amount",
+  keyboardType: TextInputType.numberWithOptions(decimal: true),
+
                   ),
-                   CustomField(
-                    validator:
-                        (value) =>
-                            value == null || value.isEmpty
-                                ? "Total amount is required"
-                                : null,
+                  CustomField(
                     controller: paidAmountController,
                     label: "Paid Amount",
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+
                   ),
-                   CustomField(
-                    validator:
-                        (value) =>
-                            value == null || value.isEmpty
-                                ? "Total amount is required"
-                                : null,
-                    controller: dueTimeController,
-                    label: "Due Time",
+                  CustomField(
+                    controller: dueTimeController, label: "Due Time"
+                    , keyboardType: TextInputType.datetime,
+                    readOnly: true,
+                    onTap: () async {
+    TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (pickedTime != null) {
+      final formattedTime = pickedTime.format(context);
+      dueTimeController.text = formattedTime;
+    }
+  },
                   ),
                   CreateButton(
                     label: isEdit ? "Update " : "Create ",
                     icon: isEdit ? Icons.restart_alt : Icons.add,
                     enabled:
                         totalAmountController.text.isNotEmpty &&
-                    paidAmountController.text.isNotEmpty &&
-                    dueTimeController.text.isNotEmpty &&
+                        paidAmountController.text.isNotEmpty &&
+                        dueTimeController.text.isNotEmpty &&
                         selectedStudent != null,
 
                     onPressed: () {
                       final entity = FeesEntity(
-                        paidAmount:
-                            double.tryParse(paidAmountController.text) ?? 0,
                         id: isEdit ? editingId! : const Uuid().v4(),
-                        totalAmount:
-                            double.tryParse(totalAmountController.text) ?? 0,
+                        paidAmount: double.parse(paidAmountController.text),
+                        totalAmount: double.parse(totalAmountController.text),
                         dueDate: DateTime.now(),
                         selectSudent: selectedStudent ?? '',
                       );
@@ -159,12 +173,32 @@ class _FeesViewState extends State<FeesView> {
               )
               : BlocBuilder<AddFeesCubit, AddFeesState>(
                 builder: (context, state) {
+                  final feesList =
+                      searchController.text.isEmpty ? state.fees : filteredFees;
                   return CustomScrollView(
                     slivers: [
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 8,
+                            ),
+                            child: TextField(
+                              controller: searchController,
+                              decoration: InputDecoration(
+                                hintText: 'Search',
+                                prefixIcon: Icon(Icons.search),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       SliverToBoxAdapter(
                         child: AddWidget(
                           onTap: () => openForm(),
-                          title: "Add Classes",
+                          title: "Add Fees",
                           width: ResponsiveUtils.getResponsiveWidth(
                             context,
                             0.5,
@@ -178,9 +212,13 @@ class _FeesViewState extends State<FeesView> {
                             context,
                             index,
                           ) {
-                            final item = state.fees[index];
+                            final item = feesList[index]; 
+
                             return NewWidget(
-                              title: item.selectSudent,
+                              title: SearchUtils.getHighlightedText(
+                                item.selectSudent,
+                                searchController.text,
+                              ),
                               subtitle: item.totalAmount.toString(),
                               onEdit: () => openForm(entity: item),
                               onDelete:
@@ -188,7 +226,7 @@ class _FeesViewState extends State<FeesView> {
                                     context,
                                     title: "Delete",
                                     message:
-                                        "Are you sure you want to delete this Teacher?",
+                                        "Are you sure you want to delete this Fees?",
                                     onConfirm: () {
                                       context.read<AddFeesCubit>().deleteFees(
                                         item.id,
@@ -196,7 +234,7 @@ class _FeesViewState extends State<FeesView> {
                                     },
                                   ),
                             );
-                          }, childCount: state.fees.length),
+                          }, childCount: feesList.length),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount:

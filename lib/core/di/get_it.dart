@@ -7,26 +7,44 @@ import 'package:MySchool/features/admin/data/data_sources/class_data_sources/cla
 import 'package:MySchool/features/admin/data/data_sources/class_data_sources/class_local_datasource_impl.dart';
 import 'package:MySchool/features/admin/data/data_sources/fees_data_sources/fees_local_datasources.dart';
 import 'package:MySchool/features/admin/data/data_sources/fees_data_sources/fees_local_datasources_impl.dart';
+import 'package:MySchool/features/admin/data/data_sources/parent_data_sources/parent_local_data_souces_impl.dart';
+import 'package:MySchool/features/admin/data/data_sources/parent_data_sources/parent_local_data_sources.dart';
+import 'package:MySchool/features/admin/data/data_sources/student_data_sources/student_local_data_souces_impl.dart';
+import 'package:MySchool/features/admin/data/data_sources/student_data_sources/student_local_data_sources.dart';
 import 'package:MySchool/features/admin/data/data_sources/subjects_data_sources/subjects_data_sources.dart';
 import 'package:MySchool/features/admin/data/data_sources/subjects_data_sources/subjects_data_sources_impl.dart';
 import 'package:MySchool/features/admin/data/data_sources/teacher_data_sources/teacher_local_datasource.dart';
 import 'package:MySchool/features/admin/data/data_sources/teacher_data_sources/teacher_local_datasource_impl.dart';
+import 'package:MySchool/features/admin/data/data_sources/timetable_datasources/timetable_local_datasources.dart';
+import 'package:MySchool/features/admin/data/data_sources/timetable_datasources/timetable_local_datasources_impl.dart';
 import 'package:MySchool/features/admin/data/repositories/class_repository_impl.dart';
 import 'package:MySchool/features/admin/data/repositories/fees_repository_impl.dart';
+import 'package:MySchool/features/admin/data/repositories/parents_repository_impl.dart';
+import 'package:MySchool/features/admin/data/repositories/student_repository_impl.dart';
 import 'package:MySchool/features/admin/data/repositories/subjects_repository_impl.dart';
 import 'package:MySchool/features/admin/data/repositories/teacher_repository_impl.dart';
+import 'package:MySchool/features/admin/data/repositories/timetable_repository_impl.dart';
+import 'package:MySchool/features/admin/domain/repositories/add_timetable_repository.dart';
 import 'package:MySchool/features/admin/domain/repositories/class_repository.dart';
 import 'package:MySchool/features/admin/domain/repositories/fees_repository.dart';
+import 'package:MySchool/features/admin/domain/repositories/parent_respository.dart';
+import 'package:MySchool/features/admin/domain/repositories/student_repository.dart';
 import 'package:MySchool/features/admin/domain/repositories/subject_repository.dart';
 import 'package:MySchool/features/admin/domain/repositories/teacher_repository.dart';
 import 'package:MySchool/features/admin/domain/usecases/add_class_usecases.dart';
 import 'package:MySchool/features/admin/domain/usecases/add_fess_usecases.dart';
+import 'package:MySchool/features/admin/domain/usecases/add_parent_usecases.dart';
+import 'package:MySchool/features/admin/domain/usecases/add_student_usecases.dart';
 import 'package:MySchool/features/admin/domain/usecases/add_subject_usecases.dart';
 import 'package:MySchool/features/admin/domain/usecases/add_teacher_usecases.dart';
+import 'package:MySchool/features/admin/domain/usecases/add_timetable_usecases.dart';
 import 'package:MySchool/features/admin/presentation/cubits/class_cubits/add_class_cubit.dart';
 import 'package:MySchool/features/admin/presentation/cubits/fees_cubits/fees_cubit.dart';
+import 'package:MySchool/features/admin/presentation/cubits/parent_cubits/add_parent_cubit.dart';
+import 'package:MySchool/features/admin/presentation/cubits/student_cubits/student_cubit.dart';
 import 'package:MySchool/features/admin/presentation/cubits/subject_cubits/add_subject_cubit.dart';
 import 'package:MySchool/features/admin/presentation/cubits/teacher_cubits/add_teacher_cubit.dart';
+import 'package:MySchool/features/admin/presentation/cubits/timetable_cubits/timetable_cubit.dart';
 import 'package:MySchool/features/auth/data/data_sources/mock/mock_auth_remote_data_source_impl.dart';
 import 'package:MySchool/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MySchool/features/auth/domain/repositories/check_first_time_repository.dart';
@@ -61,8 +79,10 @@ import 'package:MySchool/features/school/presentation/cubits/parent_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/selected_account/account_selection_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/student_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/teacher_cubit.dart';
+import 'package:MySchool/features/time_table/data/datasources/timetable_local_data_source.dart';
 import 'package:MySchool/features/time_table/data/datasources/timetable_local_data_source_impl.dart';
 import 'package:MySchool/features/time_table/data/repositories/timetable_repository_impl.dart';
+import 'package:MySchool/features/time_table/domain/repositories/timetable_repository.dart';
 import 'package:MySchool/features/time_table/domain/usecases/get_timetable_for_day.dart';
 import 'package:MySchool/features/time_table/presentation/cubits/timetable_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -86,6 +106,8 @@ Future<void> setupDependencies() async {
   await _setupNotificationDependencies();
   await _setupTimetableDependencies();
   await _setupGradesDependencies();
+  await _setupAdminDependencies();
+
 }
 
 // ============== Module Setup Methods ==============
@@ -211,8 +233,9 @@ Future<void> _setupGradesDependencies() async {
   // Cubit
   getIt.registerFactory(() => GradeCubit(getIt()));
 
+}
   //! admin
-
+  Future<void> _setupAdminDependencies()async{
   // class data source
   getIt.registerLazySingleton<ClassLocalDataSource>(
     () => ClassLocalDataSourceImpl(),
@@ -222,12 +245,24 @@ Future<void> _setupGradesDependencies() async {
     () => SubjectsLocalDataSourceImpl(),
   );
   // teachers data source 
-  getIt.registerLazySingleton<TeacherLocalDataSource>(
-    () => TeacherLocalDataSourceImpl(),
-  );
+  // getIt.registerLazySingleton<TeacherLocalDataSource>(
+  //   () => TeacherLocalDataSourceImpl(),
+  // );
   // fees data source
   getIt.registerLazySingleton<FeesLocalDataSource>(
     () => FeesLocalDataSourceImpl(),
+  );
+  // parents data source
+  getIt.registerLazySingleton<ParentLocalDataSource>(
+    () => ParentLocalDataSourceImpl(),
+  );
+  // students data source
+  getIt.registerLazySingleton<StudentLocalDataSource>(
+    () => StudentLocalDataSourceImpl(),
+  );
+  // timetable data source
+  getIt.registerLazySingleton<AddTimeTableLocalDataSource>(
+    () => AddTimeTableLocalDataSourceImpl(),
   );
 
   // class repository
@@ -245,6 +280,18 @@ Future<void> _setupGradesDependencies() async {
   // fees repository
   getIt.registerLazySingleton<FeesRepository>(
     () => FeesRepositoryImpl(getIt()),
+  );
+  // parents repository
+  getIt.registerLazySingleton<ParentRepository>(
+    () => ParentsRepositoryImpl(getIt()),
+  );
+  // students repository
+  getIt.registerLazySingleton<StudentRepository>(
+    () => StudentRepositoryImpl(getIt()),
+  );
+  // timetable repository
+  getIt.registerLazySingleton<AddTimeTableRepository>(
+    () => AddTimeTableRepositoryImpl(getIt()),
   );
 
   // class use cases
@@ -267,7 +314,21 @@ Future<void> _setupGradesDependencies() async {
   getIt.registerLazySingleton(() => AddFeesUseCase(getIt()));
   getIt.registerLazySingleton(() => UpdateFeesUseCase(getIt()));
   getIt.registerLazySingleton(() => DeleteFeesUseCase(getIt()));
-
+  // parents use cases
+  getIt.registerLazySingleton(() => GetParentsUseCase(getIt()));
+  getIt.registerLazySingleton(() => AddParentUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateParentUseCase(getIt()));
+  getIt.registerLazySingleton(() => DeleteParentUseCase(getIt()));
+  // students use cases
+  getIt.registerLazySingleton(() => GetStudentUseCase(getIt()));
+  getIt.registerLazySingleton(() => AddStudentUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateStudentUseCase(getIt()));
+  getIt.registerLazySingleton(() => DeleteStudentUseCase(getIt()));
+  // timetable use cases
+  getIt.registerLazySingleton(() => GetTimeTableUseCase(getIt()));
+  getIt.registerLazySingleton(() => AddTimeTableUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateTimeTableUseCase(getIt()));
+  getIt.registerLazySingleton(() => DeleteTimeTableUseCase(getIt()));
   // class cubit
   getIt.registerFactory(
     () => AddClassCubit(
@@ -298,6 +359,33 @@ Future<void> _setupGradesDependencies() async {
   // fees cubit
   getIt.registerLazySingleton(
     () => AddFeesCubit(
+      getAll: getIt(),
+      add: getIt(),
+      update: getIt(),
+      delete: getIt(),
+    ),
+  );
+  // parent cubit
+  getIt.registerLazySingleton(
+    () => AddParentCubit(
+      getAll: getIt(),
+      add: getIt(),
+      update: getIt(),
+      delete: getIt(),
+    ),
+  );
+  // student cubit
+  getIt.registerLazySingleton(
+    () => AddStudentCubit(
+      getAll: getIt(),
+      add: getIt(),
+      update: getIt(),
+      delete: getIt(),
+    ),
+  );
+  // timetable cubit
+  getIt.registerLazySingleton(
+    () => AddTimeTableCubit(
       getAll: getIt(),
       add: getIt(),
       update: getIt(),
