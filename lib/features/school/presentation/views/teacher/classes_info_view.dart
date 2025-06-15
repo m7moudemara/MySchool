@@ -194,11 +194,22 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
                         icon: Icons.assignment,
                         title: 'Results',
                         onTap: () {
+                          print('xxxxxxxxxxxxxxxx');
+                          print(widget.student);
                           // Navigator.pushNamed(context, GradesView.id);
-                          Navigator.pushNamed(
+                          // Navigator.pushNamed(
+                          //   context,
+                          //   StudentGradesView.id,
+                          //   arguments: widget.student,
+                          // );
+                          Navigator.push(
                             context,
-                            StudentGradesView.id,
-                            arguments: widget.student,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => StudentGradesView(
+                                    student: widget.student,
+                                  ),
+                            ),
                           );
                         },
                       ),

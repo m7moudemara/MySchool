@@ -1,3 +1,4 @@
+import 'package:MySchool/features/grades/presentation/views/student_grades_view2.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/views/parent/children_details.dart';
 import 'package:MySchool/features/homework/presentation/views/teacher_homework_view.dart';
@@ -39,7 +40,7 @@ final List<AcademicsItem> allAcademicsItems = [
   AcademicsItem(
     title: 'Results',
     iconPath: 'assets/results.png',
-    routeName: StudentGradesView.id,
+    routeName: StudentGradesView2.id,
     visibleFor: UserType.student,
   ),
 

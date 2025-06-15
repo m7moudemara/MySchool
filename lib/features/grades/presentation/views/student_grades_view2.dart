@@ -5,32 +5,51 @@ import 'package:MySchool/features/grades/presentation/widgets/result_item.dart';
 import 'package:MySchool/features/grades/presentation/widgets/term_list_widget.dart';
 import 'package:MySchool/features/grades/presentation/widgets/term_widget.dart';
 import 'package:MySchool/features/school/data/models/student_model.dart';
+import 'package:MySchool/features/school/domain/entities/user_type.dart';
 // import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class StudentGradesView extends StatefulWidget {
-  final Student student;
-  const StudentGradesView({super.key, required this.student});
+class StudentGradesView2 extends StatefulWidget {
+  const StudentGradesView2({super.key});
+  static const String id = "/StudentGradesView";
 
   @override
-  State<StudentGradesView> createState() => _StudentGradesViewState();
+  State<StudentGradesView2> createState() => _StudentGradesView2State();
 }
 
-class _StudentGradesViewState extends State<StudentGradesView> {
+class _StudentGradesView2State extends State<StudentGradesView2> {
   String selectedTerm = 'First Term';
   final List<String> terms = ['First Term', 'Second Term'];
   bool isTermListVisible = false;
 
+  late Student xStudent;
+
   @override
   void initState() {
     super.initState();
-    context.read<GradeCubit>().loadGrades(selectedTerm, widget.student.id);
+    setState(() {
+      xStudent = context.read<UserCubit>().state as Student;
+    });
+    context.read<GradeCubit>().loadGrades(selectedTerm, xStudent.id);
+    // if (widget.student == null) {
+    //   print('sssssssssssssssss');
+    //   IUser? xx = context.read<UserCubit>().state;
+    //   setState(() {
+    //     xStudent = xx as Student?;
+    //   });
+    //   context.read<GradeCubit>().loadGrades(selectedTerm, xx!.id);
+    // } else {
+    //   setState(() {
+    //     xStudent = widget.student;
+    //   });
+    //   context.read<GradeCubit>().loadGrades(selectedTerm, widget.student!.id);
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    // final studentx = context.read<UserCubit>().state;
+    final studentx = context.read<UserCubit>().state;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -78,7 +97,7 @@ class _StudentGradesViewState extends State<StudentGradesView> {
                               });
                               context.read<GradeCubit>().loadGrades(
                                 term,
-                                widget.student.id,
+                                xStudent.id,
                               );
                             },
                           )
@@ -151,11 +170,9 @@ class _StudentGradesViewState extends State<StudentGradesView> {
                     ),
                     child: ResultItem(
                       //! from user UserCubit
-                      studentName: widget.student.name,
-                      // className: studentx?.className ?? result.className,
-                      // imageUrl: studentx?.imageUrl ?? result.imageUrl,
-                      className: widget.student.className,
-                      imageUrl: widget.student.imageUrl,
+                      studentName: xStudent.name,
+                      className: studentx?.className ?? result.className,
+                      imageUrl: studentx?.imageUrl ?? result.imageUrl,
                       //! from StudentResultEntity
                       subjects: mappedSubjects,
                       totalMarks: result.totalMarks,
