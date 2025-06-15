@@ -7,7 +7,8 @@ class AddTimeTableModel extends TimeTableEntity {
     required super.selectedSubject,
     required super.selectedTeacher,
     required super.startTime,
-    required super.endTime,
+    required super.day,
+    required super.endTime, required super.selectedClassId, required super.selectedSubjectId, required super.selectedTeacherId,
   });
 
   factory AddTimeTableModel.fromEntity(TimeTableEntity entity) => AddTimeTableModel(
@@ -17,5 +18,9 @@ class AddTimeTableModel extends TimeTableEntity {
     selectedTeacher: entity.selectedTeacher,
     startTime: entity.startTime,
     endTime: entity.endTime,
+    selectedClassId: entity.selectedClassId,
+    selectedSubjectId: entity.selectedSubjectId,
+    selectedTeacherId: entity.selectedTeacherId,
+    day: entity.day
   );
 }

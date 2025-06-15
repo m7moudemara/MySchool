@@ -89,7 +89,6 @@ class _AddFeesViewState extends State<AddFeesView> {
   }
 
   void openForm({FeesEntity? entity}) {
-    DateTime xx = DateTime.parse(entity?.dueDate.toString() ?? '').toLocal();
     setState(() {
       showForm = true;
       isEdit = entity != null;
@@ -98,8 +97,7 @@ class _AddFeesViewState extends State<AddFeesView> {
       selectedStudentName = entity?.selectSudentName;
       totalAmountController.text = entity?.totalAmount.toString() ?? '';
       paidAmountController.text = entity?.paidAmount.toString() ?? '';
-      // dueTimeController.text = entity?.dueDate.toString() ?? '';
-      dueTimeController.text = xx.toString();
+      dueTimeController.text = entity?.dueDate.toString() ?? '';
     });
   }
 

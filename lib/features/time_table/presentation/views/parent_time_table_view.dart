@@ -77,9 +77,10 @@ class _ParentTimeTableViewState extends State<ParentTimeTableView> {
                           ? DaysListWidget(
                             days: days,
                             selectedDay: selectedDay,
-                            onDaySelected: (day) {
+                            onDaySelected: (day, index) {
                               setState(() {
                                 selectedDay = day;
+
                                 isDayListVisible = false;
                               });
                               context.read<TimeTableCubit>().loadTimetable(day);

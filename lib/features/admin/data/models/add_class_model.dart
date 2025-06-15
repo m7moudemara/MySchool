@@ -10,10 +10,10 @@ class AddClassModel extends ClassEntity {
 
   factory AddClassModel.fromJson(Map<String, dynamic> json) {
     return AddClassModel(
-      id: json['id'],
+      id: json['id'].toString(),
       name: json['name'],
-      grade: json['grade'],
-      studentsCount: json['studentsCount'],
+      grade: json['grade'].toString(),
+      studentsCount: json['student_count'],
     );
   }
 

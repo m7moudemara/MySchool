@@ -42,26 +42,11 @@ class ParentLocalDataSourceImpl implements ParentLocalDataSource {
 
   @override
   Future<void> add(AddParentsModel parent) async {
-    print(parent.accountId);
-    print('##########');
-    print(parent.accountId);
-    print(parent.password);
-    print(parent.nationalId);
-    print(parent.fullName);
-    print(parent.gender);
-    print(parent.dateOfBirth);
-    print(parent.address);
-    print(parent.phoneNumber);
-    print(parent.isActive);
-    print(parent.mustChangePassword);
-
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
     DateTime date = inputFormat.parse(parent.dateOfBirth);
 
     // Format as yyyy-MM-dd
     String formatted = DateFormat('yyyy-MM-dd').format(date);
-    print(formatted);
-    print('##################');
     try {
       final url = Uri.parse('$baseUrl/api/accounts');
       final response = await http.post(
@@ -97,8 +82,6 @@ class ParentLocalDataSourceImpl implements ParentLocalDataSource {
 
   @override
   Future<void> update(AddParentsModel updated) async {
-    print(updated.dateOfBirth);
-    print('rrrrrrrrrrrr');
     // final index = _parents.indexWhere((t) => t.id == updated.id);
     // if (index != -1) _parents[index] = updated;
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');

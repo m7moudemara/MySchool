@@ -5,6 +5,7 @@ import 'package:MySchool/features/admin/presentation/cubits/parent_cubits/add_pa
 import 'package:MySchool/features/admin/presentation/widgets/class_dropdown_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:MySchool/core/constants.dart';
@@ -48,6 +49,13 @@ class _AddParentsViewState extends State<AddParentsView> {
   ];
 
   void openForm({ParentEntity? entity}) {
+    print(entity?.dateOfBirth);
+    String? formatted;
+    if (entity != null) {
+      DateFormat inputFormat = DateFormat('yyyy-MM-dd');
+      DateTime date = inputFormat.parse(entity.dateOfBirth);
+      formatted = DateFormat('dd/MM/yyyy').format(date);
+    }
     setState(() {
       showForm = true;
       isEdit = entity != null;
@@ -55,7 +63,8 @@ class _AddParentsViewState extends State<AddParentsView> {
       fullNameController.text = entity?.fullName ?? '';
       accountIdController.text = entity?.accountId ?? '';
       passwordController.text = entity?.password ?? '';
-      dobController.text = entity?.dateOfBirth ?? '';
+      dobController.text = formatted ?? '';
+      // dobController.text = entity?.dateOfBirth ?? '';
       nationalIdController.text = entity?.nationalId ?? '';
       phoneController.text = entity?.phoneNumber ?? '';
       addressController.text = entity?.address ?? '';

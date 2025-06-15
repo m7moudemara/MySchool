@@ -91,9 +91,9 @@ class StudentDashboardUser implements DashboardUser {
   final int totalDays; // Placeholder for total days
   @override
   final int absentDays; // Placeholder for absent days
-    @override
+  @override
   final int total_students;
-      @override
+  @override
   final int total_classes;
   @override
   final double total;
@@ -101,9 +101,6 @@ class StudentDashboardUser implements DashboardUser {
   final double paid;
   @override
   final double remaining;
-
-
-
 
   StudentDashboardUser({
     required this.id,
@@ -117,10 +114,11 @@ class StudentDashboardUser implements DashboardUser {
     required this.className,
     required this.totalDays,
     required this.absentDays,
-    required this.total_students,    required this.total,
+    required this.total_students,
+    required this.total,
     required this.paid,
     required this.remaining,
-required this.total_classes
+    required this.total_classes,
   });
 
   factory StudentDashboardUser.fromJson(Map<String, dynamic> json) {
@@ -135,10 +133,16 @@ required this.total_classes
       total_notifications: json['account']['total_notifications'] ?? 0,
       className: json['class_name'] ?? '',
       totalDays: json['total_attendance'] ?? 0,
-      absentDays: json['absent_days'] ?? 0,total_students: json['total_students']??0,      total: json['fee_info']['total'] ?? 0,
+      absentDays: json['absent_days'] ?? 0,
+      total_students: json['total_students'] ?? 0,
+      total: json['fee_info']['total'] ?? 0,
       paid: json['fee_info']['paid'] ?? 0,
-      remaining: json['fee_info']['remaining'] ?? 0, total_classes: json['total_classes']??0,
-
+      remaining: json['fee_info']['remaining'] ?? 0,
+      total_classes: json['total_classes'] ?? 0,
     );
   }
+
+  // Map<String, dynamic> toJson() => {
+
+  // };
 }

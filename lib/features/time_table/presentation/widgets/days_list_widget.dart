@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DaysListWidget extends StatelessWidget {
   final List<String> days;
   final String selectedDay;
-  final Function(String day) onDaySelected;
+  final Function(String day,int index) onDaySelected;
 
   const DaysListWidget({
     super.key,
@@ -21,9 +21,9 @@ class DaysListWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: Column(
           children:
-              days.map((day) {
+              days.asMap().entries.map((day) {
                 return GestureDetector(
-                  onTap: () => onDaySelected(day),
+                  onTap: () => onDaySelected(day.value,day.key),
                   child: Container(
                     width: double.infinity,
                     color:
@@ -35,7 +35,7 @@ class DaysListWidget extends StatelessWidget {
                       vertical: 8,
                     ),
                     child: Text(
-                      day,
+                      day.value,
                       style: TextStyle(
                         color: day == selectedDay ? Colors.black : Colors.grey,
                         fontFamily: 'Inter',

@@ -88,7 +88,7 @@ class _AddTeachersViewState extends State<AddTeachersView> {
   void initState() {
     super.initState();
     context.read<AddTeacherCubit>().loadTeachers();
-    
+
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
       setState(() {

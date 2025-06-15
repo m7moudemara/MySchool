@@ -227,8 +227,6 @@ class _StudentTimeTableViewState extends State<StudentTimeTableView> {
   void initState() {
     super.initState();
     context.read<TimeTableCubit>().loadTimetable(selectedDay);
-    // print(BlocProvider.of<TimeTableCubit>(context).state);
-    // print('xxxxxxxxxxxxx');
   }
 
   @override
@@ -290,7 +288,7 @@ class _StudentTimeTableViewState extends State<StudentTimeTableView> {
                               ? DaysListWidget(
                                 days: days,
                                 selectedDay: selectedDay,
-                                onDaySelected: (day) {
+                                onDaySelected: (day,index) {
                                   setState(() {
                                     selectedDay = day;
                                     isDayListVisible = false;
