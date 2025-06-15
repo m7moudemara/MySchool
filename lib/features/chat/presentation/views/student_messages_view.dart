@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:MySchool/constants/strings.dart';
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/chat/data/models/chat_contact.dart';
 import 'package:MySchool/features/chat/data/models/chat_message.dart';
 import 'package:MySchool/features/chat/presentation/views/chat_view.dart';

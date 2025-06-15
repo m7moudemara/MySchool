@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/presentation/widgets/add_widget.dart';
@@ -46,6 +46,22 @@ class _AddParentsViewState extends State<AddParentsView> {
     DropdownMenuItem(value: "male", child: Text("male")),
     DropdownMenuItem(value: "female", child: Text("female")),
   ];
+
+  void _addTextListeners() {
+    final controllers = [
+      fullNameController,
+      accountIdController,
+      passwordController,
+      dobController,
+      nationalIdController,
+      phoneController,
+      addressController,
+    ];
+
+    for (var controller in controllers) {
+      controller.addListener(() => setState(() {}));
+    }
+  }
 
   void openForm({ParentEntity? entity}) {
     setState(() {
@@ -89,6 +105,7 @@ class _AddParentsViewState extends State<AddParentsView> {
   void initState() {
     super.initState();
     context.read<AddParentCubit>().loadParents();
+    _addTextListeners();
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
       setState(() {
@@ -194,12 +211,13 @@ class _AddParentsViewState extends State<AddParentsView> {
                     const SizedBox(height: 12),
                     CreateButton(
                       label: isEdit ? "Update" : "Create",
-                      icon: isEdit ? Icons.edit : Icons.add,
+                      icon: isEdit ? Icons.restart_alt : Icons.add,
                       enabled:
                           fullNameController.text.isNotEmpty &&
                           accountIdController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty &&
                           dobController.text.isNotEmpty &&
+                          gender != null &&
                           nationalIdController.text.isNotEmpty &&
                           phoneController.text.isNotEmpty &&
                           addressController.text.isNotEmpty &&
@@ -240,24 +258,24 @@ class _AddParentsViewState extends State<AddParentsView> {
                           : filteredParents;
                   return CustomScrollView(
                     slivers: [
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 8,
-                            ),
-                            child: TextField(
-                              controller: searchController,
-                              decoration: InputDecoration(
-                                hintText: 'Search',
-                                prefixIcon: Icon(Icons.search),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 8,
+                          ),
+                          child: TextField(
+                            controller: searchController,
+                            decoration: InputDecoration(
+                              hintText: 'Search',
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                           ),
                         ),
+                      ),
                       SliverToBoxAdapter(
                         child: AddWidget(
                           onTap: () => openForm(),

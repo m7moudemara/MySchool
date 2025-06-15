@@ -1,5 +1,5 @@
-import 'package:MySchool/controllers/file_controller.dart';
-import 'package:MySchool/controllers/shared_pref_controller.dart';
+import 'package:MySchool/core/controllers/file_controller.dart';
+import 'package:MySchool/core/controllers/shared_pref_controller.dart';
 import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/core/presentation/intro/presentation/cubits/intro_cubit.dart';
 import 'package:MySchool/features/admin/presentation/cubits/class_cubits/add_class_cubit.dart';
@@ -85,9 +85,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => getIt<AddFeesCubit>()),
         BlocProvider(create: (_) => getIt<AddParentCubit>()),
         BlocProvider(create: (_) => getIt<AddStudentCubit>()),
-        BlocProvider(
-          create: (_) => getIt<AddTimeTableCubit>(),
-        ),
+        BlocProvider(create: (_) => getIt<AddTimeTableCubit>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

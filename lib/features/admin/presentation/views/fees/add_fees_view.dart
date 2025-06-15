@@ -1,4 +1,4 @@
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/search_utlis.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
@@ -40,15 +40,40 @@ class _AddFeesViewState extends State<AddFeesView> {
     DropdownMenuItem(value: "Student 1", child: Text("Student 1")),
     DropdownMenuItem(value: "Student 2", child: Text("Student 2")),
   ];
+      void _addTextListeners() {
+  final controllers = [
+    totalAmountController,
+    paidAmountController,
+    dueTimeController,
+    searchController,
+  ];
+
+  for (var controller in controllers) {
+    controller.addListener(() => setState(() {}));
+  }
+}
 
   void openForm({FeesEntity? entity}) {
-    setState(() {
-      showForm = true;
-      isEdit = entity != null;
-      editingId = entity?.id;
-      selectedStudent = entity?.selectSudent;
-    });
-  }
+  setState(() {
+    showForm = true;
+    isEdit = entity != null;
+    editingId = entity?.id;
+
+    if (entity != null) {
+      selectedStudent = entity.selectSudent;
+      totalAmountController.text = entity.totalAmount.toString();
+      paidAmountController.text = entity.paidAmount.toString();
+      dueTimeController.text =
+          TimeOfDay.fromDateTime(entity.dueDate).format(context); // ✅
+    } else {
+      selectedStudent = null;
+      totalAmountController.clear();
+      paidAmountController.clear();
+      dueTimeController.clear();
+    }
+  });
+}
+
 
   void resetForm() {
     setState(() {
@@ -67,15 +92,7 @@ class _AddFeesViewState extends State<AddFeesView> {
   void initState() {
     super.initState();
     context.read<AddFeesCubit>().loadFees();
-    totalAmountController.addListener(() {
-      setState(() {});
-    });
-    paidAmountController.addListener(() {
-      setState(() {});
-    });
-    dueTimeController.addListener(() {
-      setState(() {});
-    });
+    _addTextListeners();
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
       setState(() {

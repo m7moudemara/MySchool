@@ -4,7 +4,7 @@ import 'package:MySchool/core/widgets/custom_snack_bar.dart';
 import 'package:MySchool/features/auth/presentation/views/login_view.dart';
 import 'package:MySchool/main.dart';
 import 'package:flutter/material.dart';
-import '../../../../constants/strings.dart';
+import '../../../../core/constants/strings.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../widgets/custom_button.dart';
 import 'package:http/http.dart' as http;

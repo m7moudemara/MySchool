@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/core/utils/search_utlis.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/domain/entities/timetable_entity.dart';
@@ -176,7 +175,7 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
                     const SizedBox(height: 12),
                     CreateButton(
                       label: isEdit ? "Update" : "Create",
-                      icon: isEdit ? Icons.edit : Icons.add,
+                      icon: isEdit ? Icons.restart_alt : Icons.add,
                       enabled:
                           selectedClass != null &&
                           selectedSubject != null &&

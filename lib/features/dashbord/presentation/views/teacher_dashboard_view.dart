@@ -4,33 +4,32 @@ import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/notifications/presentation/views/notifications_view.dart';
 import 'package:MySchool/features/dashbord/presentation/widgets/academics_items_config.dart';
-import 'package:MySchool/features/school/data/models/student_model.dart';
+import 'package:MySchool/features/school/data/models/teacher_model.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
-import 'package:MySchool/features/dashbord/presentation/widgets/custom_academics_widget.dart';
 import 'package:MySchool/features/dashbord/presentation/widgets/custom_info_card_widget.dart';
+import 'package:MySchool/features/dashbord/presentation/widgets/custom_academics_widget.dart';
 
-class StudentDashBoard extends StatelessWidget {
-  static String id = '/StudentDashBoard';
+class TeacherDashboardView extends StatelessWidget {
+  static String id = '/TeacherDashBoard';
 
-  const StudentDashBoard({super.key});
+  const TeacherDashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, IUser?>(
       bloc: getIt<UserCubit>(),
       builder: (context, state) {
-        if (state is! Student) {
+        if (state is! Teacher) {
           return const Scaffold(
-            body: Center(child: Text("No student data available")),
+            body: Center(child: Text("No teacher data available")),
           );
         }
 
-        final student = state;
-
+        final teacher = state;
         return BlocBuilder<DashboardUserCubit, DashboardUser?>(
           bloc: getIt<DashboardUserCubit>(),
           builder: (context, statex) {
-            final studentDash = statex;
+            // final teacherDash = state;
             return Scaffold(
               body: SafeArea(
                 child: Padding(
@@ -53,11 +52,12 @@ class StudentDashBoard extends StatelessWidget {
                           ],
                         ),
                       ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 10)),
                       SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20.0),
                           child: Text(
-                            "Hi there, Welcome ${student.name}!",
+                            "Hi there, Welcome ${teacher.name}!",
                             style: const TextStyle(
                               color: Color(0xff3F3D56),
                               fontSize: 16,
@@ -68,23 +68,7 @@ class StudentDashBoard extends StatelessWidget {
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 20)),
                       SliverToBoxAdapter(
-                        child: CustomInfoCardWidget(
-                          user: Student(
-                            date_of_birth: student.date_of_birth,
-                            user_name: student.user_name,
-                            isFirstLogin: student.isFirstLogin,
-                            name: student.name,
-                            className: 'Class ${studentDash!.className}',
-                            imageUrl: student.imageUrl,
-                            totalDays: studentDash.totalDays,
-                            absentDays: studentDash.absentDays,
-                            id: student.id,
-                            parentId: student.parentId,
-                            gender: student.gender,
-                            address: student.address,
-                            phone: student.phone,
-                          ), userx: statex!,
-                        ),
+                        child: CustomInfoCardWidget(user: teacher, userx: statex!,),
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 20)),
                       const SliverToBoxAdapter(
@@ -101,7 +85,7 @@ class StudentDashBoard extends StatelessWidget {
                       const SliverToBoxAdapter(child: SizedBox(height: 20)),
                       SliverToBoxAdapter(
                         child: RoleBasedAcademicsCompo(
-                          currentUserRole: UserType.student,
+                          currentUserRole: UserType.teacher,
                           items: allAcademicsItems,
                         ),
                       ),

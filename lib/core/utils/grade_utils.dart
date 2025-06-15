@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 
 String getGrade(int score) {
   const int maxScore = 100;

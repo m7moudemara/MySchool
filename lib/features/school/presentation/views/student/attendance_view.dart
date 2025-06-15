@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/size_config.dart';
 import 'package:MySchool/features/attendace/progress_circle.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../../../../../constants/strings.dart';
+import '../../../../../core/constants/strings.dart';
 import '../../../../../core/di/get_it.dart';
 import '../../../../../main.dart';
 import '../../../../auth/presentation/cubit/user_cubit.dart';

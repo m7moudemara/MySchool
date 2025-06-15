@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/presentation/widgets/add_widget.dart';
@@ -59,6 +59,22 @@ class _AddStudentsViewState extends State<AddStudentsView> {
     DropdownMenuItem(value: "parent2", child: Text("Parent 2")),
   ];
 
+  
+  void _addTextListeners() {
+  final controllers = [
+    fullNameController,
+    accountIdController,
+    passwordController,
+    dobController,
+    nationalIdController,
+    phoneController,
+    addressController,
+  ];
+
+  for (var controller in controllers) {
+    controller.addListener(() => setState(() {}));
+  }
+}
   void openForm({StudentEntity? entity}) {
     setState(() {
       showForm = true;
@@ -104,6 +120,7 @@ class _AddStudentsViewState extends State<AddStudentsView> {
   void initState() {
     super.initState();
     context.read<AddStudentCubit>().loadStudents();
+    _addTextListeners();  
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
       setState(() {
@@ -225,12 +242,15 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                     const SizedBox(height: 12),
                     CreateButton(
                       label: isEdit ? "Update" : "Create",
-                      icon: isEdit ? Icons.edit : Icons.add,
+                      icon: isEdit ? Icons.restart_alt : Icons.add,
                       enabled:
                           fullNameController.text.isNotEmpty &&
                           accountIdController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty &&
                           dobController.text.isNotEmpty &&
+                          gender != null &&
+                          selectedClass != null &&
+                          myParent != null &&
                           nationalIdController.text.isNotEmpty &&
                           phoneController.text.isNotEmpty &&
                           addressController.text.isNotEmpty &&

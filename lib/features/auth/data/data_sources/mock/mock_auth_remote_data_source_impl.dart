@@ -97,7 +97,7 @@ import 'package:dio/dio.dart';
 import '../auth_remote_data_source.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:MySchool/constants/strings.dart';
+import 'package:MySchool/core/constants/strings.dart';
 
 class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;

@@ -1,4 +1,4 @@
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/profile/presentation/views/help_center_view.dart';

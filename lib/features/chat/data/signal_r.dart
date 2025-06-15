@@ -1,5 +1,5 @@
 // import 'package:signalr_client/signalr_client.dart';
-import 'package:MySchool/constants/strings.dart';
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/main.dart';
 import 'package:signalr_core/signalr_core.dart';
 

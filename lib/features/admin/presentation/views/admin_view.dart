@@ -1,4 +1,4 @@
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import '../../data/models/compo.dart';
