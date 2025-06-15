@@ -1,7 +1,7 @@
 import 'package:MySchool/features/school/presentation/views/teacher/classes_info_view.dart';
 import 'dart:convert';
 
-import 'package:MySchool/constants/strings.dart';
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

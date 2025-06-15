@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/admin/data/data_sources/teacher_data_sources/teacher_local_datasource.dart';
 import 'package:MySchool/features/admin/data/models/add_teachers_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import '../../../../../constants/strings.dart';
 import '../../../../../main.dart';
 import '../../../domain/entities/teacher_entity.dart';
 

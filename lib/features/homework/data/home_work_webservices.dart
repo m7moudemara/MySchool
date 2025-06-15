@@ -1,5 +1,8 @@
 import 'dart:convert';
-import 'package:MySchool/constants/strings.dart';
+
+import 'package:MySchool/core/constants/strings.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import '../../../main.dart';
 

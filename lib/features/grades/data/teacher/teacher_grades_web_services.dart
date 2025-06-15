@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:MySchool/constants/strings.dart';
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/grades/presentation/views/teacher_result_view.dart';
 import 'package:MySchool/main.dart';
 import 'package:http/http.dart' as http;

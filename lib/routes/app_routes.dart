@@ -1,5 +1,6 @@
 import 'package:MySchool/core/presentation/intro/presentation/views/intro_view.dart';
 import 'package:MySchool/core/presentation/view/decider_view.dart';
+import 'package:MySchool/features/dashbord/presentation/views/teacher_dashboard_view.dart';
 import 'package:MySchool/features/school/data/models/student_model.dart';
 import '../features/admin/presentation/views/admin_view.dart';
 import '../features/admin/presentation/views/classes/add_class_view.dart';
@@ -27,7 +28,7 @@ import 'package:MySchool/features/time_table/presentation/views/parent_time_tabl
 import 'package:MySchool/features/time_table/presentation/views/student_time_table_view.dart';
 import 'package:MySchool/features/time_table/presentation/views/teacher_time_table_view.dart';
 import 'package:flutter/material.dart';
-import 'package:MySchool/features/dashbord/presentation/views/student_dashboard.dart';
+import 'package:MySchool/features/dashbord/presentation/views/student_dashboard_view.dart';
 import 'package:MySchool/features/auth/presentation/views/login_view.dart';
 import 'package:MySchool/features/auth/presentation/views/create_new_password_view.dart';
 import 'package:MySchool/features/notifications/presentation/views/notifications_view.dart';
@@ -62,9 +63,10 @@ class AppRoutes {
 
   static final Map<String, WidgetBuilder> routes = {
     '/': (context) => const DeciderView(),
+
     IntroView.id: (context) => IntroView(),
     LoginView.id: (context) => LoginView(),
-    StudentDashBoard.id: (context) => StudentDashBoard(),
+    StudentDashboardView.id: (context) => StudentDashboardView(),
     // StudentGradesView.id: (context) => StudentGradesView(),
     CreateNewPasswordView.id: (context) => CreateNewPasswordView(),
     NotificationsView.id: (context) => NotificationsView(),
@@ -76,10 +78,8 @@ class AppRoutes {
     // },
     StudentMessagesView.id: (context) => StudentMessagesView(),
     TeacherClassesView.id: (context) => TeacherClassesView(),
-    ParentDashboardView.id: (context) => ParentDashboardView(),
     ParentMessagesView.id: (context) => ParentMessagesView(),
     MyChildrenView.id: (context) => MyChildrenView(),
-    TeacherHomeworkView.id: (context) => const TeacherHomeworkView(),
     TeacherHomeworkView.id: (context) => const TeacherHomeworkView(),
     TeacherCreateHomeworkview.id:
         (context) => const TeacherCreateHomeworkview(),

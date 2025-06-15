@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/domain/entities/teacher_entity.dart';
@@ -46,6 +46,22 @@ class _AddTeachersViewState extends State<AddTeachersView> {
     DropdownMenuItem(value: "Male", child: Text("Male")),
     DropdownMenuItem(value: "Female", child: Text("Female")),
   ];
+  
+  void _addTextListeners() {
+  final controllers = [
+    fullNameController,
+    accountIdController,
+    passwordController,
+    dobController,
+    nationalIdController,
+    phoneController,
+    addressController,
+  ];
+
+  for (var controller in controllers) {
+    controller.addListener(() => setState(() {}));
+  }
+}
 
   void openForm({TeacherEntity? entity}) {
     setState(() {
@@ -88,7 +104,7 @@ class _AddTeachersViewState extends State<AddTeachersView> {
   void initState() {
     super.initState();
     context.read<AddTeacherCubit>().loadTeachers();
-
+    _addTextListeners();  
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
       setState(() {
@@ -195,12 +211,13 @@ class _AddTeachersViewState extends State<AddTeachersView> {
                     const SizedBox(height: 12),
                     CreateButton(
                       label: isEdit ? "Update" : "Create",
-                      icon: isEdit ? Icons.edit : Icons.add,
+                      icon: isEdit ? Icons.restart_alt : Icons.add,
                       enabled:
                           fullNameController.text.isNotEmpty &&
                           accountIdController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty &&
                           dobController.text.isNotEmpty &&
+                          gender != null &&
                           nationalIdController.text.isNotEmpty &&
                           phoneController.text.isNotEmpty &&
                           addressController.text.isNotEmpty &&
@@ -241,7 +258,6 @@ class _AddTeachersViewState extends State<AddTeachersView> {
                           : filteredTeachers;
                   return CustomScrollView(
                     slivers: [
-                      if (state.teachers.isNotEmpty)
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(

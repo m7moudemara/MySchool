@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:MySchool/constants/strings.dart';
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/core/utils/grade_utils.dart';
 import 'package:MySchool/features/grades/data/data_sources/grades_local_datasource.dart';
 import 'package:MySchool/main.dart';

@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/admin/data/data_sources/timetable_datasources/timetable_local_datasources.dart';
 import 'package:MySchool/features/admin/data/models/add_timetable_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import '../../../../../constants/strings.dart';
 import '../../../../../main.dart';
 import '../../../domain/entities/timetable_entity.dart';
 

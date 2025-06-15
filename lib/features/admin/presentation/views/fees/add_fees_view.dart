@@ -1,6 +1,8 @@
 import 'dart:convert';
-import 'package:MySchool/constants/strings.dart';
-import 'package:MySchool/core/constants.dart';
+
+import 'package:MySchool/core/constants/constants.dart';
+import 'package:MySchool/core/constants/strings.dart';
+
 import 'package:MySchool/core/utils/search_utlis.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
@@ -48,6 +50,18 @@ class _AddFeesViewState extends State<AddFeesView> {
     // DropdownMenuItem(value: 1, child: Text("Student 1")),
     // DropdownMenuItem(value: 2, child: Text("Student 2")),
   ];
+  void _addTextListeners() {
+    final controllers = [
+      totalAmountController,
+      paidAmountController,
+      dueTimeController,
+      searchController,
+    ];
+
+    for (var controller in controllers) {
+      controller.addListener(() => setState(() {}));
+    }
+  }
 
   getStudents() async {
     final url = Uri.parse(
@@ -93,11 +107,20 @@ class _AddFeesViewState extends State<AddFeesView> {
       showForm = true;
       isEdit = entity != null;
       editingId = entity?.id;
-      selectedStudentId = entity?.selectSudentId;
-      selectedStudentName = entity?.selectSudentName;
-      totalAmountController.text = entity?.totalAmount.toString() ?? '';
-      paidAmountController.text = entity?.paidAmount.toString() ?? '';
-      dueTimeController.text = entity?.dueDate.toString() ?? '';
+
+      if (entity != null) {
+        selectedStudentId = entity.selectSudentId;
+        totalAmountController.text = entity.totalAmount.toString();
+        paidAmountController.text = entity.paidAmount.toString();
+        dueTimeController.text = TimeOfDay.fromDateTime(
+          entity.dueDate,
+        ).format(context);
+      } else {
+        selectedStudentId = null;
+        totalAmountController.clear();
+        paidAmountController.clear();
+        dueTimeController.clear();
+      }
     });
   }
 
@@ -119,15 +142,7 @@ class _AddFeesViewState extends State<AddFeesView> {
     super.initState();
     getStudents();
     context.read<AddFeesCubit>().loadFees();
-    totalAmountController.addListener(() {
-      setState(() {});
-    });
-    paidAmountController.addListener(() {
-      setState(() {});
-    });
-    dueTimeController.addListener(() {
-      setState(() {});
-    });
+    _addTextListeners();
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
       // setState(() {

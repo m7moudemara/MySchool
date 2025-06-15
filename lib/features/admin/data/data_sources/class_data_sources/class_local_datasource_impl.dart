@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import '../../../../../constants/strings.dart';
+
+import 'package:MySchool/core/constants/strings.dart';
+
 import '../../../../../main.dart';
 import '../../models/add_class_model.dart';
 import 'class_local_datasource.dart';

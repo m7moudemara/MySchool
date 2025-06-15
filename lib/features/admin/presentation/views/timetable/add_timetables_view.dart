@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/time_table/presentation/widgets/day_selector_widget.dart';
 import 'package:MySchool/features/time_table/presentation/widgets/days_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
-import 'package:MySchool/core/constants.dart';
+
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/domain/entities/timetable_entity.dart';
@@ -19,7 +21,6 @@ import 'package:MySchool/features/admin/presentation/widgets/custom_text_feild.d
 import 'package:MySchool/features/admin/presentation/widgets/new_widget.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../../constants/strings.dart';
 import '../../../../../main.dart';
 
 class AddTimeTableView extends StatefulWidget {
@@ -269,7 +270,7 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
                     const SizedBox(height: 12),
                     CreateButton(
                       label: isEdit ? "Update" : "Create",
-                      icon: isEdit ? Icons.edit : Icons.add,
+                      icon: isEdit ? Icons.restart_alt : Icons.add,
                       enabled:
                           selectedClassId != null &&
                           selectedSubjectId != null &&

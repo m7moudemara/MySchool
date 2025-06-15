@@ -1,4 +1,5 @@
-import 'package:MySchool/constants/strings.dart';
+
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/main.dart';
 import 'package:flutter/material.dart';

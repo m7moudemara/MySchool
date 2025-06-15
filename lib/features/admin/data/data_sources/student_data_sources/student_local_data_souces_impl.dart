@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/admin/data/data_sources/student_data_sources/student_local_data_sources.dart';
 import 'package:MySchool/features/admin/data/models/add_student_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-import '../../../../../constants/strings.dart';
 import '../../../../../main.dart';
 import '../../../domain/entities/student_entity.dart';
 

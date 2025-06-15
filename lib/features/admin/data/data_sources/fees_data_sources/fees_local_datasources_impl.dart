@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/admin/data/data_sources/fees_data_sources/fees_local_datasources.dart';
 import 'package:MySchool/features/admin/data/models/add_fees_model.dart';
 import 'package:http/http.dart' as http;
-import '../../../../../constants/strings.dart';
 import '../../../../../main.dart';
 
 class FeesLocalDataSourceImpl implements FeesLocalDataSource {

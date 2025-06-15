@@ -1,4 +1,4 @@
-import 'package:MySchool/constants/strings.dart';
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/main.dart';
