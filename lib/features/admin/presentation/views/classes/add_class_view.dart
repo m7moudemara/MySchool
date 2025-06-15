@@ -27,13 +27,21 @@ class _AddClassViewState extends State<AddClassView> {
   bool showForm = false;
   bool isEdit = false;
   String? editingId;
-
-final List<DropdownMenuItem<String>> gradeItems = [
-  DropdownMenuItem(value: "Grade 1", child: Text("Grade 1")),
-  DropdownMenuItem(value: "Grade 2", child: Text("Grade 2")),
-  DropdownMenuItem(value: "Grade 3", child: Text("Grade 3")),
-  DropdownMenuItem(value: "Grade 4", child: Text("Grade 4")),
-];
+  List<ClassEntity> classes = [];
+  final List<DropdownMenuItem<String>> gradeItems = [
+    DropdownMenuItem(value: "Grade 1", child: Text("grade 1")),
+    DropdownMenuItem(value: "Grade 2", child: Text("grade 2")),
+    DropdownMenuItem(value: "Grade 3", child: Text("grade 3")),
+    DropdownMenuItem(value: "Grade 4", child: Text("grade 4")),
+    DropdownMenuItem(value: "Grade 5", child: Text("grade 5")),
+    DropdownMenuItem(value: "Grade 6", child: Text("grade 6")),
+    DropdownMenuItem(value: "Grade 7", child: Text("grade 7")),
+    DropdownMenuItem(value: "Grade 8", child: Text("grade 8")),
+    DropdownMenuItem(value: "Grade 9", child: Text("grade 9")),
+    DropdownMenuItem(value: "Grade 10", child: Text("grade 10")),
+    DropdownMenuItem(value: "Grade 11", child: Text("grade 11")),
+    DropdownMenuItem(value: "Grade 12", child: Text("grade 12")),
+  ];
 
   void openForm({ClassEntity? entity}) {
     setState(() {
@@ -41,7 +49,8 @@ final List<DropdownMenuItem<String>> gradeItems = [
       isEdit = entity != null;
       editingId = entity?.id;
       classNameController.text = entity?.name ?? '';
-      selectedGrade = entity?.subject;
+      selectedGrade = "Grade ${entity?.grade}";
+      // selectedGrade = entity?.grade;
     });
   }
 
@@ -64,7 +73,7 @@ final List<DropdownMenuItem<String>> gradeItems = [
     classNameController.addListener(() {
       setState(() {});
     });
-    selectedGrade = null; 
+    selectedGrade = null;
   }
 
   @override
@@ -104,8 +113,8 @@ final List<DropdownMenuItem<String>> gradeItems = [
                       final entity = ClassEntity(
                         id: isEdit ? editingId! : const Uuid().v4(),
                         name: classNameController.text,
-                       subject: selectedGrade!,
-  
+                        grade: selectedGrade!,
+
                         studentsCount: 20,
                       );
 
@@ -148,7 +157,7 @@ final List<DropdownMenuItem<String>> gradeItems = [
                                   style: DefaultTextStyle.of(context).style,
                                 ),
                               ),
-                              subtitle: item.subject,
+                              subtitle: item.grade,
                               onEdit: () => openForm(entity: item),
                               onDelete:
                                   () => confirmDelete(

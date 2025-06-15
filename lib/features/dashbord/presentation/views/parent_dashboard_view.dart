@@ -67,7 +67,10 @@ class ParentDashboardView extends StatelessWidget {
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 20)),
                       SliverToBoxAdapter(
-                        child: CustomInfoCardWidget(user: parent, userx: statex!,),
+                        child: CustomInfoCardWidget(
+                          user: parent,
+                          userx: statex!,
+                        ),
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 20)),
                       const SliverToBoxAdapter(
@@ -85,7 +88,6 @@ class ParentDashboardView extends StatelessWidget {
                       SliverToBoxAdapter(
                         child: RoleBasedAcademicsCompo(
                           currentUserRole: UserType.guardian,
-                          // currentUserRole: UserType.parent,
                           items: allAcademicsItems,
                         ),
                       ),

@@ -8,7 +8,7 @@ class GradesRepositoryImpl implements GradesRepository {
   GradesRepositoryImpl(this.localDataSource);
 
   @override
-  Future<StudentResultEntity?> getGrades(String term) async {
-    return await localDataSource.getGrades(term);
+  Future<StudentResultEntity?> getGrades(String term, int studentId) async {
+    return await localDataSource.getGrades(term, studentId);
   }
 }

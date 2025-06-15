@@ -20,13 +20,11 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   
   @override
   Future<List<Student>> fetchAllStudents() {
-    // TODO: implement fetchAllStudents
     throw UnimplementedError();
   }
   
   @override
   Future<List<Teacher>> fetchAllTeachers() {
-    // TODO: implement fetchAllTeachers
     throw UnimplementedError();
   }
 }

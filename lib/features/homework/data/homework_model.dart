@@ -27,8 +27,8 @@ class HomeworkModel {
   factory HomeworkModel.fromJson(Map<String, dynamic> map) {
     return HomeworkModel(
       id: map['id'] as int,
-      class_id: map['class_id'] ?? 0,
-      Subject_id: map['subject_id'] ?? 0,
+      class_id: map['class']['id'] ?? 0,
+      Subject_id: map['subject']['id'] ?? 0,
       title: map['title'] as String,
       subject_name: map['subject']['name'] as String,
       description: map['subject']['description'] as String,

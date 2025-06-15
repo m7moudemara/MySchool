@@ -13,7 +13,7 @@ class ClassRepositoryImpl implements ClassRepository {
       AddClassModel(
         id: newClass.id,
         name: newClass.name,
-        subject: newClass.subject,
+        grade: newClass.grade,
         studentsCount: newClass.studentsCount,
       ),
     );
@@ -31,13 +31,11 @@ class ClassRepositoryImpl implements ClassRepository {
 
   @override
   Future<void> updateClass(ClassEntity updatedClass) {
-    return localDataSource.update(
-      AddClassModel(
-        id: updatedClass.id,
-        name: updatedClass.name,
-        subject: updatedClass.subject,
-        studentsCount: updatedClass.studentsCount,
-      ),
-    );
+    return localDataSource.update(AddClassModel(
+      id: updatedClass.id,
+      name: updatedClass.name,
+      grade: updatedClass.grade,
+      studentsCount: updatedClass.studentsCount,
+    ));
   }
 }

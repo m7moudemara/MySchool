@@ -33,7 +33,7 @@ class StudentCard extends StatelessWidget {
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: Image.asset(
-            imageUrl,
+            'assets/profile.png',
             width: 42,
             height: 40,
             fit: BoxFit.cover,

@@ -24,4 +24,20 @@ class TeacherEntity {
     required this.isActive,
     required this.mustChangePassword,
   });
+
+  factory TeacherEntity.fromJson(Map<String, dynamic> json) {
+    return TeacherEntity(
+      id: json['id'].toString(),
+      fullName: json['name'] ?? '',
+      accountId: json['user_name'] ?? '',
+      password: json['password'] ?? '',
+      gender: json['gender'] ?? 'xxx',
+      dateOfBirth: json['date_of_birth'] ?? '',
+      nationalId: json['national_id'] ?? '',
+      phoneNumber: json['phone_number'] ?? '',
+      address: json['address'] ?? '',
+      isActive: json['is_active'],
+      mustChangePassword: json['must_change_password'],
+    );
+  }
 }

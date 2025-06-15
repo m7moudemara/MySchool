@@ -77,7 +77,7 @@ class _TeacherTimeTableViewState extends State<TeacherTimeTableView> {
                           ? DaysListWidget(
                             days: days,
                             selectedDay: selectedDay,
-                            onDaySelected: (day) {
+                            onDaySelected: (day,index) {
                               setState(() {
                                 selectedDay = day;
                                 isDayListVisible = false;

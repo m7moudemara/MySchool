@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:MySchool/core/constants/constants.dart';
 
-String getGrade(int score) {
-  const int maxScore = 100;
+String getGrade(int score, int maxScore) {
+  // const int maxScore = 100;
   int difference = maxScore - score;
 
   if (difference <= 10) {

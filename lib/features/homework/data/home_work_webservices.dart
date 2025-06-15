@@ -28,9 +28,6 @@ class HomeWorkWebservices {
       List<Map<String, dynamic>> data = List<Map<String, dynamic>>.from(
         jsonDecode(response.body)['data'],
       );
-      // Parse the response body and return the homework assignments
-      print(data.length);
-      print('66666666666666666');
       return data;
       // Adjust based on your API response structure
     } else {
@@ -88,4 +85,31 @@ class HomeWorkWebservices {
   // }
 
   // Additional methods for updating and deleting assignments can be added here.
+
+  Future<List<Map<String, dynamic>>> getSubmissions(int homeWorkId) async {
+    final url = Uri.parse(
+      '$baseUrl/api/assignments/$homeWorkId/submissions',
+    ); // Replace with your API endpoint
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<Map<String, dynamic>> data = List<Map<String, dynamic>>.from(
+        jsonDecode(response.body)['data'],
+      );
+      return data;
+      // Adjust based on your API response structure
+    } else {
+      // Handle error response
+      throw Exception(
+        'Failed to fetch homework assignments: ${response.statusCode}',
+      );
+    }
+  }
 }

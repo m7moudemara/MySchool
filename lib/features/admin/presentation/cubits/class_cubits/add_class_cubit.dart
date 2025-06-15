@@ -29,11 +29,20 @@ class AddClassCubit extends Cubit<AddClassState> {
   }
 
   void addClass(ClassEntity entity) async {
+    print(entity.grade);
+    print(entity.name);
+
+    print('@@@@@@@@@@@');
     await add(entity);
     loadClasses();
   }
 
   void updateClass(ClassEntity entity) async {
+    print(entity.grade);
+    print(entity.name);
+    print(entity.id);
+
+    print('@@@@@88888@@@@@@');
     await update(entity);
     loadClasses();
   }

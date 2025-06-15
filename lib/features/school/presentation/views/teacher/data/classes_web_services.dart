@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../../../../../../core/constants/strings.dart';
@@ -8,7 +7,7 @@ import '../../../../../../main.dart';
 class ClassesWebServices {
   Future getClasses() async {
     String? token = await sharedPrefController.getToken();
-    final url = Uri.parse('$baseUrl/api/enrollments');
+    final url = Uri.parse('$baseUrl/api/enrollments?Pagesize=500');
     final response = await http.get(
       url,
       headers: {

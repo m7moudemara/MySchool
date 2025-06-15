@@ -1,8 +1,5 @@
-import 'package:MySchool/features/homework/data/home_work/home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/homework_model.dart';
-import 'package:MySchool/features/homework/data/teacher/cubit/teacher_home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/teacher/cubit/teacher_view_homework_cubit.dart';
-import 'package:MySchool/features/homework/domain/entities/homework_entity.dart';
 import 'package:MySchool/features/homework/presentation/views/submitted_homeworks.dart';
 import 'package:MySchool/features/homework/presentation/views/teacher_create_homework_view.dart';
 import 'package:flutter/material.dart';
@@ -26,15 +23,9 @@ class _TeacherHomeworkViewState extends State<TeacherHomeworkView> {
     setState(() {});
   }
 
-  // void _removeExpiredHomework() {
-  //   final now = DateTime.now();
-  //   homeWorks.removeWhere((hw) => hw.deadline.isBefore(now));
-  // }
-
-  // Local list of homework items
-  // This is a mock data list. In a real application, this data would come from a database or API.
   List<HomeworkModel> homeWorks = [];
-  // final List<HomeworkEntity> homeworkList = [];
+  int count = 0;
+  String searchText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -51,122 +42,107 @@ class _TeacherHomeworkViewState extends State<TeacherHomeworkView> {
         ),
       ),
       body: SafeArea(
-        child: BlocConsumer<TeacherViewHomeworkCubit, TeacherViewHomeworkState>(
-          listener: (context, state) {
-            // TODO: implement listener
-          },
-          builder: (context, state) {
-            if (state is HomeWorksLoaded) {
-              homeWorks =
-                  state.homeWorks
-                      .where((element) => element.is_deadline_passed == false)
-                      .toList();
-              return Container(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    //! create homework button
-                    InkWell(
-                      onTap: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => const TeacherCreateHomeworkview(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0C46C4),
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 4,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Create Homework',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.30,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
+        child: Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              //! create homework button
+              CreateNewHomeWorkButton(),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Total Homework: ${homeWorks.length}"),
+                  //! Search
+                  Container(
+                    width: 150,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Total Homework: ${homeWorks.length}"),
-                        //! Search
-                        Container(
-                          width: 150,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 1),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                            ),
-                            child: TextField(
-                              cursorHeight: 16,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                prefixIcon: Icon(Icons.search),
-                                hintText: 'Search',
-                                contentPadding: EdgeInsets.symmetric(
-                                  vertical: 2,
-                                ),
-                                hintStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-
-                    // Homework list
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: homeWorks.length,
-                        itemBuilder: (context, index) {
-                          return _buildHomeworkItem(homeWorks[index]);
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            searchText = value;
+                          });
                         },
+                        cursorHeight: 16,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          prefixIcon: Icon(Icons.search),
+                          hintText: 'Search',
+                          contentPadding: EdgeInsets.symmetric(vertical: 2),
+                          hintStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
                     ),
-                  ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+
+              // Homework list
+              Expanded(
+                child: BlocConsumer<
+                  TeacherViewHomeworkCubit,
+                  TeacherViewHomeworkState
+                >(
+                  listener: (context, state) {
+                    if (state is HomeWorksLoaded) {
+                      setState(() {
+                        homeWorks =
+                            state.homeWorks
+                                .where(
+                                  (element) =>
+                                      element.is_deadline_passed == false,
+                                )
+                                .toList();
+                      });
+                      // print(homeWorks[0].class_id);
+                      // print('zerooooooooo');
+                    }
+                  },
+                  builder: (context, state) {
+                    return searchText == ''
+                        ? ListView.builder(
+                          itemCount: homeWorks.length,
+                          itemBuilder: (context, index) {
+                            return _buildHomeworkItem(homeWorks[index]);
+                          },
+                        )
+                        : ListView.builder(
+                          itemCount: getFilterdList().length,
+                          itemBuilder: (context, index) {
+                            return _buildHomeworkItem(getFilterdList()[index]);
+                          },
+                        );
+                  },
                 ),
-              );
-            } else if (state is HomeWorksLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else {
-              return Center(child: Text('No HomeWorks'));
-            }
-          },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  // Widget to build each homework item
+  getFilterdList() {
+    return homeWorks
+        .where(
+          (element) =>
+              element.title.toLowerCase().contains(searchText.toLowerCase()),
+        )
+        .toList();
+  }
+
   Widget _buildHomeworkItem(HomeworkModel item) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -182,146 +158,232 @@ class _TeacherHomeworkViewState extends State<TeacherHomeworkView> {
           ),
         ],
       ),
-      child: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Image(
-                          image: AssetImage("assets/carbon_book.png"),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Image(image: AssetImage("assets/carbon_book.png")),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //! Title
+                        Text(
+                          item.title,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        //! Subject
+                        Text(
+                          item.subject_name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        //! DeadLine
+                        Text(
+                          DateFormat(
+                            'dd/MM/yyyy – hh:mm a',
+                          ).format(item.deadline),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                //! Divider
+                Divider(
+                  color: const Color(0xFFC9C5C5),
+                  thickness: 1,
+                  height: 32,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //! View Button
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => ViewAttachmentPage(
+                                  homeWorkId: item.id,
+                                  classId: item.class_id,
+                                ),
+                          ),
+                        );
+                      },
+                      child: Row(
                         children: [
-                          //! Title
-                          Text(
-                            item.title,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w500,
-                            ),
+                          Icon(
+                            Icons.remove_red_eye,
+                            color: Colors.black,
+                            size: 16,
                           ),
-                          //! Subject
-                          Text(
-                            item.subject_name,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 3.0,
                             ),
-                          ),
-                          //! DeadLine
-                          Text(
-                            DateFormat(
-                              'dd/MM/yyyy – hh:mm a',
-                            ).format(item.deadline),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
+                            child: Text(
+                              'View',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  //! Divider
-                  Divider(
-                    color: const Color(0xFFC9C5C5),
-                    thickness: 1,
-                    height: 32,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      //! View Button
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ViewAttachmentPage(),
-                            ),
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.remove_red_eye,
-                              color: Colors.black,
-                              size: 16,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 3.0,
+                    ),
+                    //! Delete Button
+                    InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          elevation: 10,
+                          context: context,
+                          builder: (context) {
+                            return Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Do you want to remove this HomeWork?',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      BlocProvider.of<TeacherViewHomeworkCubit>(
+                                        context,
+                                      ).deleteHomeWork(item.id);
+                                      setState(() {
+                                        homeWorks.remove(item);
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                            Colors.red[200],
+                                          ),
+                                    ),
+                                    child: Text('Remove'),
+                                  ),
+                                  SizedBox(height: 10),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Cancel'),
+                                  ),
+                                ],
                               ),
-                              child: Text(
-                                'View',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400,
-                                ),
+                            );
+                          },
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.delete, color: Colors.black, size: 16),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 3.0,
+                            ),
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      //! Delete Button
-                      InkWell(
-                        onTap: () {
-                          BlocProvider.of<TeacherViewHomeworkCubit>(
-                            context,
-                          ).deleteHomeWork(item.id);
-                          setState(() {
-                            homeWorks.remove(item);
-                          });
-                        },
-                        child: Row(
-                          children: [
-                            Icon(Icons.delete, color: Colors.black, size: 16),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 3.0,
-                              ),
-                              child: Text(
-                                'Delete',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CreateNewHomeWorkButton extends StatelessWidget {
+  const CreateNewHomeWorkButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TeacherCreateHomeworkview(),
+          ),
+        );
+      },
+      child: Container(
+        width: double.infinity,
+        height: 40,
+        decoration: BoxDecoration(
+          color: const Color(0xFF0C46C4),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0x3F000000),
+              blurRadius: 4,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            'Create Homework',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14.30,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),

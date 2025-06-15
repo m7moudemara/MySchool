@@ -211,14 +211,9 @@ class _ChatLayoutState extends State<ChatLayout> {
     try {
       String truncatedUtcString =
           '${isoTime.substring(0, isoTime.length - 1)}Z';
-      // Convert the string to DateTime
       DateTime utcTime = DateTime.parse(truncatedUtcString);
 
-      // Convert to local time
       DateTime dateTime = utcTime.toLocal();
-      print(dateTime);
-      // final dateTime = DateTime.parse(isoTime);
-      // final dateTime = DateTime.parse(isoTime);
       return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
     } catch (e) {
       return isoTime;

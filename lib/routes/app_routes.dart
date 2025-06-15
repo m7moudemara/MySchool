@@ -1,6 +1,7 @@
 import 'package:MySchool/core/presentation/intro/presentation/views/intro_view.dart';
 import 'package:MySchool/core/presentation/view/decider_view.dart';
 import 'package:MySchool/features/dashbord/presentation/views/teacher_dashboard_view.dart';
+import 'package:MySchool/features/school/data/models/student_model.dart';
 import '../features/admin/presentation/views/admin_view.dart';
 import '../features/admin/presentation/views/classes/add_class_view.dart';
 import '../features/admin/presentation/views/fees/add_fees_view.dart';
@@ -50,6 +51,12 @@ class AppRoutes {
       final args = settings.arguments as Map;
       return MaterialPageRoute(builder: (context) => ChatView(messagess: args));
     }
+    if (settings.name == StudentGradesView.id) {
+      final args = settings.arguments as Student;
+      return MaterialPageRoute(
+        builder: (context) => StudentGradesView(student: args),
+      );
+    }
 
     return null;
   }
@@ -59,12 +66,8 @@ class AppRoutes {
 
     IntroView.id: (context) => IntroView(),
     LoginView.id: (context) => LoginView(),
-    //! Dashboard
     StudentDashboardView.id: (context) => StudentDashboardView(),
-    ParentDashboardView.id: (context) => ParentDashboardView(),
-    TeacherDashboardView.id : (context) => TeacherDashboardView() ,
-    StudentGradesView.id: (context) => StudentGradesView(),
-    
+    // StudentGradesView.id: (context) => StudentGradesView(),
     CreateNewPasswordView.id: (context) => CreateNewPasswordView(),
     NotificationsView.id: (context) => NotificationsView(),
     StudentHomeworkView.id: (context) => StudentHomeworkView(),

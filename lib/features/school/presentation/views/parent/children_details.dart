@@ -24,7 +24,6 @@ class _MyChildrenViewState extends State<MyChildrenView> {
       headers: {'Accept': 'application/json', 'Authorization': 'Bearer $token'},
     );
     if (response.statusCode == 200) {
-      // List result = jsonDecode(response.body)['data'];
       List<Map<String, dynamic>> resultx = [];
       for (var element in jsonDecode(response.body)['data']) {
         Map<String, dynamic> child = await getOneChildInf(
@@ -38,23 +37,6 @@ class _MyChildrenViewState extends State<MyChildrenView> {
           'image': "https://img.icons8.com/?size=256w&id=7820&format=png",
         });
       }
-      // result.forEach((element) async {
-      //   Map<String, dynamic> child = await getOneChildInf(
-      //     element['student']['id'],
-      //     token!,
-      //   );
-      //   resultx.add({
-      //     'id': element['student']['id'],
-      //     'name': element['student']['name'],
-      //     'class': child['class_name'],
-      //     'image': "https://img.icons8.com/?size=256w&id=7820&format=png",
-      //   });
-      // });
-      // setState(() {
-      //   filteredChildren = resultx;
-      // });
-      print(resultx);
-      print('dddddddddddddd');
       return resultx;
     } else {
       throw Exception('error');
@@ -74,40 +56,11 @@ class _MyChildrenViewState extends State<MyChildrenView> {
     }
   }
 
-  // local list of children
-  // This should ideally be fetched from a database or API
-  // final List<Map<String, String>> allChildren = [
-  //   {
-  //     "name": "Mohamed Ashraf",
-  //     "class": "Class 1",
-  //     "image": "https://img.icons8.com/?size=256w&id=7820&format=png",
-  //   },
-  //   {
-  //     "name": "Ahmed Ashraf",
-  //     "class": "Class 2",
-  //     "image": "https://img.icons8.com/?size=256w&id=7820&format=png",
-  //   },
-  //   {
-  //     "name": "Mahmoud Ashraf",
-  //     "class": "Class 3",
-  //     "image": "https://img.icons8.com/?size=256w&id=7820&format=png",
-  //   },
-  //   {
-  //     "name": "Mostafa Ashraf",
-  //     "class": "Class 4",
-  //     "image": "https://img.icons8.com/?size=256w&id=7820&format=png",
-  //   },
-  // ];
-
   // Filtered list based on search
   late Future<List<Map<String, dynamic>>> allchilds;
   List<Map<String, dynamic>> filteredChildren = [];
   List<Map<String, dynamic>> allChildren = [];
   String searchQuery = "";
-  // late Future<List<Map<String, dynamic>>> allChilds;
-  // xx() async {
-  //   filteredChildren = await allchilds;
-  // }
 
   @override
   void initState() {
@@ -126,10 +79,6 @@ class _MyChildrenViewState extends State<MyChildrenView> {
     setState(() {
       filteredChildren = reslults;
       searchQuery = query;
-      // filteredChildren =
-      //     allChildren.where((child) {
-      //       return child['name']!.toLowerCase().contains(query.toLowerCase());
-      //     }).toList();
     });
   }
 
@@ -235,10 +184,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                     //     ?
                     return ListView.builder(
                       itemCount: filteredChildren.length,
-                      // itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
-                        // final child = snapshot.data![index];
-                        // final name = snapshot.data![index]['name'];
                         final child = filteredChildren[index];
                         final name = filteredChildren[index]['name'];
                         return Card(
@@ -258,6 +204,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                                         studentClass: child['class']!,
                                         studentName: child['name']!,
                                         studentId: child['id'],
+                                        student: child['student']??'',
                                       ),
                                 ),
                               );
@@ -282,7 +229,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                               ),
                             ),
                             subtitle: Text(
-                              child['class']!,
+                              "Class ${child['class']!}",
                               style: TextStyle(
                                 color: Color(0xFF868686),
                                 fontSize: 14,

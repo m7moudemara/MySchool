@@ -14,11 +14,15 @@ class Parent extends IUser {
   final bool isFirstLogin;
   final String childrenInfo;
   final List<Student> children;
+  @override
   final String className;
+  @override
   final String user_name;
   @override
   final String date_of_birth;
+  @override
   final String gender;
+  @override
   final String address;
   @override
   final String phone;
@@ -100,9 +104,15 @@ class ParentDashboardUser implements DashboardUser {
   final int totalDays = 0; // Placeholder for total days
   @override
   final int absentDays = 0; // Placeholder for absent days
+  @override
   final int total_students;
+  @override
+  final int total_classes;
+  @override
   final double total;
+  @override
   final double paid;
+  @override
   final double remaining;
 
   ParentDashboardUser({
@@ -118,6 +128,7 @@ class ParentDashboardUser implements DashboardUser {
     required this.total,
     required this.paid,
     required this.remaining,
+    required this.total_classes,
   });
 
   factory ParentDashboardUser.fromJson(Map<String, dynamic> json) {
@@ -134,6 +145,7 @@ class ParentDashboardUser implements DashboardUser {
       total: json['fee_info']['total'] ?? 0,
       paid: json['fee_info']['paid'] ?? 0,
       remaining: json['fee_info']['remaining'] ?? 0,
+      total_classes: json['total_classes'] ?? 0,
     );
   }
 }

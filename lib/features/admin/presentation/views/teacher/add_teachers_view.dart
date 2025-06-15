@@ -43,8 +43,8 @@ class _AddTeachersViewState extends State<AddTeachersView> {
   String? editingId;
   List<TeacherEntity> filteredTeachers = [];
   final List<DropdownMenuItem<String>> genderItems = [
-    DropdownMenuItem(value: "male", child: Text("male")),
-    DropdownMenuItem(value: "female", child: Text("female")),
+    DropdownMenuItem(value: "Male", child: Text("Male")),
+    DropdownMenuItem(value: "Female", child: Text("Female")),
   ];
   
   void _addTextListeners() {

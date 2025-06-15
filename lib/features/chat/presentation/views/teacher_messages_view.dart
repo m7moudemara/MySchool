@@ -61,9 +61,6 @@ class _TeacherMessagesViewState extends State<TeacherMessagesView> {
               // status: person['user']['status'] ?? 'Offline',
             );
           }).toList();
-      // Handle successful response
-      print(people);
-      // print('People fetched successfully: ${people.length}');
       return people;
     } else {
       // Handle error response
@@ -76,9 +73,6 @@ class _TeacherMessagesViewState extends State<TeacherMessagesView> {
   Future<void> fetchContacts() async {
     try {
       contacts = await getPeople();
-      // print('wwwwwwwwwwwwwww');
-      // print(contacts);
-      // print('qqqqqqqqqqqqq');
       setState(() {});
     } catch (e) {
       print('Error fetching contacts: $e');
@@ -160,7 +154,7 @@ class _TeacherMessagesViewState extends State<TeacherMessagesView> {
     }
   }
 
-  late Timer _timer;
+  late Timer timer;
   @override
   void initState() {
     super.initState();
@@ -169,7 +163,7 @@ class _TeacherMessagesViewState extends State<TeacherMessagesView> {
     fetchContacts();
     fetchMessages();
 
-    _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+    timer = Timer.periodic(Duration(seconds: 2), (timer) {
       fetchContacts();
       fetchMessages();
       setState(() {});

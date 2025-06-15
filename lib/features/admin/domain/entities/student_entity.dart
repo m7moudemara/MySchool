@@ -28,4 +28,23 @@ class StudentEntity {
     required this.isActive,
     required this.mustChangePassword,
   });
+
+    factory StudentEntity.fromJson(Map<String, dynamic> json) {
+    return StudentEntity(
+      id: json['id'].toString(),
+      fullName: json['name'],
+      accountId: json['user_name'],
+      password: json['password']??'',
+      gender: json['gender']?? 'Male',
+      dateOfBirth: json['date_of_birth']??'',
+      nationalId: json['national_id']??'',
+      phoneNumber: json['phone_number']??'',
+      address: json['address']??'',
+      isActive: json['is_active']?? true,
+      mustChangePassword: json['must_change_password']?? true,
+      selectedClass:json['selected_class']?? '',
+      myParent: json['my_parent']??''
+    );
+  }
+
 }

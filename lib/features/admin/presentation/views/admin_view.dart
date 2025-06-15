@@ -1,6 +1,8 @@
 import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
+import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/compo.dart';
 import '../widgets/custom_card.dart';
 import 'classes/add_class_view.dart';
@@ -12,9 +14,16 @@ import 'subjects/add_subjects_view.dart';
 import 'teacher/add_teachers_view.dart';
 import 'timetable/add_timetables_view.dart';
 
-class AdminView extends StatelessWidget {
+class AdminView extends StatefulWidget {
   static String id = '/AdminView';
   AdminView({super.key});
+
+  @override
+  State<AdminView> createState() => _AdminViewState();
+}
+
+class _AdminViewState extends State<AdminView> {
+  // int totalClasses = 0;
   final List<Compo> items = [
     Compo(
       count: 50,
@@ -65,6 +74,14 @@ class AdminView extends StatelessWidget {
       route: AddResultsView.id,
     ),
   ];
+  @override
+  void initState() {
+    super.initState();
+    final user = context.read<UserCubit>();
+    final userDash = context.read<DashboardUserCubit>();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

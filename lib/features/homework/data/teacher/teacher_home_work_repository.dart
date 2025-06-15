@@ -4,7 +4,7 @@ import 'package:MySchool/features/homework/data/teacher/teacher_home_work_web_se
 import 'package:MySchool/features/homework/data/teacher/teacher_subject_model.dart';
 
 class TeacherHomeWorkRepository {
- final TeacherHomeWorkWebServices teacherHomeWorkWebServices;
+  final TeacherHomeWorkWebServices teacherHomeWorkWebServices;
 
   TeacherHomeWorkRepository(this.teacherHomeWorkWebServices);
   Future<List<TeacherClassModel>> fetchTeacherClasses() async {

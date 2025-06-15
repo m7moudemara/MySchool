@@ -4,12 +4,14 @@ import 'package:MySchool/features/grades/presentation/cubits/student/grade_state
 import 'package:MySchool/features/grades/presentation/widgets/result_item.dart';
 import 'package:MySchool/features/grades/presentation/widgets/term_list_widget.dart';
 import 'package:MySchool/features/grades/presentation/widgets/term_widget.dart';
+import 'package:MySchool/features/school/data/models/student_model.dart';
 // import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StudentGradesView extends StatefulWidget {
-  const StudentGradesView({super.key});
+  final Student student;
+  const StudentGradesView({super.key, required this.student});
   static const String id = "/StudentGradesView";
 
   @override
@@ -24,13 +26,12 @@ class _StudentGradesViewState extends State<StudentGradesView> {
   @override
   void initState() {
     super.initState();
-    context.read<GradeCubit>().loadGrades(selectedTerm);
+    context.read<GradeCubit>().loadGrades(selectedTerm, widget.student.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    final student = context.read<UserCubit>().state;
-
+    final studentx = context.read<UserCubit>().state;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -76,7 +77,7 @@ class _StudentGradesViewState extends State<StudentGradesView> {
                                 selectedTerm = term;
                                 isTermListVisible = false;
                               });
-                              context.read<GradeCubit>().loadGrades(term);
+                              context.read<GradeCubit>().loadGrades(term, widget.student.id);
                             },
                           )
                           : const SizedBox.shrink(),
@@ -148,9 +149,9 @@ class _StudentGradesViewState extends State<StudentGradesView> {
                     ),
                     child: ResultItem(
                       //! from user UserCubit
-                      studentName: student?.name ?? result.studentName, 
-                      className: student?.className ?? result.className,
-                      imageUrl: student?.imageUrl ?? result.imageUrl,
+                      studentName: widget.student.name,
+                      className: studentx?.className ?? result.className,
+                      imageUrl: studentx?.imageUrl ?? result.imageUrl,
                       //! from StudentResultEntity
                       subjects: mappedSubjects,
                       totalMarks: result.totalMarks,

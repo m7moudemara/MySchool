@@ -6,3 +6,4 @@ abstract class TeacherLocalDataSource {
   Future<void> update(AddTeachersModel teacher);
   Future<void> delete(String id);
 }
+

@@ -93,7 +93,6 @@ class _AttendanceViewState extends State<AttendanceView> {
       body: SingleChildScrollView(
         child: BlocConsumer<AttendanceStudentCubit, AttendanceStudentState>(
           listener: (context, state) {
-            // TODO: implement listener
             if (state is AttendanceStudentError) {
               ScaffoldMessenger.of(
                 context,

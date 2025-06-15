@@ -19,7 +19,7 @@ class ChatView extends StatefulWidget {
 class _ChatViewState extends State<ChatView> {
   final TextEditingController _messageController = TextEditingController();
   bool isLoading = false;
-  bool _isSending = false;
+  bool isSending = false;
 
   // List<Map<String, dynamic>> _messages = [];
 
@@ -73,7 +73,7 @@ class _ChatViewState extends State<ChatView> {
     if (text.isEmpty) return;
 
     setState(() {
-      _isSending = true;
+      isSending = true;
       // Add message locally immediately
       // _messages.add({
       //   'id': 'temp_${DateTime.now().millisecondsSinceEpoch}',
@@ -99,17 +99,16 @@ class _ChatViewState extends State<ChatView> {
         }),
       );
       if (response.statusCode == 201) {
-        var data = jsonDecode(response.body);
+        return jsonDecode(response.body);
       } else {
         throw Exception('error');
       }
     } catch (e) {
-      print(e);
       setState(() {
         // _messages.removeWhere((m) => m['id'].toString().startsWith('temp_'));
       });
     } finally {
-      setState(() => _isSending = false);
+      setState(() => isSending = false);
     }
   }
 

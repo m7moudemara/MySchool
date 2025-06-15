@@ -4,23 +4,23 @@ class AddClassModel extends ClassEntity {
   AddClassModel({
     required super.id,
     required super.name,
-    required super.subject,
+    required super.grade,
     required super.studentsCount,
   });
 
   factory AddClassModel.fromJson(Map<String, dynamic> json) {
     return AddClassModel(
-      id: json['id'],
+      id: json['id'].toString(),
       name: json['name'],
-      subject: json['subject'],
-      studentsCount: json['studentsCount'],
+      grade: json['grade'].toString(),
+      studentsCount: json['student_count'],
     );
   }
 
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
-    'subject': subject,
+    'grade': grade,
     'studentsCount': studentsCount,
   };
 }

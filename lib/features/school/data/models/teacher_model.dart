@@ -11,10 +11,15 @@ class Teacher extends IUser {
   @override
   final bool isFirstLogin;
   final String department;
+  @override
   final String className;
+  @override
   final String user_name;
+  @override
   final String date_of_birth;
+  @override
   final String gender;
+  @override
   final String address;
   @override
   final String phone;
@@ -82,6 +87,7 @@ class TeacherDashboardUser implements DashboardUser {
   final int totalDays = 0; // Placeholder for total days
   @override
   final int absentDays = 0; // Placeholder for absent days
+  @override
   final int total_students;
   @override
   final double total;
@@ -89,6 +95,8 @@ class TeacherDashboardUser implements DashboardUser {
   final double paid;
   @override
   final double remaining;
+  @override
+  final int total_classes;
   TeacherDashboardUser({
     required this.id,
     required this.name,
@@ -102,6 +110,7 @@ class TeacherDashboardUser implements DashboardUser {
     required this.total,
     required this.paid,
     required this.remaining,
+    required this.total_classes,
   });
 
   factory TeacherDashboardUser.fromJson(Map<String, dynamic> json) {
@@ -118,6 +127,7 @@ class TeacherDashboardUser implements DashboardUser {
       total: 0,
       paid: 0,
       remaining: 0,
+      total_classes: json['total_classes'] ?? 0,
     );
   }
 }

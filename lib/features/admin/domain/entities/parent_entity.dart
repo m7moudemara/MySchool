@@ -24,4 +24,20 @@ class ParentEntity {
     required this.isActive,
     required this.mustChangePassword,
   });
+
+  factory ParentEntity.fromJson(Map<String, dynamic> json) {
+    return ParentEntity(
+      id: json['id'].toString(),
+      fullName: json['name'],
+      accountId: json['user_name'],
+      password: json['password']??'',
+      gender: json['gender']?? 'Male',
+      dateOfBirth: json['date_of_birth']??'',
+      nationalId: json['national_id']??'',
+      phoneNumber: json['phone_number']??'',
+      address: json['address']??'',
+      isActive: json['is_active']?? true,
+      mustChangePassword: json['must_change_password']?? true,
+    );
+  }
 }

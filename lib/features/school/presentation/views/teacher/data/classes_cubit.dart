@@ -3,7 +3,6 @@ import 'package:MySchool/features/school/presentation/views/teacher/data/classes
 import 'package:MySchool/features/school/presentation/views/teacher/data/classes_web_services.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../student/data/attendance_model.dart';
 part 'classes_state.dart';
@@ -19,8 +18,11 @@ class ClassesCubit extends Cubit<ClassesState> {
       );
       Future.delayed(Duration(seconds: 2));
       List<ClassStudentModel> classes = await classesRepository.getClasses();
+      print(classes);
+
       List<TeacherAttendanceForStudent> attendances = await classesRepository
           .getAttendance(classes[0].classId);
+      print(attendances);
       emit(ClassesLoaded(classes, attendances));
     } catch (e) {
       emit(ClassesLoadedError(message: 'there is an error'));
@@ -56,7 +58,7 @@ class ClassesCubit extends Cubit<ClassesState> {
     // print(savedAbsent.length);
     // print(savedPresent.length);
     if (updated.isNotEmpty) {
-      updated.forEach((element) {
+      for (var element in updated) {
         if (element.attendanceModel!.status == 'Present') {
           classesRepository.updateAttendance(
             element.student.id,
@@ -72,25 +74,25 @@ class ClassesCubit extends Cubit<ClassesState> {
             element.attendanceModel!.id,
           );
         }
-      });
+      }
     }
     if (savedAbsent.isNotEmpty) {
-      savedAbsent.forEach((element) {
+      for (var element in savedAbsent) {
         classesRepository.saveAttendance(
           element.student.id,
           selectedClassId,
           'Absent',
         );
-      });
+      }
     }
     if (savedPresent.isNotEmpty) {
-      savedPresent.forEach((element) {
+      for (var element in savedPresent) {
         classesRepository.saveAttendance(
           element.student.id,
           selectedClassId,
           'Present',
         );
-      });
+      }
     }
 
     // for (var i.student.id,
