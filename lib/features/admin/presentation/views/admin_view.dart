@@ -1,6 +1,7 @@
 import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
+import 'package:MySchool/features/school/data/models/admin_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/compo.dart';
@@ -24,75 +25,83 @@ class AdminView extends StatefulWidget {
 
 class _AdminViewState extends State<AdminView> {
   // int totalClasses = 0;
-  final List<Compo> items = [
-    Compo(
-      count: 50,
-      image: "assets/classesadmin.png",
-      title: "Classes",
-      route: AddClassView.id,
-    ),
-    Compo(
-      count: 50,
-      image: "assets/subjectsadmin.png",
-      title: "Subjects",
-      route: AddSubjectView.id,
-    ),
-    Compo(
-      count: 50,
-      image: "assets/teachersadmin.png",
-      title: "Teachers",
-      route: AddTeachersView.id,
-    ),
-    Compo(
-      count: 50,
-      image: "assets/parentsadmin.png",
-      title: "Parents",
-      route: AddParentsView.id,
-    ),
-    Compo(
-      count: 50,
-      image: "assets/studentsadmin.png",
-      title: "Students",
-      route: AddStudentsView.id,
-    ),
-    Compo(
-      count: 50,
-      image: "assets/timetablesadmin.png",
-      title: "TimeTables",
-      route: AddTimeTableView.id,
-    ),
-    Compo(
-      count: 0,
-      image: "assets/feesadmin.png",
-      title: "Fees",
-      route: AddFeesView.id,
-    ),
-    Compo(
-      count: 0,
-      image: "assets/resultsadmin.png",
-      title: "Results",
-      route: AddResultsView.id,
-    ),
-  ];
+  late int total_students;
+  late int total_classes;
+  late int total_teachers;
+  late int total_subjects;
+  late int total_timetables;
   @override
   void initState() {
     super.initState();
     final user = context.read<UserCubit>();
-    final userDash = context.read<DashboardUserCubit>();
-    setState(() {});
+    final userDash = context.read<DashboardUserCubit>().state as AdminDashboardUser;
+    setState(() {
+      total_students = userDash!.total_students;
+      total_classes = userDash.total_classes;
+      total_teachers = userDash.total_teachers;
+      total_subjects = userDash.total_classes;
+      total_timetables = userDash.total_classes;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final List<Compo> items = [
+      Compo(
+        count: total_classes,
+        image: "assets/classesadmin.png",
+        title: "Classes",
+        route: AddClassView.id,
+      ),
+      Compo(
+        count: 50,
+        image: "assets/subjectsadmin.png",
+        title: "Subjects",
+        route: AddSubjectView.id,
+      ),
+      Compo(
+        count: 50,
+        image: "assets/teachersadmin.png",
+        title: "Teachers",
+        route: AddTeachersView.id,
+      ),
+      Compo(
+        count: 50,
+        image: "assets/parentsadmin.png",
+        title: "Parents",
+        route: AddParentsView.id,
+      ),
+      Compo(
+        count: total_students,
+        image: "assets/studentsadmin.png",
+        title: "Students",
+        route: AddStudentsView.id,
+      ),
+      Compo(
+        count: 50,
+        image: "assets/timetablesadmin.png",
+        title: "TimeTables",
+        route: AddTimeTableView.id,
+      ),
+      Compo(
+        count: 0,
+        image: "assets/feesadmin.png",
+        title: "Fees",
+        route: AddFeesView.id,
+      ),
+      Compo(
+        count: 0,
+        image: "assets/resultsadmin.png",
+        title: "Results",
+        route: AddResultsView.id,
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(
-        title: Text("MY SCHOOL",style : TextStyle(
-          color: Color(0xff114066),
-        )),
+        title: Text("MY SCHOOL", style: TextStyle(color: Color(0xff114066))),
         centerTitle: true,
-    
       ),
       body: CustomScrollView(
         slivers: [
@@ -146,7 +155,6 @@ class _AdminViewState extends State<AdminView> {
               leading: Icon(Icons.class_),
               title: Text('Classes'),
               onTap: () {
-                
                 Navigator.popAndPushNamed(context, AddClassView.id);
               },
             ),

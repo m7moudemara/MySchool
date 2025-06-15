@@ -5,8 +5,6 @@ import 'package:MySchool/features/grades/presentation/widgets/result_item.dart';
 import 'package:MySchool/features/grades/presentation/widgets/term_list_widget.dart';
 import 'package:MySchool/features/grades/presentation/widgets/term_widget.dart';
 import 'package:MySchool/features/school/data/models/student_model.dart';
-import 'package:MySchool/features/school/domain/entities/user_type.dart';
-// import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,19 +30,6 @@ class _StudentGradesView2State extends State<StudentGradesView2> {
       xStudent = context.read<UserCubit>().state as Student;
     });
     context.read<GradeCubit>().loadGrades(selectedTerm, xStudent.id);
-    // if (widget.student == null) {
-    //   print('sssssssssssssssss');
-    //   IUser? xx = context.read<UserCubit>().state;
-    //   setState(() {
-    //     xStudent = xx as Student?;
-    //   });
-    //   context.read<GradeCubit>().loadGrades(selectedTerm, xx!.id);
-    // } else {
-    //   setState(() {
-    //     xStudent = widget.student;
-    //   });
-    //   context.read<GradeCubit>().loadGrades(selectedTerm, widget.student!.id);
-    // }
   }
 
   @override
