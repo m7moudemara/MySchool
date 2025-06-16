@@ -2,7 +2,6 @@ import 'package:MySchool/features/dashbord/presentation/widgets/academics_items_
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:flutter/material.dart';
 
-
 class RoleBasedAcademicsCompo extends StatelessWidget {
   final UserType currentUserRole;
   final List<AcademicsItem> items;
@@ -15,7 +14,8 @@ class RoleBasedAcademicsCompo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final filteredItems = items.where((item) => item.visibleFor == currentUserRole).toList();
+    final filteredItems =
+        items.where((item) => item.visibleFor == currentUserRole).toList();
 
     return GridView.builder(
       shrinkWrap: true,
@@ -61,7 +61,4 @@ class RoleBasedAcademicsCompo extends StatelessWidget {
       ],
     );
   }
-
-  
 }
-

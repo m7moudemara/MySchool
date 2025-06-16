@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:MySchool/core/constants/constants.dart';
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/features/auth/presentation/cubit/user_cubit.dart';
+import 'package:MySchool/features/school/data/models/admin_model.dart';
+import 'package:MySchool/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/compo.dart';
@@ -13,6 +18,7 @@ import 'students/add_students_view.dart';
 import 'subjects/add_subjects_view.dart';
 import 'teacher/add_teachers_view.dart';
 import 'timetable/add_timetables_view.dart';
+import 'package:http/http.dart' as http;
 
 class AdminView extends StatefulWidget {
   static String id = '/AdminView';
@@ -24,75 +30,117 @@ class AdminView extends StatefulWidget {
 
 class _AdminViewState extends State<AdminView> {
   // int totalClasses = 0;
-  final List<Compo> items = [
-    Compo(
-      count: 50,
-      image: "assets/classesadmin.png",
-      title: "Classes",
-      route: AddClassView.id,
-    ),
-    Compo(
-      count: 50,
-      image: "assets/subjectsadmin.png",
-      title: "Subjects",
-      route: AddSubjectView.id,
-    ),
-    Compo(
-      count: 50,
-      image: "assets/teachersadmin.png",
-      title: "Teachers",
-      route: AddTeachersView.id,
-    ),
-    Compo(
-      count: 50,
-      image: "assets/parentsadmin.png",
-      title: "Parents",
-      route: AddParentsView.id,
-    ),
-    Compo(
-      count: 50,
-      image: "assets/studentsadmin.png",
-      title: "Students",
-      route: AddStudentsView.id,
-    ),
-    Compo(
-      count: 50,
-      image: "assets/timetablesadmin.png",
-      title: "TimeTables",
-      route: AddTimeTableView.id,
-    ),
-    Compo(
-      count: 0,
-      image: "assets/feesadmin.png",
-      title: "Fees",
-      route: AddFeesView.id,
-    ),
-    Compo(
-      count: 0,
-      image: "assets/resultsadmin.png",
-      title: "Results",
-      route: AddResultsView.id,
-    ),
-  ];
+  // late int total_students;
+  late int total_classes;
+  late int total_teachers;
+  late int total_subjects;
+  late int total_timetables;
+  int? total_fees;
+  int? total_parents;
+  int? total_students;
   @override
   void initState() {
     super.initState();
-    final user = context.read<UserCubit>();
-    final userDash = context.read<DashboardUserCubit>();
-    setState(() {});
+    getAlls();
+    // final user = context.read<UserCubit>();
+    final userDash =
+        context.read<DashboardUserCubit>().state as AdminDashboardUser;
+    setState(() {
+      // total_students = userDash.total_students;
+      total_classes = userDash.total_classes;
+      total_teachers = userDash.total_teachers;
+      total_subjects = userDash.total_subjects;
+      total_timetables = userDash.total_timetables;
+    });
+  }
+
+  getAlls() async {
+    Map<String, String> headersx = {
+      'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+      'Accept': 'application/json',
+    };
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/fees?PageSize=500'),
+      headers: headersx,
+    );
+    List fees = jsonDecode(response.body)['data'];
+
+    final response1 = await http.get(
+      Uri.parse('$baseUrl/api/accounts?PageSize=500&Where%5Brole%5D=Guardian'),
+      headers: headersx,
+    );
+    List parents = jsonDecode(response1.body)['data'];
+
+    final response2 = await http.get(
+      Uri.parse('$baseUrl/api/accounts?PageSize=500&Where%5Brole%5D=Student'),
+      headers: headersx,
+    );
+    List students = jsonDecode(response2.body)['data'];
+    setState(() {
+      total_fees = fees.length;
+      total_parents = parents.length;
+      total_students = students.length;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final List<Compo> items = [
+      Compo(
+        count: total_classes,
+        image: "assets/classesadmin.png",
+        title: "Classes",
+        route: AddClassView.id,
+      ),
+      Compo(
+        count: total_subjects,
+        image: "assets/subjectsadmin.png",
+        title: "Subjects",
+        route: AddSubjectView.id,
+      ),
+      Compo(
+        count: total_teachers,
+        image: "assets/teachersadmin.png",
+        title: "Teachers",
+        route: AddTeachersView.id,
+      ),
+      Compo(
+        count: total_parents ?? 0,
+        image: "assets/parentsadmin.png",
+        title: "Parents",
+        route: AddParentsView.id,
+      ),
+      Compo(
+        count: total_students ?? 0,
+        image: "assets/studentsadmin.png",
+        title: "Students",
+        route: AddStudentsView.id,
+      ),
+      Compo(
+        count: total_timetables,
+        image: "assets/timetablesadmin.png",
+        title: "TimeTables",
+        route: AddTimeTableView.id,
+      ),
+      Compo(
+        count: total_fees ?? 0,
+        image: "assets/feesadmin.png",
+        title: "Fees",
+        route: AddFeesView.id,
+      ),
+      Compo(
+        count: 72,
+        image: "assets/resultsadmin.png",
+        title: "Results",
+        route: AddResultsView.id,
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(
-        title: Text("MY SCHOOL",style : TextStyle(
-          color: Color(0xff114066),
-        )),
+        title: Text("MY SCHOOL", style: TextStyle(color: Color(0xff114066))),
         centerTitle: true,
-    
       ),
       body: CustomScrollView(
         slivers: [
@@ -146,7 +194,6 @@ class _AdminViewState extends State<AdminView> {
               leading: Icon(Icons.class_),
               title: Text('Classes'),
               onTap: () {
-                
                 Navigator.popAndPushNamed(context, AddClassView.id);
               },
             ),

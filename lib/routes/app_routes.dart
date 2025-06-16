@@ -37,6 +37,8 @@ import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
 import 'package:MySchool/features/chat/presentation/views/student_messages_view.dart';
 import 'package:MySchool/features/main_wrapper/presentation/views/main_wrapper_view.dart';
 
+import '../features/grades/presentation/views/student_grades_view2.dart';
+
 class AppRoutes {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     if (settings.name == MainWrapperView.id) {
@@ -49,12 +51,12 @@ class AppRoutes {
       final args = settings.arguments as Map;
       return MaterialPageRoute(builder: (context) => ChatView(messagess: args));
     }
-    if (settings.name == StudentGradesView.id) {
-      final args = settings.arguments as Student;
-      return MaterialPageRoute(
-        builder: (context) => StudentGradesView(student: args),
-      );
-    }
+    // if (settings.name == StudentGradesView.id) {
+    //   final args = settings.arguments as Student?;
+    //   return MaterialPageRoute(
+    //     builder: (context) => StudentGradesView(student: args!),
+    //   );
+    // }
 
     return null;
   }
@@ -65,7 +67,7 @@ class AppRoutes {
     IntroView.id: (context) => IntroView(),
     LoginView.id: (context) => LoginView(),
     StudentDashboardView.id: (context) => StudentDashboardView(),
-    // StudentGradesView.id: (context) => StudentGradesView(),
+    StudentGradesView2.id: (context) => StudentGradesView2(),
     CreateNewPasswordView.id: (context) => CreateNewPasswordView(),
     NotificationsView.id: (context) => NotificationsView(),
     StudentHomeworkView.id: (context) => StudentHomeworkView(),

@@ -40,11 +40,10 @@ class _DeciderViewState extends State<DeciderView> {
     // if(dash. == 'Teacher'){
 
     // }
-    IUser? user = context.read<UserCubit>().state;
-    if (user != null) {
-      print(user.name);
-    }
-    print('&&&&&&&&&&&&');
+    // IUser? user = context.read<UserCubit>().state;
+    // if (user != null) {
+    //   print(user.name);
+    // }
     final prefs = await SharedPreferences.getInstance();
     final isFirstTime = prefs.getBool('is_first_time') ?? true;
 
@@ -72,7 +71,7 @@ class _DeciderViewState extends State<DeciderView> {
       'Accept' :'application/json'
     });
     if(response.statusCode == 200){
-      
+
     }
   }
 }
