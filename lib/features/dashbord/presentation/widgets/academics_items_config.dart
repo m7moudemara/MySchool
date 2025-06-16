@@ -5,6 +5,7 @@ import 'package:MySchool/features/school/presentation/views/parent/children_deta
 import 'package:MySchool/features/homework/presentation/views/teacher_homework_view.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/teacher_attendance.dart';
 import 'package:MySchool/features/grades/presentation/views/teacher_result_view.dart';
+import '../../../chat/presentation/views/parent_messages_view.dart';
 import '../../../school/presentation/views/student/attendance_view.dart';
 import '../../../homework/presentation/views/student_homework_view.dart';
 import '../../../school/presentation/views/teacher/teacher_classes_view.dart';
@@ -76,13 +77,11 @@ final List<AcademicsItem> allAcademicsItems = [
     iconPath: 'assets/children.png',
     routeName: MyChildrenView.id,
     visibleFor: UserType.guardian,
-    
   ),
   AcademicsItem(
     title: 'Teachers',
     iconPath: 'assets/teachers.png',
-    routeName: ChatView.id,
-    // routeName: 'parent_results_route',
+    routeName: ParentMessagesView.id,
     visibleFor: UserType.guardian,
   ),
 ];
