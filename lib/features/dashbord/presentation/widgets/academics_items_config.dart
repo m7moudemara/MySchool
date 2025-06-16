@@ -1,3 +1,4 @@
+import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
 import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/school/presentation/views/parent/children_details.dart';
 import 'package:MySchool/features/homework/presentation/views/teacher_homework_view.dart';
@@ -75,13 +76,12 @@ final List<AcademicsItem> allAcademicsItems = [
     iconPath: 'assets/children.png',
     routeName: MyChildrenView.id,
     visibleFor: UserType.guardian,
-    // visibleFor: UserType.parent,
+    
   ),
   AcademicsItem(
     title: 'Teachers',
     iconPath: 'assets/teachers.png',
-    routeName: 'parent_results_route',
+    routeName: ChatView.id,
     visibleFor: UserType.guardian,
-    // visibleFor: UserType.parent,
   ),
 ];

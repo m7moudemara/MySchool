@@ -1,3 +1,4 @@
+import 'package:MySchool/features/time_table/presentation/widgets/line_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/lesson_entity.dart';
@@ -8,6 +9,7 @@ class TimeTableItem extends StatelessWidget {
   final bool isLastItem;
   final double height;
   final double space;
+  final int index;
 
   const TimeTableItem({
     super.key,
@@ -16,10 +18,23 @@ class TimeTableItem extends StatelessWidget {
     required this.space,
     this.isFirstItem = false,
     this.isLastItem = false,
+    required this.index,
   });
+final List<Color> backgroundColors = const [
+  Color(0xFFE8DBFC),
+  Color(0xFFFFF3CB),
+  Color(0xFFC0EED5),
+  Color(0xFFE8DBFC),
+  Color(0xFFCBA8A0),
+  Color(0xFFC0EED5),
+  Color(0xFFFED1B5),
+];
+
+
 
   @override
   Widget build(BuildContext context) {
+    final Color bgColor = backgroundColors[index % backgroundColors.length];
     const startTimeStyle = TextStyle(
       color: Colors.black,
       fontSize: 15.16,
@@ -48,8 +63,8 @@ class TimeTableItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(lesson.time, style: startTimeStyle),
-                    Text(lesson.endTime, style: endTimeStyle),
+                    Text(formatTime(lesson.time), style: startTimeStyle),
+                    Text(formatTime(lesson.endTime), style: endTimeStyle),
                   ],
                 ),
               ),
@@ -94,7 +109,7 @@ class TimeTableItem extends StatelessWidget {
                 Container(
                   height: height,
                   decoration: ShapeDecoration(
-                    color: lesson.color,
+                    color: bgColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.74),
                     ),

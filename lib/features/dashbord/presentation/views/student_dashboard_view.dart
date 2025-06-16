@@ -32,6 +32,7 @@ class StudentDashboardView extends StatelessWidget {
           builder: (context, statex) {
             final studentDash = statex;
             return Scaffold(
+              backgroundColor: Colors.white,
               body: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),

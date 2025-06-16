@@ -1,3 +1,4 @@
+import 'package:MySchool/core/utils/search_utlis.dart';
 import 'package:MySchool/features/school/data/models/student_model.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/classes_info_view.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/data/class_model.dart';
@@ -30,7 +31,9 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           'Classes',
@@ -289,15 +292,8 @@ class _TeacherClassesViewState extends State<TeacherClassesView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                SearchUtils.getHighlightedText(name, searchText),
+
                     Text(
                       className,
                       style: const TextStyle(

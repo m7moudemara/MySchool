@@ -77,14 +77,6 @@ class _AddFeesViewState extends State<AddFeesView> {
     );
     if (response.statusCode == 200) {
       List result = jsonDecode(response.body)['data'];
-      // List<AddStudentModel> resultx =
-      //     result
-      //         .map(
-      //           (element) =>
-      //               AddStudentModel.fromEntity(StudentEntity.fromJson(element)),
-      //         )
-      //         .toList();
-
       for (var element in result) {
         setState(() {
           studentItemsx.add(
@@ -145,15 +137,17 @@ class _AddFeesViewState extends State<AddFeesView> {
     _addTextListeners();
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
-      // setState(() {
-      //   filteredFees =
-      //       context
-      //           .read<AddFeesCubit>()
-      //           .state
-      //           .fees
-      //           .where((fee) => fee.selectSudent.toLowerCase().contains(query))
-      //           .toList();
-      // });
+      setState(() {
+        filteredFees =
+            context
+                .read<AddFeesCubit>()
+                .state
+                .fees
+                .where(
+                  (fee) => fee.selectSudentName.toLowerCase().contains(query),
+                )
+                .toList();
+      });
     });
   }
 

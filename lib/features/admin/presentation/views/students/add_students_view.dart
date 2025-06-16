@@ -57,8 +57,8 @@ class _AddStudentsViewState extends State<AddStudentsView> {
   List<StudentEntity> filteredStudents = [];
 
   final List<DropdownMenuItem<String>> genderItems = [
-    DropdownMenuItem(value: "male", child: Text("male")),
-    DropdownMenuItem(value: "female", child: Text("female")),
+    DropdownMenuItem(value: "Male", child: Text("Male")),
+    DropdownMenuItem(value: "Female", child: Text("Female")),
   ];
   final List<DropdownMenuItem<String>> classes = [
     // DropdownMenuItem(value: "class1", child: Text("Class 1")),
@@ -102,7 +102,6 @@ class _AddStudentsViewState extends State<AddStudentsView> {
       accountIdController.text = entity?.accountId ?? '';
       passwordController.text = entity?.password ?? '';
       dobController.text = formatted ?? '';
-      // dobController.text = entity?.dateOfBirth ?? '';
       nationalIdController.text = entity?.nationalId ?? '';
       phoneController.text = entity?.phoneNumber ?? '';
       addressController.text = entity?.address ?? '';

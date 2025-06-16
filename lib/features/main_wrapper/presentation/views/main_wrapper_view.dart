@@ -16,6 +16,81 @@ class MainWrapperView extends StatefulWidget {
 }
 
 class _MainWrapperViewState extends State<MainWrapperView> {
+  List<BottomNavigationBarItem> _getNavBarItemsByRole() {
+    switch (widget.userRole) {
+      case UserType.student:
+        return [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined, size: 26), //? When Icon Unselected
+            activeIcon: Icon(
+              Icons.home_filled,
+              size: 26,
+            ), //? When Icon Selected
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_outlined, size: 26),
+            activeIcon: Icon(Icons.chat, size: 26),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today, size: 26),
+            activeIcon: Icon(Icons.calendar_today, size: 26),
+            label: 'Time Table',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline, size: 26),
+            activeIcon: Icon(Icons.person, size: 26),
+            label: 'Profile',
+          ),
+        ];
+      case UserType.teacher:
+        return [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined, size: 26), //? When Icon Unselected
+            activeIcon: Icon(
+              Icons.home_filled,
+              size: 26,
+            ), //? When Icon Selected
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_outlined, size: 26),
+            activeIcon: Icon(Icons.chat, size: 26),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today, size: 26),
+            activeIcon: Icon(Icons.calendar_today, size: 26),
+            label: 'Time Table',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline, size: 26),
+            activeIcon: Icon(Icons.person, size: 26),
+            label: 'Profile',
+          ),
+        ];
+      case UserType.guardian:
+        return [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined, size: 26), //? When Icon Unselected
+            activeIcon: Icon(
+              Icons.home_filled,
+              size: 26,
+            ), //? When Icon Selected
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline, size: 26),
+            activeIcon: Icon(Icons.person, size: 26),
+            label: 'Profile',
+          ),
+        ];
+      default:
+        return [];
+    }
+  }
+
   int _currentIndex = 0; // Track the currently selected page index
   final PageController _pageController = PageController();
 
@@ -62,15 +137,16 @@ class _MainWrapperViewState extends State<MainWrapperView> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(), // Disable swipe gestures
+        physics: const NeverScrollableScrollPhysics(),
         children: _views,
         onPageChanged: (index) {
-          setState(() => _currentIndex = index); // Sync index with page change
+          setState(() => _currentIndex = index);
         },
       ),
       bottomNavigationBar: CustomBottomNavBar(
-        currentIndex: _currentIndex, // Highlight selected tab
-        onTap: _onItemTapped, // Handle navigation tab taps
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+        items: _getNavBarItemsByRole(),
       ),
     );
   }

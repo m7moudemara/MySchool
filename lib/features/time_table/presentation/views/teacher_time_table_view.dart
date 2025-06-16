@@ -1,3 +1,4 @@
+import 'package:MySchool/features/time_table/presentation/widgets/line_tile.dart';
 import 'package:MySchool/features/time_table/presentation/widgets/time_table_item.dart';
 import 'package:MySchool/features/time_table/presentation/widgets/day_selector_widget.dart';
 import 'package:MySchool/features/time_table/presentation/widgets/days_list_widget.dart';
@@ -154,29 +155,22 @@ class _TeacherTimeTableViewState extends State<TeacherTimeTableView> {
                       ),
                     );
                   }
-                  return ListView.builder(
+                return Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
                     itemCount: lessons.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          TimeTableRowWidget(
-                            className: lessons[index],
-                            space: space,
-                            height: height,
-                            isFirstItem: index == 0,
-                            isLastItem: index == lessons.length - 1,
-                          ),
-                          TimeTableItem(
-                            space: space,
-                            height: height,
-                            lesson: lessons[index],
-                            isFirstItem: index == 0,
-                            isLastItem: index == lessons.length - 1,
-                          ),
-                        ],
+                      final lesson = lessons[index];
+                      return CustomLessonTile(
+                        lesson: lesson,
+                        isFirst: index == 0,
+                        isLast: index == lessons.length - 1,
+                        index: index,
                       );
                     },
-                  );
+                  ),
+                );
+
                 } else if (state is TimeTableError) {
                   return Center(child: Text(state.message));
                 } else {

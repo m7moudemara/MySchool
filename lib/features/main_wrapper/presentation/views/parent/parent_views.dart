@@ -9,7 +9,7 @@ import '../../../../chat/presentation/views/parent_messages_view.dart';
 
 List<Widget> getParentViews() => [
   const ParentDashboardView(),
-  const ParentMessagesView(),
-  const ParentTimeTableView(),
+  // const ParentMessagesView(),
+  // const ParentTimeTableView(),
   const ProfileView(),
 ];

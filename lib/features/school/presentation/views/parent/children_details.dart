@@ -131,6 +131,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('My Children'),
         centerTitle: true,
         elevation: 0,
@@ -188,12 +189,14 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                         final child = filteredChildren[index];
                         final name = filteredChildren[index]['name'];
                         return Card(
+                          color: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                           elevation: 4,
                           margin: EdgeInsets.only(bottom: 16),
                           child: ListTile(
+                            
                             onTap: () {
                               // Navigate to details page
                               Navigator.push(

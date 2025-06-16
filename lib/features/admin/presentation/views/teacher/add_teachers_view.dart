@@ -1,5 +1,5 @@
 import 'package:MySchool/core/utils/search_utlis.dart';
-import 'package:MySchool/core/utils/time.dart' as Utils;
+import 'package:MySchool/core/utils/time.dart' as utils;
 import 'package:MySchool/features/admin/presentation/cubits/teacher_cubits/add_teacher_cubit.dart';
 import 'package:MySchool/features/admin/presentation/widgets/class_dropdown_widget.dart';
 import 'package:flutter/material.dart';
@@ -165,7 +165,7 @@ class _AddTeachersViewState extends State<AddTeachersView> {
                       items: genderItems,
                       selectedValue: gender,
                       onChanged:
-                          (value) => setState(() => gender = value ?? 'male'),
+                          (value) => setState(() => gender = value ?? 'Male'),
                     ),
                     CustomField(
                       controller: dobController,
@@ -179,7 +179,7 @@ class _AddTeachersViewState extends State<AddTeachersView> {
                           lastDate: DateTime.now(),
                         );
                         if (date != null) {
-                          dobController.text = Utils.formatDate(date);
+                          dobController.text = utils.formatDate(date);
                         }
                       },
                     ),

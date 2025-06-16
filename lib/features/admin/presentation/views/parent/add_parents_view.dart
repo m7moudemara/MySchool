@@ -1,5 +1,5 @@
 import 'package:MySchool/core/utils/search_utlis.dart';
-import 'package:MySchool/core/utils/time.dart' as Utils;
+import 'package:MySchool/core/utils/time.dart' as utils;
 import 'package:MySchool/features/admin/domain/entities/parent_entity.dart';
 import 'package:MySchool/features/admin/presentation/cubits/parent_cubits/add_parent_cubit.dart';
 import 'package:MySchool/features/admin/presentation/widgets/class_dropdown_widget.dart';
@@ -44,8 +44,8 @@ class _AddParentsViewState extends State<AddParentsView> {
   List<ParentEntity> filteredParents = [];
 
   final List<DropdownMenuItem<String>> genderItems = [
-    DropdownMenuItem(value: "male", child: Text("male")),
-    DropdownMenuItem(value: "female", child: Text("female")),
+    DropdownMenuItem(value: "Male", child: Text("Male")),
+    DropdownMenuItem(value: "Female", child: Text("Female")),
   ];
 
   void _addTextListeners() {
@@ -174,7 +174,7 @@ class _AddParentsViewState extends State<AddParentsView> {
                       items: genderItems,
                       selectedValue: gender,
                       onChanged:
-                          (value) => setState(() => gender = value ?? 'male'),
+                          (value) => setState(() => gender = value ?? 'Male'),
                     ),
                     CustomField(
                       controller: dobController,
@@ -188,7 +188,7 @@ class _AddParentsViewState extends State<AddParentsView> {
                           lastDate: DateTime.now(),
                         );
                         if (date != null) {
-                          dobController.text = Utils.formatDate(date);
+                          dobController.text = utils.formatDate(date);
                         }
                       },
                     ),
