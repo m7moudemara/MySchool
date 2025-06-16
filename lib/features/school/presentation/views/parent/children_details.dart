@@ -196,7 +196,6 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                           elevation: 4,
                           margin: EdgeInsets.only(bottom: 16),
                           child: ListTile(
-                            
                             onTap: () {
                               // Navigate to details page
                               Navigator.push(
@@ -207,7 +206,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                                         studentClass: child['class']!,
                                         studentName: child['name']!,
                                         studentId: child['id'],
-                                        student: child['student']??'',
+                                        student: child['student'] ?? '',
                                       ),
                                 ),
                               );
@@ -224,6 +223,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                             title: RichText(
                               text: TextSpan(
                                 style: TextStyle(
+                                  color: Colors.black,
                                   fontSize: 18,
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w600,

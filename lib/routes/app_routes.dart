@@ -1,6 +1,7 @@
 import 'package:MySchool/core/presentation/intro/presentation/views/intro_view.dart';
 import 'package:MySchool/core/presentation/view/decider_view.dart';
 import 'package:MySchool/features/school/data/models/student_model.dart';
+import 'package:MySchool/features/school/presentation/views/teacher/classes_info_view.dart';
 import '../features/admin/presentation/views/admin_view.dart';
 import '../features/admin/presentation/views/classes/add_class_view.dart';
 import '../features/admin/presentation/views/fees/add_fees_view.dart';
