@@ -166,7 +166,7 @@ class _TeacherMessagesViewState extends State<TeacherMessagesView> {
     timer = Timer.periodic(Duration(seconds: 2), (timer) {
       fetchContacts();
       fetchMessages();
-      setState(() {});
+      // setState(() {});
     });
   }
 

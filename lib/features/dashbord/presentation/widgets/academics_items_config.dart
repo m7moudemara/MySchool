@@ -76,7 +76,7 @@ final List<AcademicsItem> allAcademicsItems = [
     iconPath: 'assets/children.png',
     routeName: MyChildrenView.id,
     visibleFor: UserType.guardian,
-    // visibleFor: UserType.parent,
+    
   ),
   AcademicsItem(
     title: 'Teachers',
@@ -84,6 +84,5 @@ final List<AcademicsItem> allAcademicsItems = [
     routeName: ChatView.id,
     // routeName: 'parent_results_route',
     visibleFor: UserType.guardian,
-    // visibleFor: UserType.parent,
   ),
 ];

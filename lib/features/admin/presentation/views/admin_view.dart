@@ -92,49 +92,37 @@ class _AdminViewState extends State<AdminView> {
         count: total_classes,
         image: "assets/classesadmin.png",
         title: "Classes",
-        route: AddClassView.id,
+        
       ),
       Compo(
         count: total_subjects,
         image: "assets/subjectsadmin.png",
         title: "Subjects",
-        route: AddSubjectView.id,
+        
       ),
       Compo(
         count: total_teachers,
         image: "assets/teachersadmin.png",
         title: "Teachers",
-        route: AddTeachersView.id,
+        
       ),
       Compo(
         count: total_parents ?? 0,
         image: "assets/parentsadmin.png",
         title: "Parents",
-        route: AddParentsView.id,
+        
       ),
       Compo(
         count: total_students ?? 0,
         image: "assets/studentsadmin.png",
         title: "Students",
-        route: AddStudentsView.id,
+        
       ),
       Compo(
         count: total_timetables,
         image: "assets/timetablesadmin.png",
         title: "TimeTables",
-        route: AddTimeTableView.id,
-      ),
-      Compo(
-        count: total_fees ?? 0,
-        image: "assets/feesadmin.png",
-        title: "Fees",
-        route: AddFeesView.id,
-      ),
-      Compo(
-        count: 72,
-        image: "assets/resultsadmin.png",
-        title: "Results",
-        route: AddResultsView.id,
+        
       ),
     ];
     return Scaffold(

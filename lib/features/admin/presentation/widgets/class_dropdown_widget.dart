@@ -39,6 +39,7 @@ class ClassDropdownWidget2 extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         icon: const Icon(Icons.arrow_drop_down),
         isExpanded: true,
+        dropdownColor: Colors.white,
       ),
     );
   }
@@ -83,6 +84,7 @@ class ClassDropdownWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         icon: const Icon(Icons.arrow_drop_down),
         isExpanded: true,
+        dropdownColor: Colors.white,
       ),
     );
   }

@@ -133,6 +133,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('My Children'),
         centerTitle: true,
         elevation: 0,
@@ -190,6 +191,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                         final child = filteredChildren[index];
                         final name = filteredChildren[index]['name'];
                         return Card(
+                          color: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -223,6 +225,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                             title: RichText(
                               text: TextSpan(
                                 style: TextStyle(
+                                  color: Colors.black,
                                   fontSize: 18,
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w600,
