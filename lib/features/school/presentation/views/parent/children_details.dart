@@ -6,6 +6,8 @@ import 'package:MySchool/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../data/models/student_model.dart';
+
 // Main MyChildren Page with Search and Navigation to Details
 class MyChildrenView extends StatefulWidget {
   const MyChildrenView({super.key});
@@ -204,7 +206,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                                         studentClass: child['class']!,
                                         studentName: child['name']!,
                                         studentId: child['id'],
-                                        student: child['student']??'',
+                                        student: Student.fromJson(child),
                                       ),
                                 ),
                               );
