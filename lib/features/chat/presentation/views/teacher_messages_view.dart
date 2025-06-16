@@ -156,19 +156,23 @@ class _TeacherMessagesViewState extends State<TeacherMessagesView> {
 
   late Timer timer;
   @override
-  void initState() {
-    super.initState();
-
-
+void initState() {
+  super.initState();
+  fetchContacts();
+  fetchMessages();
+  timer = Timer.periodic(Duration(seconds: 2), (timer) {
     fetchContacts();
     fetchMessages();
-
-    timer = Timer.periodic(Duration(seconds: 2), (timer) {
-      fetchContacts();
-      fetchMessages();
-      // setState(() {});
-    });
-  }
+    if (mounted) {
+      setState(() {});
+    }
+  });
+}
+  @override
+void dispose() {
+  timer.cancel(); 
+  super.dispose();
+}
 
   @override
   Widget build(BuildContext context) {
