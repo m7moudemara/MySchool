@@ -2,8 +2,8 @@ name: build android release
 
 on:
   push:
-    branches:
-      - '**'   # يشمل كل الفروع
+    tags:
+      - 'v*.*.*'  
 
 jobs:
   build:
@@ -14,13 +14,14 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'  # ← النسخة اللي عندك
+          flutter-version: '3.29.3'
 
       - run: flutter pub get
       - run: flutter build apk --release
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload to GitHub Releases
+        uses: ncipollo/release-action@v1
         with:
-          name: MySchool-apk-${{ github.ref_name }}
-          path: build/app/outputs/flutter-apk/app-release.apk
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk"
+          tag: ${{ github.ref_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
