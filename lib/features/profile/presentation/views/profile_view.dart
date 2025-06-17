@@ -62,7 +62,6 @@ class _ProfileViewState extends State<ProfileView> {
             radius: 60,
             backgroundImage: AssetImage('assets/profile.png'),
           ),
-          // CircleAvatar( radius: 60 ,backgroundImage: NetworkImage(user.imageUrl)),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Text(

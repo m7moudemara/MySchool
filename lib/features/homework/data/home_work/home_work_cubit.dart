@@ -35,50 +35,6 @@ class HomeWorkCubit extends Cubit<HomeWorkState> {
     }
   }
 
-  // submitAssignment({
-  //   required int id,
-  //   required PlatformFile plateFormFile,
-  // }) async {
-  //   emit(HomeWorkSubmittedLoading());
-  //   Future.delayed(Duration(seconds: 2));
-  //   Dio dio = Dio();
-  //   String? token = await sharedPrefController.getToken();
-  //   FormData formData = FormData.fromMap({
-  //     'assignment ': await MultipartFile.fromFile(
-  //       plateFormFile.path!,
-  //       filename: plateFormFile.name,
-  //     ),
-  //   });
-
-  //   try {
-  //     print(id);
-  //     print(token);
-  //     // print(plateFormFile.path);
-  //     Response response = await dio.post(
-  //       '$baseUrl/api/assignments/$id/submissions',
-  //       data: formData,
-  //       options: Options(
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //           'Accept': 'application/json',
-  //           'Authorization': 'Bearer $token',
-  //         },
-  //       ),
-  //     );
-
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       print('Upload successful');
-  //       emit(HomeWorkSubmittedSuccess());
-  //     } else {
-  //       print('Upload failed: ${response.statusCode}');
-  //       emit(HomeWorkSubmittedError('error'));
-  //     }
-  //   } catch (e) {
-  //     print('Error during upload: $e');
-  //     emit(HomeWorkSubmittedError('error'));
-  //   }
-  // }
-
   submitAssignment({
     required int id,
     required PlatformFile plateFormFile,
@@ -111,43 +67,5 @@ class HomeWorkCubit extends Cubit<HomeWorkState> {
       // print('Upload failed: ${response.statusCode}');
       emit(HomeWorkSubmittedError('The file has not been uploaded successfully'));
     }
-
-    //   Dio dio = Dio();
-    //   String? token = await sharedPrefController.getToken();
-    //   FormData formData = FormData.fromMap({
-    //     'assignment ': await MultipartFile.fromFile(
-    //       plateFormFile.path!,
-    //       filename: plateFormFile.name,
-    //     ),
-    //   });
-
-    //   try {
-    //     print(id);
-    //     print(token);
-    //     // print(plateFormFile.path);
-    //     Response response = await dio.post(
-    //       '$baseUrl/api/assignments/$id/submissions',
-    //       data: formData,
-    //       options: Options(
-    //         headers: {
-    //           'Content-Type': 'multipart/form-data',
-    //           'Accept': 'application/json',
-    //           'Authorization': 'Bearer $token',
-    //         },
-    //       ),
-    //     );
-
-    //     if (response.statusCode == 200 || response.statusCode == 201) {
-    //       print('Upload successful');
-    //       emit(HomeWorkSubmittedSuccess());
-    //     } else {
-    //       print('Upload failed: ${response.statusCode}');
-    //       emit(HomeWorkSubmittedError('error'));
-    //     }
-    //   } catch (e) {
-    //     print('Error during upload: $e');
-    //     emit(HomeWorkSubmittedError('error'));
-    //   }
-    // }
   }
 }

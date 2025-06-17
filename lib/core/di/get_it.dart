@@ -1,4 +1,3 @@
-import 'package:MySchool/core/network/dio_client.dart';
 import 'package:MySchool/core/presentation/intro/data/data_sources/intro_local_data_source_impl.dart';
 import 'package:MySchool/core/presentation/intro/data/repositories/intro_repository_impl.dart';
 import 'package:MySchool/core/presentation/intro/domain/usecases/mark_intro_seen_usecase.dart';
@@ -45,7 +44,7 @@ import 'package:MySchool/features/admin/presentation/cubits/student_cubits/stude
 import 'package:MySchool/features/admin/presentation/cubits/subject_cubits/add_subject_cubit.dart';
 import 'package:MySchool/features/admin/presentation/cubits/teacher_cubits/add_teacher_cubit.dart';
 import 'package:MySchool/features/admin/presentation/cubits/timetable_cubits/timetable_cubit.dart';
-import 'package:MySchool/features/auth/data/data_sources/mock/mock_auth_remote_data_source_impl.dart';
+import 'package:MySchool/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
 import 'package:MySchool/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:MySchool/features/auth/domain/repositories/check_first_time_repository.dart';
 import 'package:MySchool/features/auth/domain/usecases/change_password_usecase.dart';
@@ -64,8 +63,6 @@ import 'package:MySchool/features/notifications/data/repositories/notification_r
 import 'package:MySchool/features/notifications/domain/usecases/get_notifications_usecase.dart';
 import 'package:MySchool/features/notifications/presentation/cubit/notification_cubit.dart';
 import 'package:MySchool/features/school/data/data_sources/account_selection_local_data_source.dart';
-import 'package:MySchool/features/school/data/data_sources/dio_service.dart';
-import 'package:MySchool/features/school/data/data_sources/get_children_usecase_impl.dart';
 import 'package:MySchool/features/school/data/data_sources/user_remote_data_source.dart';
 import 'package:MySchool/features/school/data/repositories/account_selection_repository.dart';
 import 'package:MySchool/features/school/data/repositories/user_repository_impl.dart';
@@ -74,15 +71,12 @@ import 'package:MySchool/features/school/domain/usecases/get_all_parents.dart';
 import 'package:MySchool/features/school/domain/usecases/get_all_students.dart';
 import 'package:MySchool/features/school/domain/usecases/get_all_teachers.dart';
 import 'package:MySchool/features/school/domain/usecases/select_account_use_case.dart';
-import 'package:MySchool/features/school/presentation/cubits/children_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/parent_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/selected_account/account_selection_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/student_cubit.dart';
 import 'package:MySchool/features/school/presentation/cubits/teacher_cubit.dart';
-import 'package:MySchool/features/time_table/data/datasources/timetable_local_data_source.dart';
 import 'package:MySchool/features/time_table/data/datasources/timetable_local_data_source_impl.dart';
 import 'package:MySchool/features/time_table/data/repositories/timetable_repository_impl.dart';
-import 'package:MySchool/features/time_table/domain/repositories/timetable_repository.dart';
 import 'package:MySchool/features/time_table/domain/usecases/get_timetable_for_day.dart';
 import 'package:MySchool/features/time_table/presentation/cubits/timetable_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -91,12 +85,9 @@ import 'package:dio/dio.dart';
 
 final getIt = GetIt.instance;
 Future<void> setupDependencies() async {
-  // Initialize SharedPreferences
+  getIt.registerLazySingleton<Dio>(()=>Dio());
   final prefs = await SharedPreferences.getInstance();
   getIt.registerSingleton<SharedPreferences>(prefs);
-
-  // Initialize Dio clients
-  getIt.registerSingleton<Dio>(DioClient.create());
   getIt.registerFactory(() => DashboardCubit());
 
   // Register other dependencies...
@@ -126,9 +117,9 @@ Future<void> _setupIntroDependencies() async {
 }
 
 Future<void> _setupAuthDependencies() async {
-  getIt.registerFactory(() => MockAuthRemoteDataSourceImpl(getIt<Dio>()));
+  getIt.registerFactory(() => AuthRemoteDataSourceImpl(getIt<Dio>()));
   getIt.registerFactory(
-    () => AuthRepositoryImpl(getIt<MockAuthRemoteDataSourceImpl>()),
+    () => AuthRepositoryImpl(getIt<AuthRemoteDataSourceImpl>()),
   );
 
   getIt.registerFactory(() => LoginUseCase(getIt<AuthRepositoryImpl>()));
@@ -180,14 +171,15 @@ Future<void> _setupUserDependencies() async {
   getIt.registerFactory(() => TeacherCubit(getIt<GetAllTeachers>()));
 
   // Children
-  getIt.registerFactory(() => DioService());
-  getIt.registerFactory(() => GetChildrenUseCaseImpl(getIt<DioService>()));
-  getIt.registerFactory(() => ChildrenCubit(getIt<GetChildrenUseCaseImpl>()));
+  // getIt.registerFactory(() => DioService());
+  // getIt.registerFactory(() => GetChildrenUseCaseImpl(getIt<DioService>()));
+  // getIt.registerFactory(() => ChildrenCubit(getIt<GetChildrenUseCaseImpl>()));
 }
 
 Future<void> _setupNotificationDependencies() async {
   getIt.registerFactory(
-    () => NotificationRemoteDataSourceImpl(UserType.student),
+    () => NotificationRemoteDataSourceImpl(UserType.student
+    ),
   );
 
   getIt.registerFactory(

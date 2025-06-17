@@ -250,8 +250,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           widget.attendanceData!
               .where((item) => item.status == 'Present')
               .toList();
-      // List<DateTime> selectedDates = [];
-
       List<DateTime> attendanceDates =
           attendanceModels.map((e) => DateTime.parse(e.date)).toList();
 
@@ -311,9 +309,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   int get presentCount => numberOfPresent;
   int get absentCount => numberOfAbsent;
-  // _attendanceData.values.where((v) => v == false || v == null).length;
-  // int get presentCount => _attendanceData.values.where((v) => v == true).length;
-  // int get absentCount => _attendanceData.values.where((v) => v == false).length;
+
 
   void _nextMonth() {
     setState(() {

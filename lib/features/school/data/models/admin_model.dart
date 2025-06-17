@@ -107,10 +107,10 @@ class AdminDashboardUser implements DashboardUser {
   @override
   final double remaining;
   final int total_teachers;
+  @override
   final int total_classes;
   final int total_subjects;
   final int total_timetables;
-  // final int total_notifications_admin; // Renamed to avoid duplicate
   final double total_fees_collected;
   final double total_fees_remaining;
   final int total_assignments_created;

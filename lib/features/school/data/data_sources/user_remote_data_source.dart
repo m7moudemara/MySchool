@@ -13,7 +13,6 @@ abstract class UserRemoteDataSource {
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<List<Parent>> fetchAllParents() async {
-    // Mock API
     await Future.delayed(Duration(milliseconds: 500));
     return [];
   }

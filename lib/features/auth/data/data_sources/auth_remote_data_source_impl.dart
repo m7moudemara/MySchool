@@ -1,14 +1,14 @@
 import 'package:MySchool/main.dart';
 import 'package:dio/dio.dart';
-import '../auth_remote_data_source.dart';
+import 'auth_remote_data_source.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:MySchool/core/constants/strings.dart';
 
-class MockAuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
 
-  MockAuthRemoteDataSourceImpl(this.dio);
+  AuthRemoteDataSourceImpl(this.dio);
 
   @override
   Future<Map<String, dynamic>> login({

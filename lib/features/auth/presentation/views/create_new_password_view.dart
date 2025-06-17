@@ -65,31 +65,6 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
     });
   }
 
-  // Future<bool> _validateOldPassword(String userId, String oldPassword) async {
-  //   try {
-  //     final dio = Dio();
-  //     final response = await dio.get(
-  //       "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
-  //       options: Options(validateStatus: (status) => status != null && status < 500),
-  //     );
-
-  //     if (response.statusCode == 200 && response.data != null) {
-  //       final userData = response.data;
-  //       if (userData["password"] == oldPassword) {
-  //         return true;
-  //       } else {
-  //         CustomSnackBar.show(context, "Old password is incorrect", type: SnackBarType.error);
-  //         return false;
-  //       }
-  //     } else {
-  //       CustomSnackBar.show(context, "Failed to validate password. User not found.", type: SnackBarType.error);
-  //       return false;
-  //     }
-  //   } catch (e) {
-  //     CustomSnackBar.show(context, "Error validating password: $e", type: SnackBarType.error);
-  //     return false;
-  //   }
-  // }
 
   @override
   void dispose() {
@@ -205,20 +180,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                     setState(() => isLoading = true);
 
                     try {
-                      // final isValid = await _validateOldPassword(userId, _oldPasswordController.text);
-                      // if (!isValid) {
-                      //   setState(() => isLoading = false);
-                      //   return;
-                      // }
-
-                      // final dio = Dio();
-                      // await dio.put(
-                      //   "https://67f2952eec56ec1a36d38b8a.mockapi.io/myschool/users/$userId",
-                      //   data: {
-                      //     "password": _newPasswordController.text,
-                      //     "is_first_login": false,
-                      //   },
-                      // );
+          
                       String? token = await sharedPrefController.getToken();
                       final url = Uri.parse(
                         '$baseUrl/api/auth/change-password',

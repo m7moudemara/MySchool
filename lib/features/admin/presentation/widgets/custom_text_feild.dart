@@ -6,9 +6,9 @@ class CustomField extends StatelessWidget {
   final TextInputType? keyboardType ;
   final VoidCallback? onTap;
   final bool? readOnly;
-   bool obscureText ;
+  final bool obscureText ;
 
-   CustomField({
+   const  CustomField({
     super.key, required this.label, required this.controller,  this.keyboardType, this.onTap, this.readOnly,  this.obscureText = false,
   });
 

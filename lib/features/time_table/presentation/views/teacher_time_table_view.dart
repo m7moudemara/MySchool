@@ -1,8 +1,6 @@
 import 'package:MySchool/features/time_table/presentation/widgets/line_tile.dart';
-import 'package:MySchool/features/time_table/presentation/widgets/time_table_item.dart';
 import 'package:MySchool/features/time_table/presentation/widgets/day_selector_widget.dart';
 import 'package:MySchool/features/time_table/presentation/widgets/days_list_widget.dart';
-import 'package:MySchool/features/time_table/presentation/widgets/time_table_row_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:MySchool/features/time_table/presentation/cubits/timetable_cubit.dart';

@@ -12,7 +12,6 @@ class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   final List<AddTeachersModel> teachers = [];
 
   @override
-  // Future<List<AddTeachersModel>> getAll() async => _teachers;
   Future<List<AddTeachersModel>> getAll() async {
     final url = Uri.parse(
       '$baseUrl/api/accounts?Pagesize=500&Where%5Brole%5D=Teacher',
@@ -42,9 +41,7 @@ class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   }
 
   @override
-  // Future<void> add(AddTeachersModel teacher) async => _teachers.add(teacher);
   Future<void> add(AddTeachersModel teacher) async {
-
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
     // DateFormat inputFormat = DateFormat('dd/MM/yyyy');
     DateTime date = inputFormat.parse(teacher.dateOfBirth);
@@ -88,8 +85,6 @@ class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<void> update(AddTeachersModel updated) async {
-    // final index = _teachers.indexWhere((t) => t.id == updated.id);
-    // if (index != -1) _teachers[index] = updated;
     final url = Uri.parse('$baseUrl/api/accounts/${updated.id}');
     final response = await http.patch(
       url,
@@ -112,16 +107,15 @@ class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
         "must_change_password": updated.mustChangePassword,
       }),
     );
-    // if (response.statusCode == 201 || response.statusCode == 200) {
-    //   return jsonDecode(response.body);
-    // } else {
-    //   throw Exception('error');
-    // }
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('error');
+    }
   }
 
   @override
   Future<void> delete(String id) async {
-    // _teachers.removeWhere((t) => t.id == id);
     final url = Uri.parse('$baseUrl/api/accounts/$id');
     await http.delete(
       url,

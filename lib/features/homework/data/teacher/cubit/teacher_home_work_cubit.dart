@@ -1,4 +1,5 @@
 import 'package:MySchool/core/constants/strings.dart';
+import 'package:MySchool/core/di/get_it.dart';
 import 'package:MySchool/features/homework/data/teacher/teacher_class_model.dart';
 import 'package:MySchool/features/homework/data/teacher/teacher_home_work_repository.dart';
 import 'package:MySchool/features/homework/data/teacher/teacher_home_work_web_services.dart';
@@ -41,7 +42,7 @@ class TeacherHomeWorkCubit extends Cubit<TeacherHomeWorkState> {
     required TeacherClassModel classx,
     required DateTime deadline,
   }) async {
-    Dio dio = Dio();
+    final dio = getIt<Dio>();
     String? token = await sharedPrefController.getToken();
     FormData formData = FormData.fromMap({
       'attachment': await MultipartFile.fromFile(

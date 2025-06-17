@@ -44,43 +44,6 @@ class HomeWorkWebservices {
     // with the assignment data.
   }
 
-  // submitAssignment({
-  //   required int id,
-  //   required PlatformFile plateFormFile,
-  // }) async {
-  //   Dio dio = Dio();
-  //   String? token = await sharedPrefController.getToken();
-  //   FormData formData = FormData.fromMap({
-  //     'assignment ': await MultipartFile.fromFile(
-  //       plateFormFile.path!,
-  //       filename: plateFormFile.name,
-  //     ),
-  //   });
-
-  //   try {
-  //     Response response = await dio.post(
-  //       '$baseUrl/api/assignments/$id/submissions',
-  //       data: formData,
-  //       options: Options(
-  //         headers: {
-  //           'Authorization': 'Bearer $token',
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //       ),
-  //     );
-
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       print('Upload successful');
-  //       return true;
-  //     } else {
-  //       print('Upload failed: ${response.statusCode}');
-  //       return false;
-  //     }
-  //   } catch (e) {
-  //     print('Error during upload: $e');
-  //     return false;
-  //   }
-  // }
 
   // Additional methods for updating and deleting assignments can be added here.
 

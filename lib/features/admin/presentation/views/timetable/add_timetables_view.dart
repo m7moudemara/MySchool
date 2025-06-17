@@ -14,7 +14,6 @@ import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/domain/entities/timetable_entity.dart';
 import 'package:MySchool/features/admin/presentation/cubits/timetable_cubits/timetable_cubit.dart';
 import 'package:MySchool/features/admin/presentation/widgets/add_widget.dart';
-import 'package:MySchool/features/admin/presentation/widgets/class_dropdown_widget.dart';
 import 'package:MySchool/features/admin/presentation/widgets/create_button.dart';
 import 'package:MySchool/features/admin/presentation/widgets/create_new_widget.dart';
 import 'package:MySchool/features/admin/presentation/widgets/custom_text_feild.dart';

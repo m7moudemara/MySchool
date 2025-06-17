@@ -9,10 +9,7 @@ import '../../../../../main.dart';
 import '../../../domain/entities/timetable_entity.dart';
 
 class AddTimeTableLocalDataSourceImpl implements AddTimeTableLocalDataSource {
-  final List<AddTimeTableModel> _timeTables = [];
-
   @override
-  // Future<List<AddTimeTableModel>> getAll() async => _timeTables;
   Future<List<AddTimeTableModel>> getAll() async {
     final url = Uri.parse('$baseUrl/api/timetables?PageSize=500');
     final response = await http.get(
@@ -40,8 +37,6 @@ class AddTimeTableLocalDataSourceImpl implements AddTimeTableLocalDataSource {
   }
 
   @override
-  // Future<void> add(AddTimeTableModel timeTable) async =>
-  //     _timeTables.add(timeTable);
   Future<void> add(AddTimeTableModel timeTable) async {
     DateFormat inputFormat = DateFormat('h:mm a');
     DateFormat outputFormat = DateFormat('HH:mm:ss');
@@ -83,8 +78,6 @@ class AddTimeTableLocalDataSourceImpl implements AddTimeTableLocalDataSource {
 
   @override
   Future<void> update(AddTimeTableModel updated) async {
-    // final index = _timeTables.indexWhere((t) => t.id == updated.id);
-    // if (index != -1) _timeTables[index] = updated;
     DateFormat inputFormat = DateFormat('h:mm a');
     DateFormat outputFormat = DateFormat('HH:mm:ss');
 
@@ -115,7 +108,6 @@ class AddTimeTableLocalDataSourceImpl implements AddTimeTableLocalDataSource {
 
   @override
   Future<void> delete(String id) async {
-    // _timeTables.removeWhere((t) => t.id == id);
     final url = Uri.parse('$baseUrl/api/timetables/$id');
     await http.delete(
       url,

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/core/utils/utils.dart';
@@ -22,7 +21,7 @@ import 'package:http/http.dart' as http;
 
 class AdminView extends StatefulWidget {
   static String id = '/AdminView';
-  AdminView({super.key});
+  const AdminView({super.key});
 
   @override
   State<AdminView> createState() => _AdminViewState();
@@ -42,11 +41,9 @@ class _AdminViewState extends State<AdminView> {
   void initState() {
     super.initState();
     getAlls();
-    // final user = context.read<UserCubit>();
     final userDash =
         context.read<DashboardUserCubit>().state as AdminDashboardUser;
     setState(() {
-      // total_students = userDash.total_students;
       total_classes = userDash.total_classes;
       total_teachers = userDash.total_teachers;
       total_subjects = userDash.total_subjects;

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/admin/data/data_sources/parent_data_sources/parent_local_data_sources.dart';
 import 'package:MySchool/features/admin/data/models/add_parent_model.dart';
@@ -9,10 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../../../main.dart';
 
 class ParentLocalDataSourceImpl implements ParentLocalDataSource {
-  final List<AddParentsModel> _parents = [];
-
   @override
-  // Future<List<AddParentsModel>> getAll() async => _parents;
   Future<List<AddParentsModel>> getAll() async {
     final url = Uri.parse(
       '$baseUrl/api/accounts?Pagesize=500&Where%5Brole%5D=Guardian',
@@ -82,13 +78,10 @@ class ParentLocalDataSourceImpl implements ParentLocalDataSource {
 
   @override
   Future<void> update(AddParentsModel updated) async {
-    // final index = _parents.indexWhere((t) => t.id == updated.id);
-    // if (index != -1) _parents[index] = updated;
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
-    // DateFormat inputFormat = DateFormat('dd/MM/yyyy');
+
     DateTime date = inputFormat.parse(updated.dateOfBirth);
 
-    // Format as yyyy-MM-dd
     String formatted = DateFormat('yyyy-MM-dd').format(date);
     print(formatted);
 
@@ -118,7 +111,6 @@ class ParentLocalDataSourceImpl implements ParentLocalDataSource {
 
   @override
   Future<void> delete(String id) async {
-    // _parents.removeWhere((t) => t.id == id);
     final url = Uri.parse('$baseUrl/api/accounts/$id');
     await http.delete(
       url,

@@ -27,7 +27,7 @@ class DaysListWidget extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     color:
-                        day == selectedDay
+                        day.value == selectedDay
                             ? const Color(0xff103568).withOpacity(0.1)
                             : Colors.white,
                     padding: const EdgeInsets.symmetric(
@@ -37,7 +37,7 @@ class DaysListWidget extends StatelessWidget {
                     child: Text(
                       day.value,
                       style: TextStyle(
-                        color: day == selectedDay ? Colors.black : Colors.grey,
+                        color: day.value == selectedDay ? Colors.black : Colors.grey,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w600,
                       ),

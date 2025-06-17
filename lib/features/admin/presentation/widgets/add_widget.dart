@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class AddWidget extends StatelessWidget {
   final String title;
   final double width;
-  VoidCallback? onTap;
-  AddWidget({super.key, required this.title, required this.width, this.onTap});
+  final VoidCallback? onTap;
+  const AddWidget({super.key, required this.title, required this.width, this.onTap});
 
   @override
   Widget build(BuildContext context) {
