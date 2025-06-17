@@ -1,4 +1,8 @@
-import 'package:MySchool/core/constants.dart';
+import 'dart:convert';
+
+import 'package:MySchool/core/constants/constants.dart';
+import 'package:MySchool/core/constants/strings.dart';
+
 import 'package:MySchool/core/utils/search_utlis.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
@@ -7,11 +11,11 @@ import 'package:MySchool/features/admin/presentation/cubits/fees_cubits/fees_cub
 import 'package:MySchool/features/admin/presentation/widgets/class_dropdown_widget.dart';
 import 'package:MySchool/features/admin/presentation/widgets/create_button.dart';
 import 'package:MySchool/features/admin/presentation/widgets/custom_text_feild.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:http/http.dart' as http;
+import '../../../../../main.dart';
 import '../../widgets/add_widget.dart';
 import '../../widgets/create_new_widget.dart';
 import '../../widgets/new_widget.dart';
@@ -30,23 +34,85 @@ class _AddFeesViewState extends State<AddFeesView> {
   final TextEditingController dueTimeController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
 
-  String? selectedStudent;
+  String? selectedStudentName;
+  int? selectedStudentId;
   bool showForm = false;
   bool isEdit = false;
   String? editingId;
   List<FeesEntity> filteredFees = [];
 
-  final List<DropdownMenuItem<String>> studentItems = [
-    DropdownMenuItem(value: "Student 1", child: Text("Student 1")),
-    DropdownMenuItem(value: "Student 2", child: Text("Student 2")),
+  // final List<DropdownMenuItem<String>> studentItems = [
+  //   DropdownMenuItem(value: "Student 1", child: Text("Student 1")),
+  //   DropdownMenuItem(value: "Student 2", child: Text("Student 2")),
+  // ];
+
+  final List<DropdownMenuItem<int>> studentItemsx = [
+    // DropdownMenuItem(value: 1, child: Text("Student 1")),
+    // DropdownMenuItem(value: 2, child: Text("Student 2")),
   ];
+  void _addTextListeners() {
+    final controllers = [
+      totalAmountController,
+      paidAmountController,
+      dueTimeController,
+      searchController,
+    ];
+
+    for (var controller in controllers) {
+      controller.addListener(() => setState(() {}));
+    }
+  }
+
+  getStudents() async {
+    final url = Uri.parse(
+      '$baseUrl/api/accounts?Pagesize=500&Where%5Brole%5D=Student',
+    );
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      List result = jsonDecode(response.body)['data'];
+      for (var element in result) {
+        setState(() {
+          studentItemsx.add(
+            DropdownMenuItem(
+              value: element['id'],
+              child: Text(element['name']),
+            ),
+          );
+        });
+      }
+
+      return result;
+    } else {
+      throw Exception('error');
+    }
+  }
 
   void openForm({FeesEntity? entity}) {
     setState(() {
       showForm = true;
       isEdit = entity != null;
       editingId = entity?.id;
-      selectedStudent = entity?.selectSudent;
+
+      if (entity != null) {
+        selectedStudentId = entity.selectSudentId;
+        totalAmountController.text = entity.totalAmount.toString();
+        paidAmountController.text = entity.paidAmount.toString();
+        dueTimeController.text = TimeOfDay.fromDateTime(
+          entity.dueDate,
+        ).format(context);
+      } else {
+        selectedStudentId = null;
+        totalAmountController.clear();
+        paidAmountController.clear();
+        dueTimeController.clear();
+      }
     });
   }
 
@@ -59,23 +125,16 @@ class _AddFeesViewState extends State<AddFeesView> {
       paidAmountController.clear();
       searchController.clear();
       dueTimeController.clear();
-      selectedStudent = null;
+      selectedStudentId = null;
     });
   }
 
   @override
   void initState() {
     super.initState();
+    getStudents();
     context.read<AddFeesCubit>().loadFees();
-    totalAmountController.addListener(() {
-      setState(() {});
-    });
-    paidAmountController.addListener(() {
-      setState(() {});
-    });
-    dueTimeController.addListener(() {
-      setState(() {});
-    });
+    _addTextListeners();
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
       setState(() {
@@ -84,7 +143,9 @@ class _AddFeesViewState extends State<AddFeesView> {
                 .read<AddFeesCubit>()
                 .state
                 .fees
-                .where((fee) => fee.selectSudent.toLowerCase().contains(query))
+                .where(
+                  (fee) => fee.selectSudentName.toLowerCase().contains(query),
+                )
                 .toList();
       });
     });
@@ -109,39 +170,42 @@ class _AddFeesViewState extends State<AddFeesView> {
               ? CreateNewWidget(
                 title: isEdit ? "Edit Fees" : "Add Fees",
                 items: [
-                  ClassDropdownWidget(
+                  ClassDropdownWidget2(
                     title: "select student",
-                    items: studentItems,
-                    selectedValue: selectedStudent,
+                    items: studentItemsx,
+                    selectedValue: selectedStudentId,
                     onChanged:
-                        (value) => setState(() => selectedStudent = value),
+                        (value) => setState(() => selectedStudentId = value),
                   ),
                   CustomField(
                     controller: totalAmountController,
                     label: "Total Amount",
-  keyboardType: TextInputType.numberWithOptions(decimal: true),
-
+                    keyboardType: TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                   ),
                   CustomField(
                     controller: paidAmountController,
                     label: "Paid Amount",
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-
+                    keyboardType: TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                   ),
                   CustomField(
-                    controller: dueTimeController, label: "Due Time"
-                    , keyboardType: TextInputType.datetime,
+                    controller: dueTimeController,
+                    label: "Due Time",
+                    keyboardType: TextInputType.datetime,
                     readOnly: true,
                     onTap: () async {
-    TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (pickedTime != null) {
-      final formattedTime = pickedTime.format(context);
-      dueTimeController.text = formattedTime;
-    }
-  },
+                      TimeOfDay? pickedTime = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      if (pickedTime != null) {
+                        final formattedTime = pickedTime.format(context);
+                        dueTimeController.text = formattedTime;
+                      }
+                    },
                   ),
                   CreateButton(
                     label: isEdit ? "Update " : "Create ",
@@ -150,7 +214,7 @@ class _AddFeesViewState extends State<AddFeesView> {
                         totalAmountController.text.isNotEmpty &&
                         paidAmountController.text.isNotEmpty &&
                         dueTimeController.text.isNotEmpty &&
-                        selectedStudent != null,
+                        selectedStudentId != null,
 
                     onPressed: () {
                       final entity = FeesEntity(
@@ -158,7 +222,8 @@ class _AddFeesViewState extends State<AddFeesView> {
                         paidAmount: double.parse(paidAmountController.text),
                         totalAmount: double.parse(totalAmountController.text),
                         dueDate: DateTime.now(),
-                        selectSudent: selectedStudent ?? '',
+                        selectSudentId: selectedStudentId ?? 0,
+                        selectSudentName: selectedStudentName ?? '',
                       );
 
                       if (isEdit) {
@@ -177,24 +242,24 @@ class _AddFeesViewState extends State<AddFeesView> {
                       searchController.text.isEmpty ? state.fees : filteredFees;
                   return CustomScrollView(
                     slivers: [
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 8,
-                            ),
-                            child: TextField(
-                              controller: searchController,
-                              decoration: InputDecoration(
-                                hintText: 'Search',
-                                prefixIcon: Icon(Icons.search),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 8,
+                          ),
+                          child: TextField(
+                            controller: searchController,
+                            decoration: InputDecoration(
+                              hintText: 'Search',
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                           ),
                         ),
+                      ),
                       SliverToBoxAdapter(
                         child: AddWidget(
                           onTap: () => openForm(),
@@ -212,11 +277,11 @@ class _AddFeesViewState extends State<AddFeesView> {
                             context,
                             index,
                           ) {
-                            final item = feesList[index]; 
+                            final item = feesList[index];
 
                             return NewWidget(
                               title: SearchUtils.getHighlightedText(
-                                item.selectSudent,
+                                item.selectSudentName,
                                 searchController.text,
                               ),
                               subtitle: item.totalAmount.toString(),

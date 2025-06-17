@@ -17,6 +17,10 @@ class AddTimeTableRepositoryImpl implements AddTimeTableRepository {
         selectedTeacher: newTimeTable.selectedTeacher,
         startTime: newTimeTable.startTime,
         endTime: newTimeTable.endTime,
+        selectedClassId: newTimeTable.selectedClassId,
+        selectedSubjectId: newTimeTable.selectedSubjectId,
+        selectedTeacherId: newTimeTable.selectedTeacherId,
+        day: newTimeTable.day,
       ),
     );
   }
@@ -41,6 +45,10 @@ class AddTimeTableRepositoryImpl implements AddTimeTableRepository {
         selectedTeacher: updatedTimeTable.selectedTeacher,
         startTime: updatedTimeTable.startTime,
         endTime: updatedTimeTable.endTime,
+        selectedClassId: updatedTimeTable.selectedClassId,
+        selectedSubjectId: updatedTimeTable.selectedSubjectId,
+        selectedTeacherId: updatedTimeTable.selectedTeacherId,
+        day: updatedTimeTable.day,
       ),
     );
   }

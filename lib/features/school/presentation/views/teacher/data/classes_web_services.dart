@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import '../../../../../../constants/strings.dart';
+import '../../../../../../core/constants/strings.dart';
 import '../../../../../../main.dart';
 
 class ClassesWebServices {

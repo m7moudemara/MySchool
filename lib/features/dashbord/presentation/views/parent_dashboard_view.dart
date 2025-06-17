@@ -31,6 +31,7 @@ class ParentDashboardView extends StatelessWidget {
           bloc: getIt<DashboardUserCubit>(),
           builder: (context, statex) {
             return Scaffold(
+              backgroundColor: Colors.white,
               body: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),

@@ -28,7 +28,7 @@ class TimeTableRowWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Padding(
-                padding: EdgeInsets.only(right: space + 3.5),
+                padding: EdgeInsets.only(right: space + 2),
                 child: Text('Time', style: startTimeStyle),
               ),
             ],

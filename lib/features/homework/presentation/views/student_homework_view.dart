@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:MySchool/constants/strings.dart';
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/strings.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/features/homework/data/home_work/home_work_cubit.dart';
 import 'package:MySchool/features/homework/data/homework_model.dart';
 import 'package:MySchool/main.dart';

@@ -3,7 +3,6 @@ import 'package:MySchool/features/homework/data/home_work_webservices.dart';
 import 'package:MySchool/features/school/presentation/views/teacher/data/classes_web_services.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../school/presentation/views/teacher/data/class_model.dart';
 import '../../../../school/presentation/views/teacher/data/classes_repository.dart';
@@ -65,9 +64,4 @@ class TeacherViewHomeworkCubit extends Cubit<TeacherViewHomeworkState> {
     }
   }
 
-  getStudentClass() async {
-    ClassesRepository classesRepository = ClassesRepository(
-      classesWebServices: ClassesWebServices(),
-    );
-  }
 }

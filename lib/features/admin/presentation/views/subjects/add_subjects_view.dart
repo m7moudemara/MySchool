@@ -1,4 +1,4 @@
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/domain/entities/subject_entity.dart';

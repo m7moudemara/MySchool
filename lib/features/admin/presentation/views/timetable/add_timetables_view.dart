@@ -1,11 +1,14 @@
+import 'dart:convert';
+
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/time_table/presentation/widgets/day_selector_widget.dart';
 import 'package:MySchool/features/time_table/presentation/widgets/days_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:MySchool/core/constants.dart';
-import 'package:MySchool/core/utils/search_utlis.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/domain/entities/timetable_entity.dart';
@@ -16,6 +19,9 @@ import 'package:MySchool/features/admin/presentation/widgets/create_button.dart'
 import 'package:MySchool/features/admin/presentation/widgets/create_new_widget.dart';
 import 'package:MySchool/features/admin/presentation/widgets/custom_text_feild.dart';
 import 'package:MySchool/features/admin/presentation/widgets/new_widget.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../../../main.dart';
 
 class AddTimeTableView extends StatefulWidget {
   const AddTimeTableView({super.key});
@@ -27,27 +33,94 @@ class AddTimeTableView extends StatefulWidget {
 
 class _AddTimeTableViewState extends State<AddTimeTableView> {
   String? selectedClass;
+  int? selectedClassId;
   String? selectedSubject;
+  int? selectedSubjectId;
   String? selectedTeacher;
+  int? selectedTeacherId;
   final TextEditingController startTimeController = TextEditingController();
   final TextEditingController endTimeController = TextEditingController();
 
-  final List<DropdownMenuItem<String>> gradeItems = [
-    DropdownMenuItem(value: 'Grade 1', child: Text('Grade 1')),
-    DropdownMenuItem(value: 'Grade 2', child: Text('Grade 2')),
-    DropdownMenuItem(value: 'Grade 3', child: Text('Grade 3')),
-  ];
-  final List<DropdownMenuItem<String>> subjectItems = [
-    DropdownMenuItem(value: 'Math', child: Text('Math')),
-    DropdownMenuItem(value: 'Science', child: Text('Science')),
-    DropdownMenuItem(value: 'English', child: Text('English')),
-  ];
-  final List<DropdownMenuItem<String>> teacherItems = [
-    DropdownMenuItem(value: 'Teacher 1', child: Text('Teacher 1')),
-    DropdownMenuItem(value: 'Teacher 2', child: Text('Teacher 2')),
-    DropdownMenuItem(value: 'Teacher 3', child: Text('Teacher 3')),
-  ];
+  final List<DropdownMenuItem<int>> classItems = [];
+  getClasses() async {
+    final url = Uri.parse('$baseUrl/api/classes');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      List classes = jsonDecode(response.body)['data'];
+      for (var item in classes) {
+        setState(() {
+          classItems.add(
+            DropdownMenuItem(value: item['id'], child: Text(item['name'])),
+          );
+        });
+      }
+    } else {
+      throw Exception('error');
+    }
+  }
+
+  final List<DropdownMenuItem<int>> subjectItems = [];
+  List subjects = [];
+  getSubjects() async {
+    final url = Uri.parse('$baseUrl/api/subjects');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      subjects = jsonDecode(response.body)['data'];
+      for (var item in subjects) {
+        setState(() {
+          subjectItems.add(
+            DropdownMenuItem(value: item['id'], child: Text(item['name'])),
+          );
+        });
+      }
+    } else {
+      throw Exception('error');
+    }
+  }
+
+  final List<DropdownMenuItem<int>> teacherItems = [];
+  getTeachers() async {
+    final url = Uri.parse(
+      '$baseUrl/api/accounts?Pagesize=500&Where%5Brole%5D=Teacher',
+    );
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      List result = jsonDecode(response.body)['data'];
+      for (var item in result) {
+        setState(() {
+          teacherItems.add(
+            DropdownMenuItem(value: item['id'], child: Text(item['name'])),
+          );
+        });
+      }
+    } else {
+      throw Exception('error');
+    }
+  }
+
   String selectedDay = 'Saturday';
+  int selectedDayIndex = 0;
   final List<String> days = [
     'Saturday',
     'Sunday',
@@ -57,6 +130,7 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
     'Thursday',
     'Friday',
   ];
+
   bool isDayListVisible = false;
 
   bool showForm = false;
@@ -64,15 +138,29 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
   String? editingId;
 
   void openForm({TimeTableEntity? entity}) {
+    String? start;
+    String? end;
+    if (entity != null) {
+      DateFormat inputFormat = DateFormat('HH:mm:ss');
+      DateFormat ouputFormat = DateFormat('h:mm a');
+      DateTime dateTimeStart = inputFormat.parse(entity.startTime);
+      DateTime dateTimeEnd = inputFormat.parse(entity.endTime);
+
+      start = ouputFormat.format(dateTimeStart);
+      end = ouputFormat.format(dateTimeEnd);
+    }
     setState(() {
       showForm = true;
       isEdit = entity != null;
       editingId = entity?.id;
       selectedClass = entity?.selectedClass;
+      selectedClassId = entity?.selectedClassId;
       selectedSubject = entity?.selectedSubject;
+      selectedSubjectId = entity?.selectedSubjectId;
       selectedTeacher = entity?.selectedTeacher;
-      startTimeController.text = entity?.startTime?.toString() ?? '';
-      endTimeController.text = entity?.endTime?.toString() ?? '';
+      selectedTeacherId = entity?.selectedTeacherId;
+      startTimeController.text = start ?? '';
+      endTimeController.text = end ?? '';
     });
   }
 
@@ -84,6 +172,9 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
       selectedClass = null;
       selectedSubject = null;
       selectedTeacher = null;
+      selectedClassId = null;
+      selectedSubjectId = null;
+      selectedTeacherId = null;
       startTimeController.clear();
       endTimeController.clear();
     });
@@ -92,7 +183,10 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
   @override
   void initState() {
     super.initState();
-    context.read<AddTimeTableCubit>().loadTimeTables();
+    getSubjects();
+    getTeachers();
+    getClasses();
+    context.read<AddTimeTableCubit>().loadTimeTables(selectedDayIndex);
   }
 
   @override
@@ -116,28 +210,28 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
                 child: CreateNewWidget(
                   title: isEdit ? "Edit Time Table" : "Add Time Table",
                   items: [
-                    ClassDropdownWidget(
+                    ClassDropdownWidget2(
                       title: "Class",
-                      items: gradeItems,
-                      selectedValue: selectedClass,
+                      items: classItems,
+                      selectedValue: selectedClassId,
                       onChanged:
-                          (value) => setState(() => selectedClass = value),
+                          (value) => setState(() => selectedClassId = value),
                     ),
                     const SizedBox(height: 12),
-                    ClassDropdownWidget(
+                    ClassDropdownWidget2(
                       title: "Subject",
                       items: subjectItems,
-                      selectedValue: selectedSubject,
+                      selectedValue: selectedSubjectId,
                       onChanged:
-                          (value) => setState(() => selectedSubject = value),
+                          (value) => setState(() => selectedSubjectId = value),
                     ),
                     const SizedBox(height: 12),
-                    ClassDropdownWidget(
+                    ClassDropdownWidget2(
                       title: "Teacher",
                       items: teacherItems,
-                      selectedValue: selectedTeacher,
+                      selectedValue: selectedTeacherId,
                       onChanged:
-                          (value) => setState(() => selectedTeacher = value),
+                          (value) => setState(() => selectedTeacherId = value),
                     ),
                     CustomField(
                       label: "Start Time",
@@ -176,21 +270,25 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
                     const SizedBox(height: 12),
                     CreateButton(
                       label: isEdit ? "Update" : "Create",
-                      icon: isEdit ? Icons.edit : Icons.add,
+                      icon: isEdit ? Icons.restart_alt : Icons.add,
                       enabled:
-                          selectedClass != null &&
-                          selectedSubject != null &&
-                          selectedTeacher != null &&
+                          selectedClassId != null &&
+                          selectedSubjectId != null &&
+                          selectedTeacherId != null &&
                           startTimeController.text.isNotEmpty &&
                           endTimeController.text.isNotEmpty,
                       onPressed: () {
                         final entity = TimeTableEntity(
                           id: isEdit ? editingId! : const Uuid().v4(),
                           selectedClass: selectedClass ?? '',
+                          selectedClassId: selectedClassId ?? 0,
                           selectedSubject: selectedSubject ?? '',
+                          selectedSubjectId: selectedSubjectId ?? 0,
                           selectedTeacher: selectedTeacher ?? '',
+                          selectedTeacherId: selectedTeacherId ?? 0,
                           startTime: startTimeController.text,
                           endTime: endTimeController.text,
+                          day: selectedDayIndex,
                         );
 
                         if (isEdit) {
@@ -239,10 +337,14 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
                                     ? DaysListWidget(
                                       days: days,
                                       selectedDay: selectedDay,
-                                      onDaySelected: (day) {
+                                      onDaySelected: (day, index) {
                                         setState(() {
                                           selectedDay = day;
+                                          selectedDayIndex = index;
                                           isDayListVisible = false;
+                                          context
+                                              .read<AddTimeTableCubit>()
+                                              .loadTimeTables(selectedDayIndex);
                                         });
                                       },
                                     )
@@ -275,6 +377,7 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
                                   text: item.selectedClass,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),
@@ -311,6 +414,51 @@ class _AddTimeTableViewState extends State<AddTimeTableView> {
                   );
                 },
               ),
+    );
+  }
+}
+
+class ClassDropdownWidget2 extends StatelessWidget {
+  final int? selectedValue;
+  final List<DropdownMenuItem<int>> items;
+  final ValueChanged<int?> onChanged;
+  final String title;
+
+  const ClassDropdownWidget2({
+    super.key,
+    required this.selectedValue,
+    required this.items,
+    required this.onChanged,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: DropdownButtonFormField<int>(
+        value:
+            items.any((item) => item.value == selectedValue)
+                ? selectedValue
+                : null,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          label: Container(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+            decoration: BoxDecoration(
+              color: const Color(0xFF361FC2),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(title, style: TextStyle(color: Colors.white)),
+          ),
+        ),
+        items: items,
+        onChanged: onChanged,
+        borderRadius: BorderRadius.circular(12),
+        icon: const Icon(Icons.arrow_drop_down),
+        isExpanded: true,
+      ),
     );
   }
 }

@@ -7,7 +7,7 @@ import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
 import 'package:MySchool/features/chat/presentation/widgets/chat_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../../../../constants/strings.dart';
+import '../../../../core/constants/strings.dart';
 import '../../../../main.dart';
 
 class ParentMessagesView extends StatefulWidget {
@@ -156,27 +156,39 @@ class _ParentMessagesViewState extends State<ParentMessagesView> {
   late Timer timer;
 
   @override
-  void initState() {
-    super.initState();
+void initState() {
+  super.initState();
+  fetchContacts();
+  fetchMessages();
+  timer = Timer.periodic(Duration(seconds: 2), (timer) {
     fetchContacts();
     fetchMessages();
-        timer = Timer.periodic(Duration(seconds: 2), (timer) {
-      fetchContacts();
-      fetchMessages();
+    if (mounted) {
       setState(() {});
-    });
-  }
-
+    }
+  });
+}
   @override
-  Widget build(BuildContext context) {
-    return ChatLayout(
-      title: 'Chat',
-      tabs: ['Messages', 'People'],
-      getMessages: () => messages,
-      getContacts: () => contacts,
-      onChatTap: (context, contact) {
-        createNewConversation(contact.id);
-      },
+void dispose() {
+  timer.cancel(); 
+  super.dispose();
+}
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: Colors.white,
+      
+    ),
+    body: ChatLayout(
+        title: 'Chat',
+        tabs: ['Messages', 'People'],
+        getMessages: () => messages,
+        getContacts: () => contacts,
+        onChatTap: (context, contact) {
+          createNewConversation(contact.id);
+        },
+      ),
     );
   }
 }

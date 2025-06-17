@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:MySchool/constants/strings.dart';
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/features/chat/data/models/chat_contact.dart';
 import 'package:MySchool/features/chat/data/models/chat_message.dart';
 import 'package:MySchool/features/chat/presentation/views/chat_view.dart';
@@ -158,16 +158,23 @@ class _StudentMessagesViewState extends State<StudentMessagesView> {
   late Timer timer;
 
   @override
-  void initState() {
-    super.initState();
+void initState() {
+  super.initState();
+  fetchContacts();
+  fetchMessages();
+  timer = Timer.periodic(Duration(seconds: 2), (timer) {
     fetchContacts();
     fetchMessages();
-    timer = Timer.periodic(Duration(seconds: 2), (timer) {
-      fetchContacts();
-      fetchMessages();
+    if (mounted) {
       setState(() {});
-    });
-  }
+    }
+  });
+}
+  @override
+void dispose() {
+  timer.cancel(); 
+  super.dispose();
+}
 
   @override
   Widget build(BuildContext context) {

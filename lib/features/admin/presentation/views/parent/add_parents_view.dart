@@ -1,13 +1,14 @@
 import 'package:MySchool/core/utils/search_utlis.dart';
-import 'package:MySchool/core/utils/time.dart' as Utils;
+import 'package:MySchool/core/utils/time.dart' as utils;
 import 'package:MySchool/features/admin/domain/entities/parent_entity.dart';
 import 'package:MySchool/features/admin/presentation/cubits/parent_cubits/add_parent_cubit.dart';
 import 'package:MySchool/features/admin/presentation/widgets/class_dropdown_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/presentation/widgets/add_widget.dart';
@@ -43,11 +44,34 @@ class _AddParentsViewState extends State<AddParentsView> {
   List<ParentEntity> filteredParents = [];
 
   final List<DropdownMenuItem<String>> genderItems = [
-    DropdownMenuItem(value: "male", child: Text("male")),
-    DropdownMenuItem(value: "female", child: Text("female")),
+    DropdownMenuItem(value: "Male", child: Text("Male")),
+    DropdownMenuItem(value: "Female", child: Text("Female")),
   ];
 
+  void _addTextListeners() {
+    final controllers = [
+      fullNameController,
+      accountIdController,
+      passwordController,
+      dobController,
+      nationalIdController,
+      phoneController,
+      addressController,
+    ];
+
+    for (var controller in controllers) {
+      controller.addListener(() => setState(() {}));
+    }
+  }
+
   void openForm({ParentEntity? entity}) {
+    print(entity?.dateOfBirth);
+    String? formatted;
+    if (entity != null) {
+      DateFormat inputFormat = DateFormat('yyyy-MM-dd');
+      DateTime date = inputFormat.parse(entity.dateOfBirth);
+      formatted = DateFormat('dd/MM/yyyy').format(date);
+    }
     setState(() {
       showForm = true;
       isEdit = entity != null;
@@ -55,7 +79,8 @@ class _AddParentsViewState extends State<AddParentsView> {
       fullNameController.text = entity?.fullName ?? '';
       accountIdController.text = entity?.accountId ?? '';
       passwordController.text = entity?.password ?? '';
-      dobController.text = entity?.dateOfBirth ?? '';
+      dobController.text = formatted ?? '';
+      // dobController.text = entity?.dateOfBirth ?? '';
       nationalIdController.text = entity?.nationalId ?? '';
       phoneController.text = entity?.phoneNumber ?? '';
       addressController.text = entity?.address ?? '';
@@ -89,6 +114,7 @@ class _AddParentsViewState extends State<AddParentsView> {
   void initState() {
     super.initState();
     context.read<AddParentCubit>().loadParents();
+    _addTextListeners();
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
       setState(() {
@@ -148,7 +174,7 @@ class _AddParentsViewState extends State<AddParentsView> {
                       items: genderItems,
                       selectedValue: gender,
                       onChanged:
-                          (value) => setState(() => gender = value ?? 'male'),
+                          (value) => setState(() => gender = value ?? 'Male'),
                     ),
                     CustomField(
                       controller: dobController,
@@ -162,7 +188,7 @@ class _AddParentsViewState extends State<AddParentsView> {
                           lastDate: DateTime.now(),
                         );
                         if (date != null) {
-                          dobController.text = Utils.formatDate(date);
+                          dobController.text = utils.formatDate(date);
                         }
                       },
                     ),
@@ -194,12 +220,13 @@ class _AddParentsViewState extends State<AddParentsView> {
                     const SizedBox(height: 12),
                     CreateButton(
                       label: isEdit ? "Update" : "Create",
-                      icon: isEdit ? Icons.edit : Icons.add,
+                      icon: isEdit ? Icons.restart_alt : Icons.add,
                       enabled:
                           fullNameController.text.isNotEmpty &&
                           accountIdController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty &&
                           dobController.text.isNotEmpty &&
+                          gender != null &&
                           nationalIdController.text.isNotEmpty &&
                           phoneController.text.isNotEmpty &&
                           addressController.text.isNotEmpty &&
@@ -240,24 +267,24 @@ class _AddParentsViewState extends State<AddParentsView> {
                           : filteredParents;
                   return CustomScrollView(
                     slivers: [
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 8,
-                            ),
-                            child: TextField(
-                              controller: searchController,
-                              decoration: InputDecoration(
-                                hintText: 'Search',
-                                prefixIcon: Icon(Icons.search),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 8,
+                          ),
+                          child: TextField(
+                            controller: searchController,
+                            decoration: InputDecoration(
+                              hintText: 'Search',
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                           ),
                         ),
+                      ),
                       SliverToBoxAdapter(
                         child: AddWidget(
                           onTap: () => openForm(),

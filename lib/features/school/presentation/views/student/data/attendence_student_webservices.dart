@@ -1,7 +1,7 @@
 import 'package:MySchool/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../../../../../../constants/strings.dart';
+import '../../../../../../core/constants/strings.dart';
 
 class AttendenceStudentWebservices {
   // This class is responsible for handling web service calls related to student attendance.

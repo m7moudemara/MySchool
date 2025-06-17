@@ -1,10 +1,12 @@
 import 'package:MySchool/features/school/presentation/views/teacher/classes_info_view.dart';
 import 'dart:convert';
 
-import 'package:MySchool/constants/strings.dart';
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../data/models/student_model.dart';
 
 // Main MyChildren Page with Search and Navigation to Details
 class MyChildrenView extends StatefulWidget {
@@ -131,6 +133,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('My Children'),
         centerTitle: true,
         elevation: 0,
@@ -188,6 +191,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                         final child = filteredChildren[index];
                         final name = filteredChildren[index]['name'];
                         return Card(
+                          color: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -204,7 +208,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                                         studentClass: child['class']!,
                                         studentName: child['name']!,
                                         studentId: child['id'],
-                                        student: child['student']??'',
+                                        student: Student.fromJson(child),
                                       ),
                                 ),
                               );
@@ -221,6 +225,7 @@ class _MyChildrenViewState extends State<MyChildrenView> {
                             title: RichText(
                               text: TextSpan(
                                 style: TextStyle(
+                                  color: Colors.black,
                                   fontSize: 18,
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w600,

@@ -1,4 +1,4 @@
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/domain/entities/class_entity.dart';
@@ -49,7 +49,8 @@ class _AddClassViewState extends State<AddClassView> {
       isEdit = entity != null;
       editingId = entity?.id;
       classNameController.text = entity?.name ?? '';
-      selectedGrade = entity?.grade;
+      selectedGrade = "Grade ${entity?.grade}";
+      // selectedGrade = entity?.grade;
     });
   }
 
@@ -72,7 +73,7 @@ class _AddClassViewState extends State<AddClassView> {
     classNameController.addListener(() {
       setState(() {});
     });
-    selectedGrade = null; 
+    selectedGrade = null;
   }
 
   @override
@@ -112,8 +113,8 @@ class _AddClassViewState extends State<AddClassView> {
                       final entity = ClassEntity(
                         id: isEdit ? editingId! : const Uuid().v4(),
                         name: classNameController.text,
-                       grade: selectedGrade!,
-  
+                        grade: selectedGrade!,
+
                         studentsCount: 20,
                       );
 

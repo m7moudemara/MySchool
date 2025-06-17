@@ -1,6 +1,7 @@
 class FeesEntity {
   final String id;
-  final String selectSudent;
+  final int selectSudentId;
+  final String selectSudentName;
   final double totalAmount;
   final double paidAmount;
   final DateTime dueDate;
@@ -8,7 +9,8 @@ class FeesEntity {
 
   FeesEntity({
     required this.id,
-    required this.selectSudent,
+    required this.selectSudentId,
+    required this.selectSudentName,
     required this.totalAmount,
     required this.paidAmount,
     required this.dueDate,

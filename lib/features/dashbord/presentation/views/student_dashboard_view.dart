@@ -9,10 +9,10 @@ import 'package:MySchool/features/school/domain/entities/user_type.dart';
 import 'package:MySchool/features/dashbord/presentation/widgets/custom_academics_widget.dart';
 import 'package:MySchool/features/dashbord/presentation/widgets/custom_info_card_widget.dart';
 
-class StudentDashBoard extends StatelessWidget {
+class StudentDashboardView extends StatelessWidget {
   static String id = '/StudentDashBoard';
 
-  const StudentDashBoard({super.key});
+  const StudentDashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +32,7 @@ class StudentDashBoard extends StatelessWidget {
           builder: (context, statex) {
             final studentDash = statex;
             return Scaffold(
+              backgroundColor: Colors.white,
               body: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),

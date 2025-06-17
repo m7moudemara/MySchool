@@ -245,9 +245,9 @@ Future<void> _setupGradesDependencies() async {
     () => SubjectsLocalDataSourceImpl(),
   );
   // teachers data source 
-  // getIt.registerLazySingleton<TeacherLocalDataSource>(
-  //   () => TeacherLocalDataSourceImpl(),
-  // );
+  getIt.registerLazySingleton<TeacherLocalDataSource>(
+    () => TeacherLocalDataSourceImpl(),
+  );
   // fees data source
   getIt.registerLazySingleton<FeesLocalDataSource>(
     () => FeesLocalDataSourceImpl(),

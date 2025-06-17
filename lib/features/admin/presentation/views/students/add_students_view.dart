@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:MySchool/core/constants/strings.dart';
 import 'package:MySchool/core/utils/search_utlis.dart';
 import 'package:MySchool/core/utils/time.dart';
 import 'package:MySchool/features/admin/domain/entities/student_entity.dart';
@@ -5,9 +8,11 @@ import 'package:MySchool/features/admin/presentation/cubits/student_cubits/stude
 import 'package:MySchool/features/admin/presentation/widgets/class_dropdown_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:MySchool/core/constants.dart';
+import 'package:MySchool/core/constants/constants.dart';
 import 'package:MySchool/core/utils/utils.dart';
 import 'package:MySchool/core/widgets/app_bar.dart';
 import 'package:MySchool/features/admin/presentation/widgets/add_widget.dart';
@@ -15,6 +20,9 @@ import 'package:MySchool/features/admin/presentation/widgets/create_button.dart'
 import 'package:MySchool/features/admin/presentation/widgets/create_new_widget.dart';
 import 'package:MySchool/features/admin/presentation/widgets/custom_text_feild.dart';
 import 'package:MySchool/features/admin/presentation/widgets/new_widget.dart';
+
+
+import '../../../../../main.dart';
 
 class AddStudentsView extends StatefulWidget {
   const AddStudentsView({super.key});
@@ -39,6 +47,8 @@ class _AddStudentsViewState extends State<AddStudentsView> {
   String? gender;
   String? selectedClass;
   String? myParent;
+  int? selectedClassId;
+  int? selectedParentId;
   bool isActive = false;
   bool mustChangePassword = false;
   bool showForm = false;
@@ -47,19 +57,43 @@ class _AddStudentsViewState extends State<AddStudentsView> {
   List<StudentEntity> filteredStudents = [];
 
   final List<DropdownMenuItem<String>> genderItems = [
-    DropdownMenuItem(value: "male", child: Text("male")),
-    DropdownMenuItem(value: "female", child: Text("female")),
+    DropdownMenuItem(value: "Male", child: Text("Male")),
+    DropdownMenuItem(value: "Female", child: Text("Female")),
   ];
   final List<DropdownMenuItem<String>> classes = [
-    DropdownMenuItem(value: "class1", child: Text("Class 1")),
-    DropdownMenuItem(value: "class2", child: Text("Class 2")),
+    // DropdownMenuItem(value: "class1", child: Text("Class 1")),
+    // DropdownMenuItem(value: "class2", child: Text("Class 2")),
   ];
   final List<DropdownMenuItem<String>> parents = [
-    DropdownMenuItem(value: "parent1", child: Text("Parent 1")),
-    DropdownMenuItem(value: "parent2", child: Text("Parent 2")),
+    // DropdownMenuItem(value: "parent1", child: Text("Parent 1")),
+    // DropdownMenuItem(value: "parent2", child: Text("Parent 2")),
   ];
 
+  
+  void _addTextListeners() {
+  final controllers = [
+    fullNameController,
+    accountIdController,
+    passwordController,
+    dobController,
+    nationalIdController,
+    phoneController,
+    addressController,
+  ];
+
+  for (var controller in controllers) {
+    controller.addListener(() => setState(() {}));
+  }
+}
   void openForm({StudentEntity? entity}) {
+    print(entity?.dateOfBirth);
+    String? formatted;
+    if (entity != null) {
+      DateFormat inputFormat = DateFormat('yyyy-MM-dd');
+      DateTime date = inputFormat.parse(entity.dateOfBirth);
+      formatted = DateFormat('dd/MM/yyyy').format(date);
+    }
+
     setState(() {
       showForm = true;
       isEdit = entity != null;
@@ -67,13 +101,13 @@ class _AddStudentsViewState extends State<AddStudentsView> {
       fullNameController.text = entity?.fullName ?? '';
       accountIdController.text = entity?.accountId ?? '';
       passwordController.text = entity?.password ?? '';
-      dobController.text = entity?.dateOfBirth ?? '';
+      dobController.text = formatted ?? '';
       nationalIdController.text = entity?.nationalId ?? '';
       phoneController.text = entity?.phoneNumber ?? '';
       addressController.text = entity?.address ?? '';
       selectedClass = entity?.selectedClass;
       myParent = entity?.myParent;
-      gender = entity?.gender;
+      gender = entity?.gender.toLowerCase();
       isActive = entity?.isActive ?? false;
       mustChangePassword = entity?.mustChangePassword ?? false;
     });
@@ -100,10 +134,63 @@ class _AddStudentsViewState extends State<AddStudentsView> {
     });
   }
 
+  getClasses() async {
+    final url = Uri.parse('$baseUrl/api/classes');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      List classesx = jsonDecode(response.body)['data'];
+      for (var item in classesx) {
+        setState(() {
+          classes.add(
+            DropdownMenuItem(value: item['name'], child: Text(item['name'])),
+          );
+        });
+      }
+    } else {
+      throw Exception('error');
+    }
+  }
+
+  getParents() async {
+    final url = Uri.parse(
+      '$baseUrl/api/accounts?Pagesize=500&Where%5Brole%5D=Guardian',
+    );
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${await sharedPrefController.getToken()}',
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      List result = jsonDecode(response.body)['data'];
+      for (var item in result) {
+        setState(() {
+          parents.add(
+            DropdownMenuItem(value: item['name'], child: Text(item['name'])),
+          );
+        });
+      }
+    } else {
+      throw Exception('error');
+    }
+  }
+
   @override
   void initState() {
+    getClasses();
+    getParents();
     super.initState();
     context.read<AddStudentCubit>().loadStudents();
+    _addTextListeners();  
     searchController.addListener(() {
       final query = searchController.text.toLowerCase();
       setState(() {
@@ -167,20 +254,20 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                     CustomField(
                       controller: dobController,
                       label: "Date of Birth",
-                      readOnly:   true,
-                       onTap: () async {
-    final selectedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime(2000),
-      firstDate: DateTime(1950),
-      lastDate: DateTime.now(),
-    );
+                      readOnly: true,
+                      onTap: () async {
+                        final selectedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime(2000),
+                          firstDate: DateTime(1950),
+                          lastDate: DateTime.now(),
+                        );
 
-    if (selectedDate != null) {
-      dobController.text = formatDate(selectedDate);
-      setState(() {});
-    }
-  },
+                        if (selectedDate != null) {
+                          dobController.text = formatDate(selectedDate);
+                          setState(() {});
+                        }
+                      },
                     ),
                     CustomField(
                       controller: nationalIdController,
@@ -200,9 +287,12 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                       title: "Select Class",
                       items: classes,
                       selectedValue: selectedClass,
-                      onChanged:
-                          (value) =>
-                              setState(() => selectedClass = value ?? ''),
+                      onChanged: (value) {
+                        print('*********');
+                        print(value);
+                        setState(() => selectedClass = value ?? '');
+                        print(selectedClass);
+                      },
                     ),
                     ClassDropdownWidget(
                       title: "Select Parent",
@@ -225,12 +315,15 @@ class _AddStudentsViewState extends State<AddStudentsView> {
                     const SizedBox(height: 12),
                     CreateButton(
                       label: isEdit ? "Update" : "Create",
-                      icon: isEdit ? Icons.edit : Icons.add,
+                      icon: isEdit ? Icons.restart_alt : Icons.add,
                       enabled:
                           fullNameController.text.isNotEmpty &&
                           accountIdController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty &&
                           dobController.text.isNotEmpty &&
+                          gender != null &&
+                          selectedClass != null &&
+                          myParent != null &&
                           nationalIdController.text.isNotEmpty &&
                           phoneController.text.isNotEmpty &&
                           addressController.text.isNotEmpty &&
@@ -273,24 +366,24 @@ class _AddStudentsViewState extends State<AddStudentsView> {
 
                   return CustomScrollView(
                     slivers: [
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 8,
-                            ),
-                            child: TextField(
-                              controller: searchController,
-                              decoration: InputDecoration(
-                                hintText: 'Search',
-                                prefixIcon: Icon(Icons.search),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 8,
+                          ),
+                          child: TextField(
+                            controller: searchController,
+                            decoration: InputDecoration(
+                              hintText: 'Search',
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                           ),
                         ),
+                      ),
                       SliverToBoxAdapter(
                         child: AddWidget(
                           onTap: () => openForm(),

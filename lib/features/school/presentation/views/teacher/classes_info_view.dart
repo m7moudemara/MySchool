@@ -5,7 +5,7 @@ import 'package:MySchool/features/school/presentation/views/student/attendance_v
 import 'package:MySchool/features/homework/presentation/views/student_submitted_homework_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../../../../../constants/strings.dart';
+import '../../../../../core/constants/strings.dart';
 import '../../../../../main.dart';
 
 class ClassesinfoView extends StatefulWidget {
@@ -62,6 +62,7 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: FutureBuilder(
@@ -194,11 +195,19 @@ class _ClassesinfoViewState extends State<ClassesinfoView> {
                         icon: Icons.assignment,
                         title: 'Results',
                         onTap: () {
-                          // Navigator.pushNamed(context, GradesView.id);
-                          Navigator.pushNamed(
+                          // Navigator.pushNamed(
+                          //   context,
+                          //   StudentGradesView.id,
+                          //   arguments: widget.student,
+                          // );
+                          Navigator.push(
                             context,
-                            StudentGradesView.id,
-                            arguments: widget.student,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => StudentGradesView(
+                                    student: widget.student,
+                                  ),
+                            ),
                           );
                         },
                       ),

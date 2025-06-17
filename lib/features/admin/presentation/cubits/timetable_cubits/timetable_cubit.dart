@@ -21,24 +21,26 @@ class AddTimeTableCubit extends Cubit<AddTimeTableState> {
     required this.delete,
   }) : super(const AddTimeTableState(timeTables: []));
 
-  Future<void> loadTimeTables() async {
+  Future<void> loadTimeTables(int selectedDayIndex) async {
     emit(const AddTimeTableState(timeTables: [], isLoading: true));
-    final list = await getAll();
-    emit(AddTimeTableState(timeTables: list));
+    List<TimeTableEntity> list = await getAll();
+    List<TimeTableEntity> selectedTimeTables =
+        list.where((element) => element.day == selectedDayIndex).toList();
+    emit(AddTimeTableState(timeTables: selectedTimeTables));
   }
 
   Future<void> addTimeTable(TimeTableEntity timeTable) async {
     await add(timeTable);
-    await loadTimeTables();
+    await loadTimeTables(0);
   }
 
   Future<void> updateTimeTable(TimeTableEntity timeTable) async {
     await update(timeTable);
-    await loadTimeTables();
+    await loadTimeTables(0);
   }
 
   Future<void> deleteTimeTable(String id) async {
     await delete(id);
-    await loadTimeTables();
+    await loadTimeTables(0);
   }
 }
